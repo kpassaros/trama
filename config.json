@@ -11,8 +11,10 @@
     "provider": "ga4",
     "measurement_id": "G-4SFQY2C6J3",
     "site_url": "https://kpassaros.github.io/trama/",
-    "consent_required": true,
-    "consent_days": 180,
-    "advertising_enabled": false
+    "consent_required": false,
+    "advertising_enabled": false,
+    "collection_mode": "informational",
+    "preference_days": 180,
+    "legal_basis_review_status": "pending_owner_validation"
   }
 }

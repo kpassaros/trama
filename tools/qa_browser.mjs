@@ -26,7 +26,7 @@ try{
    await delay(20);
   }
   if(await evaluate('location.href')!==url)throw Error('Rota incorreta: '+file);
-  await evaluate(`(async()=>{await document.fonts.ready;document.documentElement.dataset.theme=${JSON.stringify(theme)};await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true;})()`);
+  await evaluate(`(async()=>{await document.fonts.ready;document.querySelector('[data-notice-dismiss]')?.click();document.documentElement.dataset.theme=${JSON.stringify(theme)};await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return true;})()`);
  };
 
  const check=(name,passed,extra={})=>{console.log(name,passed?'PASS':'FAIL');results.push({name,passed,...extra});if(!passed)errors.push(name);};
