@@ -1,0 +1,70 @@
+{
+  "id": "looker-001",
+  "track": "looker",
+  "title": "Looker: uma definição de receita, vários usos",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Distinguir view, model e Explore e explicar como uma medida LookML depende do banco e da granularidade correta.",
+  "intro": "No Looker, a camada semântica descreve como consultar dados e definir indicadores. Não basta desenhar um gráfico: é preciso explicitar relações, chaves e regras. Esta é uma introdução conceitual com exemplo de LookML, não uma implantação gratuita de uma instância.",
+  "prerequisites": "SQL básico, agregação e relações um-para-muitos",
+  "sections": [
+    {
+      "heading": "Modelo semântico antes do dashboard",
+      "paragraphs": [
+        "LookML descreve dimensões, agregações, cálculos e relações em um banco SQL. O Looker usa essas definições para gerar SQL e consultar a origem. Isso permite reutilizar regras de negócio, mas não elimina a necessidade de validar os dados e as relações.",
+        "Uma view descreve campos associados a uma tabela ou consulta. O model organiza conexão e Explores. Um Explore expõe um caminho de consulta para o usuário. O projeto é composto de arquivos e costuma ser versionado em Git; não confunda esses objetos com uma página do Looker Studio / Data Studio."
+      ]
+    },
+    {
+      "heading": "Comece com uma tabela pequena e uma medida",
+      "paragraphs": [
+        "Suponha uma tabela fictícia analytics.orders com uma linha por pedido, order_id único e total_amount numérico. O exemplo define a chave, a dimensão de valor e a medida revenue. O nome da tabela e a conexão são ilustrativos: precisam existir no banco configurado para o seu projeto.",
+        "Em uma tabela com dois pedidos de valores 150 e 50, a medida soma deve produzir 200 antes de qualquer join. Declarar primary_key: yes não transforma dados duplicados em únicos. É uma informação do modelo que precisa corresponder aos dados reais."
+      ],
+      "codeBlocks": [
+        {
+          "code": "view: orders {\n  sql_table_name: analytics.orders ;;\n\n  dimension: order_id {\n    primary_key: yes\n    type: number\n    sql: ${TABLE}.order_id ;;\n  }\n\n  dimension: total_amount {\n    type: number\n    sql: ${TABLE}.total_amount ;;\n  }\n\n  measure: revenue {\n    type: sum\n    sql: ${total_amount} ;;\n  }\n}",
+          "language": "text",
+          "label": "LookML · view ilustrativa · exige instância e conexão"
+        }
+      ]
+    },
+    {
+      "heading": "Relações mudam o significado da soma",
+      "paragraphs": [
+        "Se adicionar uma tabela de itens com várias linhas por pedido, o join pode repetir os valores da tabela de pedidos. Antes de modelar a relação, declare qual tabela tem uma linha por pedido, qual tem uma linha por item e se as chaves são realmente únicas.",
+        "Recursos do Looker podem ajudar a tratar agregações em joins quando o modelo é configurado corretamente, mas não presuma que qualquer relação está segura. Examine o SQL gerado e compare o total sem join e com join usando uma fixture pequena e um caso de duplicidade."
+      ]
+    },
+    {
+      "heading": "Valide estrutura e números separadamente",
+      "paragraphs": [
+        "Validação de LookML detecta problemas estruturais, mas não prova que a métrica tem o significado de negócio correto. Confira a unidade, os filtros, a inclusão de cancelamentos e o comportamento de nulos. Receita bruta, receita paga e receita líquida exigem definições distintas.",
+        "No portfólio, documente a especificação da medida e a reconciliação com SQL. Executar este exemplo exige acesso a uma instância Looker, permissão no projeto e conexão ao banco. Sem esse ambiente, apresente o modelo como estudo e não como uma implementação validada em produção."
+      ]
+    }
+  ],
+  "exercise": "Desenhe orders e order_items com dois pedidos fictícios. Escreva a definição de receita e mostre onde um join um-para-muitos poderia duplicá-la. Se tiver Looker, valide o projeto e confira SQL gerado; se não tiver, entregue a especificação e marque a execução como pendente.",
+  "pitfalls": [
+    "Achar que primary_key cria uma restrição física de unicidade no banco.",
+    "Confundir Looker/LookML com a ferramenta de relatórios Looker Studio / Data Studio.",
+    "Validar apenas sintaxe e não a reconciliação de valores."
+  ],
+  "review": [
+    {
+      "question": "LookML armazena todos os dados consultados?",
+      "answer": "Não é essa a função do modelo apresentado: ele descreve consultas que o Looker gera e executa contra a conexão SQL configurada."
+    },
+    {
+      "question": "Uma chave declarada como primary_key garante que não há duplicatas?",
+      "answer": "Não. A declaração deve ser sustentada pela qualidade dos dados e por testes de unicidade."
+    }
+  ],
+  "references": [
+    {
+      "label": "Looker — introdução ao LookML",
+      "url": "https://docs.cloud.google.com/looker/docs/what-is-lookml"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

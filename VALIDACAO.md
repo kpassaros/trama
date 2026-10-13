@@ -1,22 +1,22 @@
-# Validação local — Trama
+# Validação local — Google, links profissionais e GA4 opt-in
 
-Recorte inicial aprovado visualmente pelo autor. 13 trilhas, 37 aulas iniciais, 62 referências e 52 páginas HTML.
+Atualização preparada para revisão em branch, não aprovada como release. O visual base da Trama já havia sido aprovado pelo autor. O build contém 20 trilhas, 44 aulas iniciais, 76 referências e 67 páginas HTML, incluindo privacidade.
 
 ## Executado localmente
+- Build e sintaxe Python/JavaScript; links, IDs, âncoras, realce e regressões de segurança do gerador.
+- Cinco checks SQL com fixtures SQLite e parsing de seis blocos JavaScript sem executar snippets no CI.
+- 20 checks interativos gerais; dimensões das 67 rotas em 1440px e 390px sem overflow horizontal da página ou imagens locais ausentes.
+- 21 checks de analytics com interceptação offline de todos os requests e gtag simulado: ausência de tag/queue antes de aceite; recusa persistente; reabertura das preferências; aceite; URL/referrer minimizados; anúncios desativados; uma visualização por documento; cópia, busca, clique profissional e link de aula; revogação; separação dos cookies do portfólio; consentimento vencido; privacidade sem tag; armazenamento bloqueado.
+- Gate de configuração rejeita ID/base inválidos, consentimento obrigatório desligado, anúncios ligados e prazo inválido. Desligamento global por config foi testado com rebuild: sem script/controles de analytics no HTML.
+- Seis links profissionais por documento (três na lateral e três no rodapé), SVGs locais, nomes acessíveis e nova aba com noopener/noreferrer. Contato aponta para o portfólio; nenhum formulário incorporado.
+- Capturas representativas inspecionadas: home desktop/celular, privacidade com rodapé no celular e menu aberto em tema escuro. Não equivale a revisão visual manual de cada aula.
+- Auditoria de padrões comuns de segredo sem ocorrências; não certifica segurança completa nem conformidade WCAG integral.
 
-- Build, compilação Python e verificação de sintaxe JavaScript.
-- Links locais, âncoras, IDs e preservação do texto no realce de sintaxe.
-- Cinco verificações SQL em fixture SQLite, incluindo LEFT JOIN sem cliente e chave duplicada; parsing JavaScript sem execução no CI. No QA local de conteúdo revisado, sete cenários Fetch verificam erros e também o retorno exato nos casos válido/vazio.
-- Vinte testes de interface: menu retrátil, temas, busca/filtros, vazio/limpeza, detalhes, cópia, menu móvel, Escape e movimento reduzido.
-- Layout das 52 rotas verificado automaticamente em 1440px e 390px, sem overflow horizontal da página ou imagens locais ausentes.
-- Tokens de texto medidos acima de 4,5:1 nos pares testados. Isso não certifica conformidade completa WCAG.
-- Inspeção visual das telas representativas nos dois temas, incluindo consultas, Fabric, aula, menu móvel e lateral recolhida.
-- Auditoria local de padrões comuns de segredo e higiene, sem ocorrências detectadas. Isso não garante ausência de todas as vulnerabilidades.
+## Limites e status
+As sete trilhas Google têm uma aula inicial e duas referências cada; não são formações completas. Fontes oficiais e limites de ambiente constam nas aulas e no plano de curadoria. Não houve execução dentro de contas Google Sheets, Forms, Workspace, Looker ou Google Cloud, habilitação de billing ou configuração de dashboards externos.
 
-## Ainda depende da publicação
+O ID GA4 foi informado pelo titular e integrado no código. Os testes de analytics usam stub: zero eventos enviados ao Google durante o QA local. Não comprovam recebimento em Tempo real/DebugView, retenção/configuração externa, comportamento interno da tag real ou resultados de relatório.
 
-O relatório acima registra testes locais. Checks remotos e revisão são acompanhados no PR #1 antes do merge. O endereço público só deve ser confirmado depois do deploy e da conferência da página; este arquivo não comprova publicação.
+Conta, propriedade e fluxo não foram acessados pelo agente. O titular deve conferir medição otimizada desligada, retenção, publicidade e aviso de privacidade; seguir GA4-INICIO.md para validação real após publicação. Consentimento não é certificação jurídica e não significa anonimato absoluto.
 
-Não houve execução nos ambientes de Fabric, Databricks, Power BI, Excel ou demais produtos. Não houve revisão externa/certificação das aulas. Confira versões, dialetos, esquemas e permissões no ambiente aplicável.
-
-Analytics permanece desligado. Não são coletados perfis, progresso ou dados operacionais pela aplicação.
+Checks remotos, revisão, merge e deploy devem ser conferidos no PR. Este documento não comprova publicação externa.

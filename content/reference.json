@@ -1302,6 +1302,314 @@
       ],
       "pitfall": "Acrescente catch no chamador e validação de esquema. HTTP 200 não prova dados corretos; nunca exponha segredos.",
       "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-063",
+      "tool": "Google Workspace",
+      "name": "Acesso restrito e papéis",
+      "category": "Permissões",
+      "description": "Defina o público autorizado e conceda apenas o papel necessário para consultar, comentar ou editar um arquivo.",
+      "code": "Compartilhar → Acesso geral: Restrito\nDestinatário → Leitor / Comentador / Editor",
+      "dialect": "Roteiro de interface · não executável",
+      "use": "Compartilhar uma revisão de dados fictícios sem liberar o arquivo publicamente.",
+      "result": "Somente os destinatários autorizados consultam o arquivo; o papel controla o que cada um pode fazer.",
+      "steps": [
+        "Abra o compartilhamento do próprio arquivo.",
+        "Escolha acesso restrito e adicione o destinatário.",
+        "Defina o papel e teste com a conta destinatária."
+      ],
+      "pitfall": "Copiar o link não autoriza acesso; liberar qualquer pessoa com o link pode ampliar a exposição além da pasta.",
+      "source": {
+        "label": "Google Workspace — compartilhar arquivos e pastas",
+        "url": "https://support.google.com/a/users/answer/9310248?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-064",
+      "tool": "Google Workspace",
+      "name": "Revisão de acesso",
+      "category": "Governança",
+      "description": "Revise permissões quando a colaboração termina, incluindo arquivos vinculados e público de leitura.",
+      "code": "Arquivo → Compartilhar → pessoa → Remover acesso\nArquivo → Acesso geral → Restrito",
+      "dialect": "Roteiro de interface · não executável",
+      "use": "Encerrar o acesso de um revisor que não participa mais do trabalho.",
+      "result": "A permissão selecionada é removida; outros caminhos de acesso precisam ser conferidos.",
+      "steps": [
+        "Identifique destinatários e grupos com acesso.",
+        "Remova permissões que não são mais necessárias.",
+        "Confira arquivos associados e possíveis permissões herdadas."
+      ],
+      "pitfall": "Uma alteração no formulário não garante a mesma alteração na planilha de respostas.",
+      "source": {
+        "label": "Google Workspace — compartilhar arquivos e pastas",
+        "url": "https://support.google.com/a/users/answer/9310248?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-065",
+      "tool": "Google Sheets",
+      "name": "QUERY: filtrar e agregar",
+      "category": "Consulta",
+      "description": "Filtre status e agregue valores por cliente, declarando explicitamente a quantidade de linhas de cabeçalho.",
+      "code": "=QUERY(A1:C4; \"select A, sum(C) where B = 'paid' group by A label sum(C) 'Receita paga'\"; 1)",
+      "dialect": "Google Sheets · exemplo com separador ;",
+      "use": "Somar pedidos pagos por cliente numa base A1:C4: a1/paid/150, a1/pending/80, b1/paid/50.",
+      "result": "a1 recebe 150 e b1 recebe 50; soma dos valores pagos = 200.",
+      "steps": [
+        "A1:C4 contém cabeçalho e os três pedidos fictícios.",
+        "where filtra paid; group by reúne linhas de cada cliente.",
+        "sum(C) soma valores e label define o rótulo do resultado."
+      ],
+      "pitfall": "Confira localidade e tipos. Número armazenado como texto pode ser tratado como nulo em coluna mista.",
+      "source": {
+        "label": "Google Planilhas — QUERY",
+        "url": "https://support.google.com/docs/answer/3093343?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-066",
+      "tool": "Google Sheets",
+      "name": "QUERY: cabeçalhos e tipos",
+      "category": "Qualidade",
+      "description": "Declare cabeçalho e confira tipos antes de interpretar um resultado com ausências.",
+      "code": "=QUERY(A1:C4; \"select A, C where C is not null\"; 1)",
+      "dialect": "Google Sheets · exemplo com separador ;",
+      "use": "Inspecionar quais linhas têm um valor reconhecido pela consulta na coluna C.",
+      "result": "Retorna A e C somente para linhas em que C não é nulo segundo a tipagem do QUERY.",
+      "steps": [
+        "O argumento 1 declara uma linha de cabeçalho.",
+        "A consulta usa o tipo majoritário da coluna.",
+        "Compare linhas ausentes com o tipo do dado na entrada."
+      ],
+      "pitfall": "Este filtro não corrige tipos nem valida que todo número é um valor de negócio aceitável.",
+      "source": {
+        "label": "Google Planilhas — QUERY",
+        "url": "https://support.google.com/docs/answer/3093343?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-067",
+      "tool": "Google Forms",
+      "name": "Destino das respostas",
+      "category": "Coleta",
+      "description": "Conecte o formulário a uma planilha e verifique uma resposta fictícia antes de usar a base.",
+      "code": "Formulário → Respostas → Selecionar destino\nCriar planilha ou selecionar planilha existente",
+      "dialect": "Roteiro de interface · não executável",
+      "use": "Organizar respostas de uma pesquisa em uma base tabular.",
+      "result": "Novas respostas são enviadas ao destino configurado; formulário e planilha continuam sendo objetos distintos.",
+      "steps": [
+        "Abra Respostas e selecione o destino.",
+        "Envie uma resposta fictícia de teste.",
+        "Confira colunas, valores e permissões dos dois objetos."
+      ],
+      "pitfall": "Colaboradores do formulário podem receber acesso ao criar a planilha; revise o público.",
+      "source": {
+        "label": "Google Formulários — destino e permissões das respostas",
+        "url": "https://support.google.com/docs/answer/2917686?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-068",
+      "tool": "Google Forms",
+      "name": "Desvincular não é excluir",
+      "category": "Ciclo de vida",
+      "description": "Interrompa o vínculo com uma planilha sem confundir a ação com encerramento ou exclusão do formulário.",
+      "code": "Formulário → Respostas → Mais → Desvincular\nDados existentes na planilha permanecem",
+      "dialect": "Roteiro de interface · não executável",
+      "use": "Mudar o destino de armazenamento após revisar os dados e acessos.",
+      "result": "A planilha desvinculada deixa de receber novas respostas e conserva os dados existentes.",
+      "steps": [
+        "Confira se precisa parar o vínculo ou a coleta.",
+        "Desvincule apenas a planilha desejada.",
+        "Revise separadamente recebimento, dados existentes e novo destino."
+      ],
+      "pitfall": "Apagar respostas do formulário pode ser irreversível; desvincular não impede por si só novas respostas ao formulário.",
+      "source": {
+        "label": "Google Formulários — destino e permissões das respostas",
+        "url": "https://support.google.com/docs/answer/2917686?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-069",
+      "tool": "Google Analytics 4",
+      "name": "Conta → propriedade → fluxo",
+      "category": "Configuração",
+      "description": "Organize acesso, configuração de relatórios e origem Web antes da instalação de uma tag.",
+      "code": "Conta: Trama\nPropriedade: Trama — Web\nFluxo: Site Trama\nID de medição: G-…",
+      "dialect": "Modelo de configuração · não executável",
+      "use": "Começar uma propriedade exclusiva para o portal sem mexer em propriedades antigas.",
+      "result": "Estrutura criada no GA4; a coleta só começa com a implementação válida da tag no site.",
+      "steps": [
+        "Crie ou escolha a conta adequada.",
+        "Crie a propriedade com fuso e moeda corretos.",
+        "Crie um fluxo Web para o endereço HTTPS do portal."
+      ],
+      "pitfall": "O ID G-… identifica a medição e não é senha nem prova de que o script foi instalado.",
+      "source": {
+        "label": "Google Analytics — criar conta, propriedade e fluxo",
+        "url": "https://support.google.com/analytics/answer/9304153?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-070",
+      "tool": "Google Analytics 4",
+      "name": "Evento copy_reference",
+      "category": "Mensuração",
+      "description": "Descreva uma interação de cópia com identificadores de conteúdo, sem enviar o conteúdo copiado.",
+      "code": "Evento proposto: copy_reference\nreference_id: ref-017\ntool: SQL",
+      "dialect": "Contrato de evento proposto · não é código executável",
+      "use": "Medir uso de referências depois da revisão de privacidade e da implantação com consentimento.",
+      "result": "Cada disparo válido representa uma interação medida, não uma pessoa única nem prova de aprendizado.",
+      "steps": [
+        "Defina a pergunta e os parâmetros mínimos.",
+        "Implemente somente após revisão e escolha de analytics.",
+        "Valide parâmetros e ausência de duplicidade no DebugView."
+      ],
+      "pitfall": "Não envie texto da busca, código copiado, e-mail ou dados pessoais; recusas e bloqueadores limitam a cobertura.",
+      "source": {
+        "label": "Google Analytics — eventos e DebugView",
+        "url": "https://support.google.com/analytics/answer/9322688?hl=pt-BR"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-071",
+      "tool": "Looker Studio / Data Studio",
+      "name": "Conectar fonte GA4",
+      "category": "Conexões",
+      "description": "Use o conector Google Analytics para expor campos de uma propriedade autorizada em uma fonte de relatório.",
+      "code": "Criar → Fonte de dados → Google Analytics\nAutorizar → Conta → Propriedade → Conectar",
+      "dialect": "Roteiro de interface · não executável",
+      "use": "Construir um relatório privado para avaliar uso de aulas.",
+      "result": "A fonte expõe campos disponíveis da propriedade; relatórios podem ser criados a partir dela.",
+      "steps": [
+        "Selecione uma propriedade a que sua conta tenha acesso.",
+        "Confira dimensões, métricas e tipos.",
+        "Crie o relatório e compare um recorte simples com GA4."
+      ],
+      "pitfall": "O conector usa cotas da Data API e não replica todas as funcionalidades das explorações.",
+      "source": {
+        "label": "Looker Studio / Data Studio — conectar ao GA4",
+        "url": "https://docs.cloud.google.com/data-studio/connect-to-google-analytics"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-072",
+      "tool": "Looker Studio / Data Studio",
+      "name": "Credenciais da fonte",
+      "category": "Permissões",
+      "description": "Escolha como o relatório autoriza acesso aos dados da origem antes de publicar qualquer link.",
+      "code": "Proprietário → acesso pela credencial da fonte\nLeitor       → acesso próprio do leitor à origem",
+      "dialect": "Modelo de acesso · não executável",
+      "use": "Decidir quem poderá consultar um dashboard agregado do portfólio.",
+      "result": "O modo de credenciais influencia se o leitor precisa de acesso próprio ao conjunto de origem.",
+      "steps": [
+        "Revise público do relatório.",
+        "Confira o modo de credenciais suportado pelo conector.",
+        "Teste o comportamento com uma conta destinatária."
+      ],
+      "pitfall": "Credenciais do proprietário podem expor dados a quem não tem acesso direto à origem; mantenha o relatório privado até revisar.",
+      "source": {
+        "label": "Looker Studio / Data Studio — conectar ao GA4",
+        "url": "https://docs.cloud.google.com/data-studio/connect-to-google-analytics"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-073",
+      "tool": "Looker / LookML",
+      "name": "Medida de soma",
+      "category": "Modelagem",
+      "description": "Defina uma agregação reutilizável de um campo numérico dentro de uma view LookML.",
+      "code": "measure: revenue {\n  type: sum\n  sql: ${total_amount} ;;\n}",
+      "dialect": "LookML · fragmento dentro de view válida",
+      "use": "Centralizar a definição de receita numa tabela com uma linha por pedido.",
+      "result": "A medida instrui o Looker a gerar a agregação SQL correspondente conforme a consulta.",
+      "steps": [
+        "Garanta que total_amount seja uma dimensão válida e numérica.",
+        "Declare a medida na view do projeto.",
+        "Compare o SQL gerado e o total com uma fixture pequena."
+      ],
+      "pitfall": "Uma soma correta sem join pode duplicar após relações mal modeladas; definir a medida não corrige a granularidade.",
+      "source": {
+        "label": "Looker — introdução ao LookML",
+        "url": "https://docs.cloud.google.com/looker/docs/what-is-lookml"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-074",
+      "tool": "Looker / LookML",
+      "name": "View, model e Explore",
+      "category": "Arquitetura",
+      "description": "Separe definição de campos, conexão/relacionamentos e caminho de consulta disponível ao usuário.",
+      "code": "View    → campos e cálculos\nModel   → conexão e Explores\nExplore → caminho de consulta",
+      "dialect": "Mapa conceitual · não executável",
+      "use": "Entender onde revisar um campo ou uma relação antes de alterar o modelo.",
+      "result": "O projeto descreve consultas que o Looker traduz em SQL para a origem configurada.",
+      "steps": [
+        "Encontre a view do campo.",
+        "Confira o model e as relações do Explore.",
+        "Valide estrutura e depois reconcilie valores no banco."
+      ],
+      "pitfall": "Looker e Looker Studio / Data Studio são caminhos diferentes; este mapa não é uma configuração válida para colar num arquivo.",
+      "source": {
+        "label": "Looker — introdução ao LookML",
+        "url": "https://docs.cloud.google.com/looker/docs/what-is-lookml"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-075",
+      "tool": "Google Cloud / BigQuery",
+      "name": "Primeira consulta com CTE",
+      "category": "Consulta",
+      "description": "Construa dados fictícios na própria consulta antes de acessar tabelas grandes ou privadas.",
+      "code": "WITH orders AS (\n  SELECT 101 AS order_id, 'paid' AS status, 150 AS amount\n  UNION ALL SELECT 102, 'pending', 80\n  UNION ALL SELECT 103, 'paid', 50\n)\nSELECT SUM(amount) AS paid_revenue\nFROM orders\nWHERE status = 'paid';",
+      "dialect": "BigQuery · GoogleSQL",
+      "use": "Conferir agregação de pedidos pagos sem criar tabela permanente.",
+      "result": "Uma linha paid_revenue = 200 para os três registros fictícios da CTE.",
+      "steps": [
+        "A CTE define dois pedidos pagos e um pendente.",
+        "WHERE conserva somente paid.",
+        "SUM calcula 150 + 50."
+      ],
+      "pitfall": "O exemplo não exige criar tabela; execute apenas em projeto autorizado e confira o ambiente de estudo.",
+      "source": {
+        "label": "BigQuery — sandbox e limitações",
+        "url": "https://docs.cloud.google.com/bigquery/docs/sandbox"
+      },
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-076",
+      "tool": "Google Cloud / BigQuery",
+      "name": "Orçamento somente de alertas",
+      "category": "Custos",
+      "description": "Diferencie aviso de gasto de um mecanismo de interrupção de serviços.",
+      "code": "Orçamento de alertas → notificação\nNão significa bloqueio automático\nSpend cap: conferir suporte e configuração",
+      "dialect": "Modelo conceitual · não executável",
+      "use": "Evitar habilitar recursos pagos acreditando que todo orçamento limita cobrança.",
+      "result": "Alertas informam custo; mecanismos de limite, quando suportados, têm configuração e condições próprias.",
+      "steps": [
+        "Confira conta de faturamento e projetos no escopo.",
+        "Verifique o tipo de orçamento.",
+        "Planeje controle, monitoramento e encerramento de recursos."
+      ],
+      "pitfall": "Um orçamento somente de alertas não impede novas cobranças; avisos também podem ter atraso.",
+      "source": {
+        "label": "Google Cloud — orçamentos e alertas",
+        "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets"
+      },
+      "editorialStatus": "initial-release"
     }
   ]
 }

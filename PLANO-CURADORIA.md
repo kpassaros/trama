@@ -49,3 +49,24 @@ Documentação localizada; precisa de leitura aprofundada por módulo antes de e
 
 ## Gate de publicação
 Rascunho → revisão de fonte e exemplos → execução de fixtures no ambiente declarado → revisão pedagógica → revisão visual/acessibilidade → aprovação do responsável → release. Não há alegação de validação por especialista externo, certificação ou domínio de todo o ecossistema.
+
+## Recorte Google preparado para revisão
+
+Sete trilhas com uma aula inicial e duas referências cada: Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Não é um currículo completo; Apps Script, administração Workspace, BigQuery avançado e integração analítica são próximos módulos, ainda não publicados nesta fase.
+
+Fontes oficiais lidas por produto:
+- Google Workspace — compartilhar arquivos e pastas: https://support.google.com/a/users/answer/9310248?hl=pt-BR
+- Google Workspace — drives compartilhados: https://support.google.com/a/users/answer/9310249?hl=en
+- Google Planilhas — QUERY: https://support.google.com/docs/answer/3093343?hl=pt-BR
+- Google Formulários — destino e permissões das respostas: https://support.google.com/docs/answer/2917686?hl=pt-BR
+- Google Formulários — editar perguntas e seções: https://support.google.com/docs/answer/2839737?hl=pt-BR
+- Google Cloud — visão geral: https://docs.cloud.google.com/docs/overview
+- Google Cloud — orçamentos e alertas: https://docs.cloud.google.com/billing/docs/how-to/budgets
+- BigQuery — sandbox e limitações: https://docs.cloud.google.com/bigquery/docs/sandbox
+- Google Analytics — criar conta, propriedade e fluxo: https://support.google.com/analytics/answer/9304153?hl=pt-BR
+- Google Analytics — eventos e DebugView: https://support.google.com/analytics/answer/9322688?hl=pt-BR
+- Google Analytics — evitar dados pessoais: https://support.google.com/analytics/answer/6366371?hl=pt-BR
+- Looker Studio / Data Studio — conectar ao GA4: https://docs.cloud.google.com/data-studio/connect-to-google-analytics
+- Looker — introdução ao LookML: https://docs.cloud.google.com/looker/docs/what-is-lookml
+
+Validação de estrutura e exemplos didáticos não equivale à execução em contas Google, Looker ou Cloud. Analytics permanece desligado; GA4-INICIO.md orienta a configuração do titular.

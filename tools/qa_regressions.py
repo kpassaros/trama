@@ -24,6 +24,7 @@ with tempfile.TemporaryDirectory() as folder:
  assert 'id="pratica"' not in page and 'href="#pratica"' not in page
  assert page.index('class="lesson-toc glass"')<page.index('class="lesson-main"')
  assert page.count('class="copy-button"')==2
+ assert '1 aulas' not in (out/'index.html').read_text()
 assert 'ui-icon' in track_icon({'icon':'SQL'})
 assert '&lt;bad&gt;'==track_icon({'icon':'<bad>'})
 print('Regressões: IDs rejeitados/escapados, prática opcional, TOC, ícones e dois blocos independentes aprovados.')

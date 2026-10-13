@@ -38,7 +38,7 @@ Em `content/reference.json`, copie um item e dê um ID único. Campos: `id`, `to
 
 O build recria `public/`: nunca edite somente o HTML gerado, porque será sobrescrito. Abra `public/index.html` ou use o servidor local, confira o card da trilha, ordem de aulas, revisão, código e links. A inclusão gera catálogo, busca, contagens, páginas e links entre aulas automaticamente.
 
-O workflow do GitHub Pages também roda o build a cada push em `main`, quando o repositório e Pages estiverem configurados. Um commit não garante deploy: confira os checks e o endereço publicado. Nesta entrega não houve publicação externa.
+O workflow do GitHub Pages também roda o build a cada push em `main`, quando o repositório e Pages estiverem configurados. Um commit não garante deploy: confira os checks e o endereço publicado. A publicação inicial está disponível no GitHub Pages; cada atualização deve ser conferida separadamente.
 
 O formato atual cobre aulas com texto, código, exercícios opcionais, revisão e fontes. Recursos novos como quizzes com correção, vídeos próprios ou CMS podem exigir alteração dos templates. Não adicione progresso individual ou coleta de dados sem nova autorização.
 

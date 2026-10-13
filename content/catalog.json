@@ -168,6 +168,97 @@
         "Fetch e tratamento de falhas"
       ],
       "color": "iris"
+    },
+    {
+      "id": "google-workspace",
+      "name": "Google Workspace",
+      "category": "Colaboração & produtividade",
+      "icon": "data",
+      "color": "petrol",
+      "description": "Organize arquivos e colaboração com papéis explícitos, acesso mínimo e revisão de compartilhamento.",
+      "topics": [
+        "Drive, Docs, Gmail e Calendar",
+        "Compartilhamento e responsabilidade",
+        "Colaboração e governança"
+      ]
+    },
+    {
+      "id": "google-sheets",
+      "name": "Google Sheets / Planilhas",
+      "category": "Análise & produtividade",
+      "icon": "data",
+      "color": "iris",
+      "description": "Estruture dados, confira tipos e use QUERY com granularidade e resultados verificáveis.",
+      "topics": [
+        "Google Sheets / Planilhas",
+        "Tipos, cabeçalhos e QUERY",
+        "Qualidade e compartilhamento"
+      ]
+    },
+    {
+      "id": "google-forms",
+      "name": "Google Forms / Formulários",
+      "category": "Coleta de dados",
+      "icon": "data",
+      "color": "petrol",
+      "description": "Desenhe perguntas claras, conecte respostas às planilhas e controle quem pode ver os dados.",
+      "topics": [
+        "Perguntas e seções",
+        "Respostas e planilha vinculada",
+        "Privacidade e qualidade"
+      ]
+    },
+    {
+      "id": "ga4",
+      "name": "Google Analytics 4",
+      "category": "Analytics digital",
+      "icon": "data",
+      "color": "iris",
+      "description": "Crie conta, propriedade e fluxo; planeje eventos e valide a coleta antes de interpretar métricas.",
+      "topics": [
+        "GA4 do zero",
+        "Eventos, consentimento e DebugView",
+        "Aquisição e engajamento"
+      ]
+    },
+    {
+      "id": "looker-studio",
+      "name": "Looker Studio / Data Studio",
+      "category": "Análise & BI",
+      "icon": "data",
+      "color": "petrol",
+      "description": "Conecte fontes, confira agregações e compartilhe dashboards sem expor dados indevidamente.",
+      "topics": [
+        "Google Looker Studio / Data Studio",
+        "Conector GA4 e credenciais",
+        "Dimensões, métricas e validação"
+      ]
+    },
+    {
+      "id": "looker",
+      "name": "Looker / LookML",
+      "category": "Consulta & modelagem",
+      "icon": "data",
+      "color": "iris",
+      "description": "Modele dimensões, medidas e relações numa camada semântica consistente sobre o banco SQL.",
+      "topics": [
+        "Looker e LookML",
+        "Views, models e Explores",
+        "Granularidade, SQL e governança"
+      ]
+    },
+    {
+      "id": "google-cloud",
+      "name": "Google Cloud",
+      "category": "Dados & engenharia",
+      "icon": "data",
+      "color": "petrol",
+      "description": "Entenda projetos, permissões e custos; comece a consultar no BigQuery com um caminho de estudo controlado.",
+      "topics": [
+        "GCP: projetos, IAM e custos",
+        "BigQuery e sandbox",
+        "Armazenamento e arquitetura de dados"
+      ]
     }
   ]
 }

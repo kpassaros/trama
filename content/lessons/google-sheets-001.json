@@ -1,0 +1,70 @@
+{
+  "id": "google-sheets-001",
+  "track": "google-sheets",
+  "title": "Planilhas: dados tipados e uma QUERY que você consegue conferir",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Criar uma base pequena, declarar cabeçalho e conferir uma agregação QUERY sem misturar texto e números.",
+  "intro": "Uma fórmula sofisticada não corrige uma base ambígua. Vamos consultar pedidos fictícios, explicar a entrada, obter um total esperado e introduzir uma falha de tipo para descobrir por que números podem desaparecer.",
+  "prerequisites": "Conta do Google e noções de arquivos e tabelas",
+  "sections": [
+    {
+      "heading": "Uma linha representa o quê?",
+      "paragraphs": [
+        "Nesta base, cada linha representa um pedido. Coluna A: cliente; B: status; C: valor numérico. A primeira linha contém os cabeçalhos Cliente, Status e Valor. Insira a1/paid/150, a1/pending/80 e b1/paid/50 nas três linhas seguintes. Os códigos são fictícios e não identificam pessoas.",
+        "Não use células mescladas dentro da base, subtotais entre registros nem notas misturadas à coluna de valor. Formatar uma célula como moeda muda a apresentação, mas não garante que um valor importado como texto se torne um número válido."
+      ]
+    },
+    {
+      "heading": "Leia a fórmula de dentro para fora",
+      "paragraphs": [
+        "A1:C4 contém a base completa e uma linha de cabeçalho; o último argumento 1 declara isso explicitamente. A consulta escolhe A, soma C, conserva apenas status paid e agrupa por cliente. label muda o rótulo do resultado; não altera o cálculo.",
+        "Este exemplo usa separador de argumentos ponto e vírgula, comum em configurações regionais em português. Confira a localidade da sua planilha; outras configurações usam vírgula. A consulta entre aspas usa a linguagem da API de visualização Google, não todo o SQL de um banco como PostgreSQL."
+      ],
+      "codeBlocks": [
+        {
+          "code": "=QUERY(A1:C4; \"select A, sum(C) where B = 'paid' group by A label sum(C) 'Receita paga'\"; 1)",
+          "language": "Excel",
+          "label": "Google Sheets · QUERY · localidade com ;"
+        }
+      ]
+    },
+    {
+      "heading": "Confira o resultado antes de ampliar",
+      "paragraphs": [
+        "A saída esperada tem uma linha para a1 com receita paga 150 e uma para b1 com 50. O pedido pending de 80 foi excluído pela condição, e não por erro. Compare o resultado com a base original: soma dos valores pagos = 200. Se precisar garantir ordem, declare order by em vez de depender da ordem observada.",
+        "Depois acrescente outro pedido pago para a1 com valor 20 e amplie o intervalo. O total de a1 deve passar para 170. Se novas linhas ficaram fora do intervalo, a fórmula pode continuar aparentemente correta, mas estará consultando uma base incompleta."
+      ]
+    },
+    {
+      "heading": "Tipos mistos e valores nulos não são detalhes",
+      "paragraphs": [
+        "A documentação de QUERY informa que o tipo majoritário define o tipo de cada coluna. Valores de tipos minoritários podem ser tratados como nulos. Trocar um número por texto pode mudar quais registros entram no cálculo; não confunda ausência de valor com receita zero.",
+        "Antes de publicar um indicador, registre o intervalo, os cabeçalhos, a regra de status e o tratamento de tipos. Revise também permissões: uma planilha com dados privados não deve se tornar pública apenas para facilitar a conexão de um dashboard."
+      ]
+    }
+  ],
+  "exercise": "Reproduza os três pedidos fictícios e confira total pago 200. Acrescente um pedido de 20, amplie o intervalo e confira 220. Depois introduza um valor textual e investigue seu tipo antes de corrigir. Critério: explicar por que cada linha foi incluída, excluída ou tratada como nula.",
+  "pitfalls": [
+    "Confiar apenas na aparência monetária de um valor.",
+    "Deixar o cabeçalho ser inferido sem conferir a base.",
+    "Tratar a linguagem QUERY como implementação completa de SQL."
+  ],
+  "review": [
+    {
+      "question": "Qual é a função do último argumento 1?",
+      "answer": "Informar que o intervalo contém uma linha de cabeçalho."
+    },
+    {
+      "question": "QUERY garante que números escritos como texto sejam somados?",
+      "answer": "Não. Em colunas de tipos mistos, o tipo majoritário define a coluna e tipos minoritários são tratados como nulos."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Planilhas — QUERY",
+      "url": "https://support.google.com/docs/answer/3093343?hl=pt-BR"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

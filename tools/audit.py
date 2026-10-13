@@ -15,7 +15,10 @@ for f in R.rglob('*'):
 for f in (R/'public').rglob('*'):
  if f.is_file() and f.name.startswith(('preview-','qa-')):issues.append({'file':str(f.relative_to(R)),'type':'preview_file'})
 config=json.loads((R/'config.json').read_text())
-if config.get('analytics',{}).get('enabled'):issues.append({'file':'config.json','type':'analytics_not_reviewed'})
+from build import validate_config
+try:validate_config(config)
+except ValueError as error:issues.append({'file':'config.json','type':'analytics_config_invalid','detail':str(error)})
+if config.get('analytics',{}).get('enabled') and not (R/'public/privacidade.html').exists():issues.append({'file':'public','type':'privacy_page_missing'})
 (R/'reports').mkdir(exist_ok=True)
 report={'pattern_scan':'pass' if not issues else 'fail','issues':issues,'scope':'Padrões comuns e higiene do pacote; não é garantia de ausência de todo segredo ou vulnerabilidade.'}
 (R/'reports/audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')

@@ -1,7 +1,18 @@
 {
   "title": "Trama",
+  "creator": {
+    "name": "Kaíque Passaros",
+    "portfolio_url": "https://kpassaros.github.io/portfolio/",
+    "contact_url": "https://kpassaros.github.io/portfolio/contact/",
+    "linkedin_url": "https://www.linkedin.com/in/kaiquepassaros/"
+  },
   "analytics": {
-    "enabled": false,
-    "goatcounter_url": ""
+    "enabled": true,
+    "provider": "ga4",
+    "measurement_id": "G-4SFQY2C6J3",
+    "site_url": "https://kpassaros.github.io/trama/",
+    "consent_required": true,
+    "consent_days": 180,
+    "advertising_enabled": false
   }
 }
