@@ -1,6 +1,7 @@
 """Gera o portal estático, validando IDs, referências e conteúdo antes da saída."""
 from pathlib import Path
 import json, re, shutil, sys, base64
+from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'public'
 def read(path): return json.loads(path.read_text(encoding='utf-8'))
@@ -32,15 +33,34 @@ def validate(tracks,lessons,refs):
         if not source.get('url','').startswith('https://'): raise ValueError('Fonte precisa ser HTTPS: '+str(source))
     return track_ids
 
+def validate_config(cfg):
+    for key in ('portfolio_url','contact_url','linkedin_url'):
+        value=cfg.get('creator',{}).get(key)
+        if value:
+            u=urlsplit(value)
+            if u.scheme!='https' or not u.netloc or u.username or u.password:
+                raise ValueError('Link do criador inválido: '+key)
+    a=cfg.get('analytics',{})
+    if a.get('enabled'):
+        u=urlsplit(a.get('site_url',''))
+        if a.get('provider')!='ga4' or not re.fullmatch(r'G-[A-Z0-9]+',a.get('measurement_id','')):
+            raise ValueError('Provider/ID GA4 inválido')
+        if not a.get('consent_required') or a.get('advertising_enabled'):
+            raise ValueError('Coleta exige opt-in; publicidade deve permanecer desligada')
+        if u.scheme!='https' or not u.netloc or u.username or u.password or u.query or u.fragment or not u.path.endswith('/'):
+            raise ValueError('URL base GA4 inválida')
+        days=a.get('consent_days',180)
+        if not isinstance(days,int) or isinstance(days,bool) or not 1<=days<=365:
+            raise ValueError('Prazo de preferência inválido')
+
 def build():
     cfg=read(ROOT/'config.json')
     tracks=read(ROOT/'content/catalog.json')['tracks']
     lessons=[read(p) for p in sorted((ROOT/'content/lessons').glob('*.json'))]
     refs=read(ROOT/'content/reference.json')['items']
     validate(tracks,lessons,refs)
-    # Analytics fica desligado por padrão; integração requer revisão/configuração explícita fora deste build.
-    if cfg.get('analytics',{}).get('enabled'):
-        raise ValueError('Analytics não foi ativado: revisar fornecedor, privacidade e configuração antes de ligar.')
+    # Gate de configuração: enabled não dispensa consentimento individual no navegador.
+    validate_config(cfg)
     if OUT.exists(): shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     shutil.copytree(ROOT/'assets',OUT/'assets',dirs_exist_ok=True)

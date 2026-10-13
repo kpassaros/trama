@@ -35,7 +35,9 @@ Trilhas iniciais: **Databricks, SQL, Microsoft Fabric, Power BI, Power Query, Ex
 - Cards translúcidos com interação discreta; preferência de redução de movimento respeitada.
 - Blocos de código claros nos dois temas, com realce editorial de sintaxe.
 - Busca por nome ou intenção, filtros, estados vazios e detalhes expansíveis.
-- Sem login, banco remoto, progresso individual, cookies de rastreamento ou armazenamento local.
+- Sem login, banco remoto ou progresso individual.
+- Portfólio, LinkedIn e Contato e sugestões com ícones locais na lateral e no rodapé.
+- GA4 opcional: nenhuma tag do Google antes de aceite. Apenas a preferência de consentimento é guardada localmente; cookies analíticos são configurados após aceite.
 
 ### Tela real do projeto
 
@@ -88,13 +90,15 @@ Abra **http://localhost:8000**. No Windows, substitua `python` por `py -3.12`.
 ```bash
 python -m py_compile tools/build.py tools/views.py tools/highlight.py
 node --check assets/site.js
+node --check assets/analytics.js
 python tools/qa_static.py
 python tools/qa_regressions.py
+python tools/qa_analytics_static.py
 node tools/qa_examples.mjs
 python tools/audit.py
 ```
 
-O CI verifica a sintaxe dos blocos JavaScript sem executá-los. O QA visual/interativo opcional executa JavaScript local previamente revisado, não é sandbox e não deve receber conteúdo desconhecido; exige Node 24 e Chromium: `node tools/qa_browser.mjs`. Os relatórios locais ficam em `reports/`.
+O CI verifica a sintaxe dos blocos JavaScript sem executá-los. O QA visual/interativo opcional executa JavaScript local previamente revisado, não é sandbox e não deve receber conteúdo desconhecido; exige Node 24 e Chromium: `node tools/qa_browser.mjs`. O teste de analytics é separado e offline, com `gtag` simulado: `node tools/qa_analytics_browser.mjs`. Não envia dados ao Google nem comprova recebimento no GA4. Os relatórios locais ficam em `reports/`.
 
 ## Publicação segura
 
@@ -107,7 +111,7 @@ O workflow só publica `main`; Pull Requests passam pelos checks, mas não alter
 - Exemplos não são executados contra suas ferramentas ou dados reais. Confira esquema, tipo, versão, dialeto, localidade e permissão antes de adaptar.
 - Realce de sintaxe é uma apresentação estática, não um editor ou validador completo de linguagem.
 - Testes locais de SQL usam uma fixture SQLite; isso não certifica compatibilidade com todos os bancos.
-- Analytics está desligado. Qualquer ativação exige revisão da ferramenta, processamento e privacidade. O provedor de hospedagem pode manter logs técnicos próprios.
+- A integração GA4 está preparada para o domínio da Trama e depende de aceite explícito. Preferências podem ser revisadas no rodapé; recusa mantém o portal funcional. Consulte [GA4-INICIO.md](GA4-INICIO.md) para limitações, configuração externa e testes reais. O provedor de hospedagem pode manter logs técnicos próprios.
 - Nunca publique segredos, arquivos operacionais, dados reais ou referências internas privadas.
 - Não há revisão externa/certificação das formações nem alegação de resultado profissional comprovado.
 
@@ -125,4 +129,4 @@ No envio automatizado inicial, arquivos binários usam representações `.base64
 
 ## Ecossistema Google — conteúdo inicial
 
-Inclui Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Cada trilha nova começa com uma aula e duas consultas, sem alegação de currículo completo. O guia [GA4 do zero](GA4-INICIO.md) separa criar a propriedade de ativar a coleta: analytics continua desligado nesta etapa.
+Inclui Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Cada trilha nova começa com uma aula e duas consultas, sem alegação de currículo completo. O guia [GA4 do zero](GA4-INICIO.md) mantém o caminho de criação da propriedade e documenta a integração opt-in, eventos e testes reais ainda pendentes. A atualização permanece em branch de revisão até merge/publicação.
