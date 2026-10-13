@@ -1,0 +1,72 @@
+{
+  "id": "css-03",
+  "track": "css",
+  "title": "Temas e movimento com legibilidade",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Definir tokens de tema, foco visível e uma alternativa sem animações.",
+  "intro": "Um tema escuro não é só inverter cores. Fundo, texto, links, estados e código precisam ser definidos e avaliados juntos.",
+  "prerequisites": "HTML, seletores e box model",
+  "sections": [
+    {
+      "heading": "Tokens que carregam intenção",
+      "paragraphs": [
+        "Use nomes como fundo, texto e borda, em vez de codificar cada componente com uma cor fixa. Isso permite trocar o tema sem esquecer um link ou uma legenda.",
+        "Elementos com função diferente podem manter outro tratamento: um bloco de código pode continuar branco no tema escuro, desde que seus próprios textos e cores permaneçam legíveis."
+      ]
+    },
+    {
+      "heading": "Controle explícito e preferência do sistema",
+      "paragraphs": [
+        "Um atributo na raiz permite alternar tokens. A aplicação pode iniciar pelo prefers-color-scheme e deixar o usuário mudar durante a sessão. Se houver persistência, sua necessidade e implicações devem ser revisadas.",
+        "No exemplo, data-theme=\"dark\" ativa as variáveis escuras. O CSS não fornece sozinho um botão nem grava a escolha; isso exige uma camada de comportamento."
+      ],
+      "code": ":root {\n  --fundo: #F4F7F7;\n  --texto: #19353d;\n  --borda: #c5d5d8;\n}\n[data-theme=\"dark\"] {\n  --fundo: #0c171b;\n  --texto: #f1f5f6;\n  --borda: #445b63;\n}\nbody { color: var(--texto); background: var(--fundo); }\nbutton:focus-visible { outline: 3px solid #7563AD; }\n@media (prefers-reduced-motion: reduce) {\n  .card { transition: none; transform: none; }\n}"
+    },
+    {
+      "heading": "Contraste e foco",
+      "paragraphs": [
+        "Para texto comum, o alvo WCAG AA é contraste de pelo menos 4,5:1; texto grande pode usar 3:1. Componentes e estados relevantes também precisam de limites perceptíveis. Teste a cor efetiva sobre transparência e imagem, não apenas o token isolado.",
+        "Não remova outline sem criar um foco visível equivalente. Estados de seleção e erro precisam de mais do que cor: texto, ícone, borda e atributos apropriados ajudam a comunicar o significado."
+      ]
+    },
+    {
+      "heading": "Movimento é opcional",
+      "paragraphs": [
+        "Um hover com inclinação ou reflexo pode enriquecer a interface, mas não deve carregar informação essencial. Desative o movimento quando prefers-reduced-motion solicitar e não espere hover em dispositivos touch.",
+        "O exemplo de media query trata a classe card. Uma interface real deve revisar todos os efeitos e respeitar também o JavaScript que anima elementos."
+      ]
+    }
+  ],
+  "exercise": "Crie um card com tema claro e escuro. Teste foco de teclado e preferência de redução de movimento. Meça o contraste do texto e do link sobre o fundo real.",
+  "pitfalls": [
+    "Manter link petróleo escuro sobre fundo escuro.",
+    "Depender só de hover para uma ação.",
+    "Desabilitar movimentos CSS e esquecer animações JavaScript."
+  ],
+  "review": [
+    {
+      "question": "Cor de marca deve ser usada em qualquer texto?",
+      "answer": "Não. A marca pode ser preservada e os tons de leitura ajustados ao fundo para manter contraste."
+    },
+    {
+      "question": "O atributo data-theme é uma API do navegador?",
+      "answer": "Não. É um atributo de dados escolhido pela aplicação; o CSS e o JavaScript definem seu uso."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — css",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"
+    },
+    {
+      "label": "MDN — layout",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout"
+    },
+    {
+      "label": "W3C — WCAG 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

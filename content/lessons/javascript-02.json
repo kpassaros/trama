@@ -1,0 +1,64 @@
+{
+  "id": "javascript-02",
+  "track": "javascript",
+  "title": "DOM e eventos: interface sem atalhos perigosos",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Selecionar elementos, responder a eventos e exibir texto sem interpretar HTML não confiável.",
+  "intro": "DOM é a representação do documento que o navegador disponibiliza. Eventos conectam a ação do usuário à atualização da interface.",
+  "prerequisites": "Variáveis, funções e a aula anterior de JavaScript",
+  "sections": [
+    {
+      "heading": "Escolha um elemento real",
+      "paragraphs": [
+        "querySelector devolve a primeira correspondência ou null. Se o script rodar antes do HTML necessário existir, pode não encontrar o controle. defer em um script externo adia sua execução até o documento ter sido analisado.",
+        "Use ids únicos para elementos específicos e classes para conjuntos. Um seletor correto é parte do contrato entre o markup e o comportamento."
+      ]
+    },
+    {
+      "heading": "Um contador acessível",
+      "paragraphs": [
+        "O botão já tem interação nativa de teclado. addEventListener liga um manipulador ao clique; a função atualiza a variável e a mensagem. O script deve estar depois do HTML ou carregar com defer.",
+        "aria-live=\"polite\" pode anunciar mudanças sem interromper imediatamente a leitura. Não use anúncios em alta frequência para cada detalhe visual."
+      ],
+      "code": "<!-- HTML -->\n<button id=\"adicionar\" type=\"button\">Adicionar exemplo</button>\n<p id=\"contador\" aria-live=\"polite\">0 exemplos</p>\n\n// JavaScript em um arquivo separado, carregado com defer\nconst botao = document.querySelector('#adicionar');\nconst saida = document.querySelector('#contador');\nlet total = 0;\nif (botao && saida) {\n  botao.addEventListener('click', () => {\n    total += 1;\n    saida.textContent = `${total} exemplos`;\n  });\n}"
+    },
+    {
+      "heading": "Texto não é HTML",
+      "paragraphs": [
+        "textContent coloca texto literal. Se o valor vier de uma API ou de entrada do usuário, essa escolha evita interpretá-lo como markup. innerHTML exige tratamento de segurança quando recebe conteúdo não confiável.",
+        "Crie elementos com APIs do DOM quando precisar de estrutura. Nunca use uma credencial ou dado privado como texto de demonstração só para visualizar o resultado."
+      ]
+    },
+    {
+      "heading": "Estado e acessibilidade",
+      "paragraphs": [
+        "Um menu retrátil exige estado visual e atributos coerentes, como aria-expanded. O foco deve continuar em um local compreensível ao abrir ou fechar; uma sobreposição pode precisar limitar a navegação ao conteúdo aberto.",
+        "Teste clique, Enter/Space no botão e Tab. O contador é apenas estado da sessão; não é uma gravação de progresso individual. Recarregar reinicia o exemplo."
+      ]
+    }
+  ],
+  "exercise": "Acrescente um botão Limpar que volte o contador a zero. Depois substitua o texto exibido por uma string com <b> e confirme que textContent não cria uma tag.",
+  "pitfalls": [
+    "Usar innerHTML com resposta não confiável.",
+    "Rodar o script antes de os elementos existirem.",
+    "Mudar a aparência do menu sem atualizar aria-expanded."
+  ],
+  "review": [
+    {
+      "question": "O que querySelector entrega quando não encontra?",
+      "answer": "null. Verifique antes de acessar propriedades ou registrar eventos."
+    },
+    {
+      "question": "textContent transforma tags em elementos?",
+      "answer": "Não. Exibe a string como texto literal."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — js",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

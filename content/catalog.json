@@ -1,0 +1,173 @@
+{
+  "tracks": [
+    {
+      "id": "databricks",
+      "name": "Databricks",
+      "category": "Dados & engenharia",
+      "icon": "DB",
+      "description": "Do mapa do ambiente a SQL, Delta Lake, jobs e recuperação operacional.",
+      "topics": [
+        "Ambiente, notebooks e compute",
+        "SQL Warehouse e governança",
+        "Delta Lake, qualidade e jobs"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "sql",
+      "name": "SQL",
+      "category": "Consulta & modelagem",
+      "icon": "SQL",
+      "description": "Consultas confiáveis, joins sem duplicidade, funções de janela e desempenho.",
+      "topics": [
+        "SELECT, filtros e NULL",
+        "Joins, agregações e granularidade",
+        "CTEs, janelas, funções e planos"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "fabric",
+      "name": "Microsoft Fabric",
+      "category": "Dados & engenharia",
+      "icon": "FAB",
+      "description": "Entenda OneLake, workspaces e capacidades; escolha Lakehouse ou Warehouse e conecte ingestão, transformação e análise.",
+      "topics": [
+        "Mapa do Fabric e OneLake",
+        "Lakehouse, Warehouse e consulta SQL",
+        "Data Factory, modelo semântico e operação"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "power-bi",
+      "name": "Power BI",
+      "category": "Análise & BI",
+      "icon": "BI",
+      "description": "Modele relações e escreva medidas que preservem o significado dos indicadores.",
+      "topics": [
+        "Modelo semântico e granularidade",
+        "DAX e contexto de filtro",
+        "Relatórios, atualização e segurança"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "power-query",
+      "name": "Power Query",
+      "category": "Preparação de dados",
+      "icon": "PQ",
+      "description": "Prepare dados com etapas rastreáveis, tipos corretos, M e folding verificado.",
+      "topics": [
+        "Fontes e tipos",
+        "Etapas M e tratamento de erros",
+        "Parâmetros e query folding"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "excel",
+      "name": "Excel",
+      "category": "Análise & produtividade",
+      "icon": "XL",
+      "description": "Use tabelas e fórmulas de forma auditável, com conferência de chaves e tipos.",
+      "topics": [
+        "Tabelas e referências estruturadas",
+        "Busca e agregações",
+        "Validação e análise"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "apis",
+      "name": "APIs & HTTP",
+      "category": "Integração",
+      "icon": "API",
+      "description": "Interprete contratos HTTP/JSON e integre com paginação, credenciais e retries seguros.",
+      "topics": [
+        "Métodos, status e recursos",
+        "JSON e contrato",
+        "Autenticação, paginação e retries"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "power-automate",
+      "name": "Power Automate",
+      "category": "Automação",
+      "icon": "PA",
+      "description": "Mapeie processos e implemente fluxos com tratamento de exceções e recuperação.",
+      "topics": [
+        "Gatilhos e conectores",
+        "Condições e aprovações",
+        "Retries, logs e recuperação"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "power-apps",
+      "name": "Power Apps",
+      "category": "Aplicações",
+      "icon": "APP",
+      "description": "Construa apps Canvas com Power Fx, validação, fonte segura e atenção à delegação.",
+      "topics": [
+        "Telas e expressões",
+        "Formulários e estados",
+        "Fontes, permissões e delegação"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "copilot-studio",
+      "name": "Microsoft Copilot Studio",
+      "category": "Agentes & IA",
+      "icon": "AI",
+      "description": "Defina limites, fontes de conhecimento e ações de agentes com avaliação explícita.",
+      "topics": [
+        "Propósito e instruções",
+        "Conhecimento e ferramentas",
+        "Avaliação e segurança"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "category": "Desenvolvimento web",
+      "icon": "HTML",
+      "description": "Estruture páginas com significado: semântica, tabelas de dados e formulários acessíveis.",
+      "topics": [
+        "Documento e semântica",
+        "Tabelas acessíveis",
+        "Formulários e validação"
+      ],
+      "color": "petrol"
+    },
+    {
+      "id": "css",
+      "name": "CSS",
+      "category": "Desenvolvimento web",
+      "icon": "CSS",
+      "description": "Construa interfaces legíveis e responsivas com cascata, box model, Flexbox e Grid.",
+      "topics": [
+        "Cascata e box model",
+        "Layout responsivo",
+        "Temas, contraste e movimento"
+      ],
+      "color": "iris"
+    },
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "category": "Desenvolvimento web",
+      "icon": "JS",
+      "description": "Transforme dados e interfaces com funções, DOM, eventos e requisições tratadas com segurança.",
+      "topics": [
+        "Arrays e transformação",
+        "DOM e eventos",
+        "Fetch e tratamento de falhas"
+      ],
+      "color": "iris"
+    }
+  ]
+}

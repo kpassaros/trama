@@ -1,0 +1,63 @@
+{
+  "id": "fabric-003",
+  "track": "fabric",
+  "title": "Do dado ao relatório: integração, modelo e operação",
+  "level": "Construção da base",
+  "minutes": 12,
+  "objective": "Planejar um fluxo simples no Fabric separando movimentação, transformação, orquestração e consumo sem ignorar falhas ou acesso.",
+  "intro": "Uma demonstração de ponta a ponta pode funcionar uma vez e ainda não estar pronta para uso recorrente. No Fabric, integrar ferramentas não elimina a necessidade de contratos entre etapas. O cenário desta aula é fictício: receber pedidos, preparar uma tabela consistente e disponibilizar indicadores para leitura.",
+  "prerequisites": "Entender workspace, item, Lakehouse e Warehouse; não é necessário estudar outra trilha antes.",
+  "sections": [
+    {
+      "heading": "Mover, transformar e orquestrar são papéis diferentes",
+      "paragraphs": [
+        "Data Factory no Fabric oferece recursos de movimentação, transformação e orquestração. Uma atividade de cópia move dados conforme sua configuração; Dataflow Gen2 oferece preparação low-code; notebooks podem executar transformações programáticas. Pipeline coordena atividades, dependências, condições e execução. Não trate todos esses nomes como sinônimos.",
+        "Escolha ETL ou ELT pela origem, destino, qualidade exigida e processamento disponível. Em ETL, a transformação antecede a carga de destino; em ELT, o dado é carregado antes de parte das transformações. Cada estágio deve informar entrada, saída, granularidade, tipos, regra de nulos e responsável."
+      ]
+    },
+    {
+      "heading": "Uma tabela pronta não é um indicador pronto",
+      "paragraphs": [
+        "Depois de preparar os dados, o consumo em Power BI pede um modelo semântico: relações e medidas traduzem tabelas em conceitos de negócio. Um relatório apresenta esse modelo para perguntas concretas. Armazenamento, modelo semântico e visualização são camadas diferentes; criar a tabela não define automaticamente o denominador de uma métrica.",
+        "Escolha o modo de conexão/modelo segundo os recursos disponíveis e as necessidades de atualização, escala e segurança. Não presuma que uma opção elimina todos os limites, latência ou configuração. Confira o dado de origem e reconcilie o resultado do indicador no período escolhido."
+      ]
+    },
+    {
+      "heading": "Operar exige recuperação e permissões",
+      "paragraphs": [
+        "Planeje frequência, atraso tolerado, dependências e critério de falha. Registre estado, duração e erro suficiente para diagnóstico, sem tokens nem dados pessoais desnecessários. Retentar cópia ou gravação pede uma estratégia para evitar duplicidade; sucesso técnico da atividade não comprova que a tabela ficou correta.",
+        "Revise a identidade de conexão, papéis do workspace e acesso ao dado e ao modelo antes de compartilhar. Teste com um usuário autorizado de leitura, confirme o que ele pode consultar e defina como recuperar uma execução interrompida. Fabric Data Factory e Azure Data Factory não são serviços com paridade automática: valide recursos e conectores na documentação do produto efetivamente usado."
+      ]
+    }
+  ],
+  "exercise": "Desenhe um fluxo diário para pedidos fictícios: ingestão, transformação, tabela validada, modelo semântico e relatório. Defina uma chave de deduplicação, uma condição que bloqueie a publicação e como reprocessar um dia após falha sem repetir pedidos.",
+  "pitfalls": [
+    "Confundir cópia de dados com validação de qualidade ou modelagem semântica.",
+    "Reexecutar uma carga sem estratégia de idempotência e depois somar registros duplicados.",
+    "Compartilhar apenas o relatório sem testar permissões sobre modelo e dados."
+  ],
+  "review": [
+    {
+      "question": "Qual a função de um pipeline?",
+      "answer": "Coordenar atividades e dependências de um fluxo; as atividades executam movimentação, transformação ou outras tarefas."
+    },
+    {
+      "question": "Uma execução marcada como sucesso prova que o indicador está correto?",
+      "answer": "Não. É preciso validar qualidade, granularidade, regras, atualização e reconciliação do resultado."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Data Factory no Fabric",
+      "url": "https://learn.microsoft.com/en-us/fabric/data-factory/data-factory-overview"
+    },
+    {
+      "label": "Microsoft Learn — visão geral do Microsoft Fabric",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview"
+    },
+    {
+      "label": "Microsoft Learn — como escolher Lakehouse ou Warehouse",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/decision-guide-lakehouse-warehouse"
+    }
+  ]
+}

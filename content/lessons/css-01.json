@@ -1,0 +1,64 @@
+{
+  "id": "css-01",
+  "track": "css",
+  "title": "CSS: cascata, seletores e box model",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Explicar por que uma regra vence e calcular o espaço ocupado por uma caixa.",
+  "intro": "CSS aplica regras aos elementos do documento. Entender cascata e tamanho de caixas evita resolver cada problema acrescentando !important.",
+  "prerequisites": "Estrutura HTML básica",
+  "sections": [
+    {
+      "heading": "Ler uma regra",
+      "paragraphs": [
+        "Um seletor indica os elementos; cada declaração combina uma propriedade com um valor. Uma classe representa um estilo reutilizável sem depender de um id específico da página.",
+        "A cascata resolve conflitos considerando fatores como origem, importância, camadas, especificidade e ordem. Apenas comparar o último seletor é insuficiente. Dentro das mesmas condições, a declaração mais específica ou posterior pode vencer."
+      ]
+    },
+    {
+      "heading": "A caixa real",
+      "paragraphs": [
+        "No modelo content-box, width mede o conteúdo; padding e border se somam ao tamanho externo. Com border-box, width inclui conteúdo, padding e border, mas não margin.",
+        "Se uma caixa tem width 320px, padding 20px em cada lado e border 1px, content-box resulta em 362px externos. border-box mantém os 320px e reduz o espaço interno do conteúdo."
+      ],
+      "code": "* { box-sizing: border-box; }\n\n.card {\n  width: min(100%, 320px);\n  padding: 20px;\n  border: 1px solid #c5d5d8;\n  border-radius: 12px;\n  color: #20505A;\n  background: #fff;\n}"
+    },
+    {
+      "heading": "Herança não é aplicação universal",
+      "paragraphs": [
+        "Propriedades como color e font-family normalmente são herdadas; margin e border não são. Uma declaração específica no filho pode substituir uma cor herdada do pai.",
+        "Variáveis CSS ajudam a reunir tokens de tema, mas não conferem acessibilidade automaticamente. O par entre texto e fundo precisa ser validado no estado em que é realmente exibido."
+      ]
+    },
+    {
+      "heading": "Depure com evidências",
+      "paragraphs": [
+        "No inspetor, selecione o elemento e veja regras aplicadas e riscadas. A aba Computed mostra o valor final e o diagrama do box model expõe padding, border e margin.",
+        "Desative uma declaração temporariamente antes de aumentar sua prioridade. Procure a causa: seletor abrangente, estilo inline, camada, largura mínima ou conteúdo que não pode quebrar."
+      ]
+    }
+  ],
+  "exercise": "Crie duas regras de mesma especificidade para a mesma cor, inverta a ordem e observe. Depois mude box-sizing e calcule o tamanho externo da caixa do exemplo.",
+  "pitfalls": [
+    "Usar !important como primeira resposta.",
+    "Confundir margin com parte da largura border-box.",
+    "Definir larguras fixas que excedem a tela."
+  ],
+  "review": [
+    {
+      "question": "A última regra sempre vence?",
+      "answer": "Não. A ordem resolve conflitos depois de fatores anteriores como origem, importância, camada e especificidade."
+    },
+    {
+      "question": "border-box inclui margin?",
+      "answer": "Não. Inclui conteúdo, padding e border; a margem fica fora."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — css",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

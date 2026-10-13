@@ -1,0 +1,56 @@
+{
+  "id": "cop-002",
+  "track": "copilot-studio",
+  "title": "Conhecimento, ações e avaliação de agentes",
+  "level": "Primeiros usos",
+  "minutes": 12,
+  "objective": "Adicionar conhecimento e ações com permissões, limites e critérios de teste explícitos.",
+  "intro": "Base de conhecimento e ferramentas ampliam o que um agente pode responder ou fazer. São riscos diferentes: conhecimento pode expor informação; ação pode alterar estado. Trate cada conector e cada fonte como parte da superfície de segurança.",
+  "prerequisites": "Propósito, instruções e fonte de conhecimento aprovada.",
+  "sections": [
+    {
+      "heading": "Fonte de conhecimento",
+      "paragraphs": [
+        "Use conteúdo atualizado, aprovado, com permissão correta e limites explícitos. Teste perguntas com versões antigas, ausência de resposta e fontes conflitantes. A origem, atualização e escopo precisam estar claros."
+      ]
+    },
+    {
+      "heading": "Ferramenta executável exige controles",
+      "paragraphs": [
+        "Defina entradas, validação, identidade de execução, permissões, limites de taxa e resultado. Para ação de alto impacto, exija confirmação ou revisão humana. Proteja segredos fora das instruções e conversa."
+      ]
+    },
+    {
+      "heading": "Avalie regressões",
+      "paragraphs": [
+        "Mantenha conjunto de perguntas esperado, respostas seguras, casos fora de escopo e ataques de prompt injection. Teste antes de publicar e após mudança de fonte, modelo, ferramenta ou instruções. Registros de monitoramento dependem de configurações e política de privacidade."
+      ]
+    }
+  ],
+  "exercise": "Crie um plano de 8 testes para um agente com uma fonte documental e uma ação de consulta. Inclua pelo menos um caso sem evidência, um erro da ferramenta e uma pergunta para a qual o agente deve se recusar.",
+  "pitfalls": [
+    "Usar a saída de documento como comando confiável para ferramenta.",
+    "Dar ao agente permissão maior do que a tarefa requer.",
+    "Medir apenas fluência e não correção, segurança e limites."
+  ],
+  "review": [
+    {
+      "question": "Por que testar uma fonte fora do escopo?",
+      "answer": "Para confirmar que o agente admite a lacuna e não inventa resposta."
+    },
+    {
+      "question": "O que muda ao adicionar uma ação?",
+      "answer": "O agente passa a poder afetar sistema/estado, então validação e permissões precisam aumentar."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — o que é Copilot Studio",
+      "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio"
+    },
+    {
+      "label": "Microsoft Learn — criar agentes",
+      "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-fundamentals"
+    }
+  ]
+}

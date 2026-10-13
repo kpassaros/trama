@@ -1,0 +1,8 @@
+import vm from 'node:vm';import path from 'node:path';import {fileURLToPath} from 'node:url';import {readFile,writeFile} from 'node:fs/promises';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');const get=async id=>JSON.parse(await readFile(root+'/content/lessons/'+id+'.json','utf8'));
+const lesson=await get('javascript-01');let answer;vm.runInNewContext(lesson.sections.find(x=>x.code).code,{console:{log:x=>{answer=x}}});if(answer!==200)throw Error('Agregação incorreta');
+const fetchLesson=await get('javascript-03'),code=fetchLesson.sections.find(x=>x.code).code;const tests=[];
+for(const [name,response,throws] of [['valid',{ok:true,json:async()=>[{status:'paid',total:150}]},false],['HTTP404',{ok:false,status:404},true],['invalidJSON',{ok:true,json:async()=>{throw Error('Invalid JSON')}},true],['wrongSchema',{ok:true,json:async()=>({status:'paid',total:150})},true],['textAmount',{ok:true,json:async()=>[{status:'paid',total:'150'}]},true],['nullRecord',{ok:true,json:async()=>[null]},true],['empty',{ok:true,json:async()=>[]},false]]){
+ let failed=false;const context=vm.createContext({fetch:async()=>response,console:{error:()=>{}}});vm.runInContext(code,context);try{await vm.runInContext('carregarPedidos()',context);}catch{failed=true;}if(failed!==throws)throw Error('Falha de fixture '+name);tests.push({name,passed:true});
+}
+await writeFile(root+'/reports/qa-examples.json',JSON.stringify({aggregation:answer,fetchFixtures:tests,scope:'Fixtures simuladas em Node; não são chamadas reais à API nem equivalem a teste em todos os navegadores.'},null,2));console.log('Exemplos: soma 200 confirmada; 7 fixtures Fetch aprovadas sem rede.');

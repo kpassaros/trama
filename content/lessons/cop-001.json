@@ -1,0 +1,56 @@
+{
+  "id": "cop-001",
+  "track": "copilot-studio",
+  "title": "Agente: escopo, instruções e experiência",
+  "level": "Fundamentos",
+  "minutes": 10,
+  "objective": "Definir propósito e limites verificáveis antes de adicionar conhecimento ou ações.",
+  "intro": "Copilot Studio permite criar agentes conversacionais e organizar capacidades do produto, mas a qualidade exige um escopo estreito. Um agente não é automaticamente confiável por parecer natural: precisa de dados aprovados, limites, testes e governança.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Declare o contrato",
+      "paragraphs": [
+        "Defina público, perguntas aceitas, fontes permitidas, respostas proibidas, política de não saber e forma de encaminhamento. Não publique um agente que possa expor conteúdo privado ou executar ações sem autorização."
+      ]
+    },
+    {
+      "heading": "Instruções orientam, não são controle de acesso",
+      "paragraphs": [
+        "Instruções ajudam a orientar comportamento, mas não substituem permissões da fonte, conectores ou ferramentas. Use princípio de menor privilégio, revisão do owner e aprovação humana para ações de impacto."
+      ]
+    },
+    {
+      "heading": "Teste conversas e falhas",
+      "paragraphs": [
+        "Monte perguntas representativas, ambíguas, fora do escopo e adversariais. Compare resposta com fonte, verifique citação/atribuição e comportamento quando não há evidência. Dados de teste devem ser fictícios ou aprovados."
+      ]
+    }
+  ],
+  "exercise": "Escreva um contrato de agente para responder perguntas sobre uma documentação pública: escopo, fonte, quando recusar e como encaminhar uma pergunta não coberta.",
+  "pitfalls": [
+    "Conectar toda a base sem revisar permissões e classificação.",
+    "Assumir que uma instrução textual garante segurança.",
+    "Prometer precisão ou substituir revisão humana em decisão sensível."
+  ],
+  "review": [
+    {
+      "question": "O que fazer se a fonte não cobre a pergunta?",
+      "answer": "Indicar a lacuna e encaminhar, em vez de inventar uma resposta."
+    },
+    {
+      "question": "Instruções substituem controle de acesso?",
+      "answer": "Não; autorização precisa ser aplicada nas fontes e ferramentas."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — o que é Copilot Studio",
+      "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio"
+    },
+    {
+      "label": "Microsoft Learn — criar agentes",
+      "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-fundamentals"
+    }
+  ]
+}

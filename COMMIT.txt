@@ -1,0 +1,9 @@
+feat(trama): preparar portal de estudos e consultas para GitHub Pages
+
+- aplicar identidade Trama, temas e navegação lateral retrátil
+- melhorar cards, fundo, contraste e leitura no celular
+- adicionar realce de sintaxe e contexto detalhado às consultas
+- incluir fundamentos iniciais de HTML, CSS e JavaScript
+- manter 13 trilhas, 37 aulas iniciais e 62 referências com fontes
+- preparar auditoria, checks, build e deploy protegido pela main
+- incluir créditos e licença da fonte, sem analytics ou dados reais

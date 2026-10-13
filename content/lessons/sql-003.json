@@ -1,0 +1,61 @@
+{
+  "id": "sql-003",
+  "track": "sql",
+  "title": "GROUP BY: agregue sem perder o significado",
+  "level": "Fundamentos",
+  "minutes": 10,
+  "objective": "Agrupar dados na granularidade certa e diferenciar WHERE de HAVING.",
+  "intro": "Uma tabela transacional tem várias linhas por entidade. Para responder “total por mês e status”, agrupe pelas dimensões da pergunta e agregue as medidas. O resultado passa a ter uma linha por combinação das colunas agrupadas.",
+  "prerequisites": "SELECT, filtros e a noção de granularidade.",
+  "sections": [
+    {
+      "heading": "Escolha dimensões e medidas",
+      "paragraphs": [
+        "Dimensões definem grupos; medidas são calculadas dentro de cada grupo. `COUNT(*)` conta linhas. `COUNT(coluna)` ignora NULL nessa coluna. `COUNT(DISTINCT chave)` conta chaves únicas e pode ter custo ou semântica específica por mecanismo."
+      ]
+    },
+    {
+      "heading": "Filtre na etapa certa",
+      "paragraphs": [
+        "WHERE limita linhas antes da agregação; HAVING filtra grupos depois. Colunas da saída não agregadas normalmente precisam aparecer em GROUP BY, mas regras de alias e expressões variam entre dialetos."
+      ],
+      "code": "-- SQL: sintaxe portátil para este exemplo\nSELECT status,\n       COUNT(*) AS order_count,\n       SUM(total_amount) AS gross_amount\nFROM orders\nWHERE order_date >= CAST('2026-01-01' AS DATE)\nGROUP BY status\nHAVING COUNT(*) >= 10\nORDER BY gross_amount DESC;"
+    },
+    {
+      "heading": "Cheque totais e ausências",
+      "paragraphs": [
+        "Confronte o total agregado com o total da população filtrada. Se uma soma fica NULL quando todas as entradas do grupo são NULL, isso não equivale automaticamente a zero; se usar COALESCE, documente que a substituição é válida para a métrica."
+      ]
+    }
+  ],
+  "exercise": "Crie um resumo de pedidos por status: contagem de linhas e soma do valor. Defina o tratamento de status ausente, e reconcilie a contagem total com as linhas do período.",
+  "pitfalls": [
+    "Incluir no GROUP BY uma coluna descritiva que explode a quantidade de grupos sem necessidade.",
+    "Usar WHERE para filtrar um resultado de agregação em vez de HAVING.",
+    "Confundir soma de pedidos com número de clientes distintos."
+  ],
+  "review": [
+    {
+      "question": "Quando usar HAVING?",
+      "answer": "Para filtrar grupos usando condições sobre valores agregados."
+    },
+    {
+      "question": "`COUNT(*)` e `COUNT(coluna)` sempre contam o mesmo?",
+      "answer": "Não. `COUNT(coluna)` ignora valores NULL daquela coluna."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}

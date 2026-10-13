@@ -1,0 +1,56 @@
+{
+  "id": "pa-001",
+  "track": "power-automate",
+  "title": "Fluxo começa no processo, não no gatilho",
+  "level": "Fundamentos",
+  "minutes": 10,
+  "objective": "Traduzir um processo em gatilho, condições, ações e limites de responsabilidade.",
+  "intro": "Automação consistente reproduz um processo entendido. Antes de selecionar conectores, identifique evento de início, resultado, ator, dados, exceções e onde é necessária aprovação humana. Um fluxo não torna uma regra ambígua segura.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Mapeie o caminho e exceções",
+      "paragraphs": [
+        "Liste evento, passos, decisão, saída e dono. Separe o “caminho feliz” de casos inválidos, atrasados ou repetidos. Verifique se o conector, ambiente e licença estão disponíveis no seu contexto."
+      ]
+    },
+    {
+      "heading": "Defina contrato entre etapas",
+      "paragraphs": [
+        "Gatilho fornece dados; ações consomem entradas e retornam saídas. Valide campos obrigatórios, timezone e limite de itens. Uma condição precisa ter regra clara e teste para os dois ramos."
+      ]
+    },
+    {
+      "heading": "Aprovação é decisão, não decoração",
+      "paragraphs": [
+        "Aprovação deve incluir contexto suficiente, decisor autorizado, prazo e resultado alternativo. Não automatize pagamento, acesso ou decisão regulada sem governança apropriada."
+      ]
+    }
+  ],
+  "exercise": "Escolha uma solicitação fictícia de acesso: identifique gatilho, validação, aprovação, resultado e dois casos de exceção. Não conecte a sistemas corporativos.",
+  "pitfalls": [
+    "Construir fluxo antes de esclarecer dono e regra do processo.",
+    "Supor que conexão disponível na tela está licenciada/permitida para produção.",
+    "Usar texto de usuário diretamente em ação privilegiada sem validação."
+  ],
+  "review": [
+    {
+      "question": "Por que mapear exceções antes de implementar?",
+      "answer": "Para definir caminhos de falha, segurança e intervenção humana."
+    },
+    {
+      "question": "O gatilho é a automação inteira?",
+      "answer": "Não; ainda há contrato, validações, ações, tratamento de falhas e monitoramento."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power Automate",
+      "url": "https://learn.microsoft.com/en-us/power-automate/"
+    },
+    {
+      "label": "Microsoft Learn — tratamento robusto de erros",
+      "url": "https://learn.microsoft.com/en-us/power-automate/guidance/coding-guidelines/error-handling"
+    }
+  ]
+}

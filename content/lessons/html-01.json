@@ -1,0 +1,64 @@
+{
+  "id": "html-01",
+  "track": "html",
+  "title": "HTML: estrutura antes de aparência",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Reconhecer a estrutura de um documento e usar elementos semânticos em vez de caixas genéricas.",
+  "intro": "HTML descreve conteúdo e significado. Não calcula indicadores nem determina sozinho o desenho visual: fornece a estrutura que CSS apresenta e JavaScript manipula.",
+  "prerequisites": "Nenhuma experiência prévia obrigatória",
+  "sections": [
+    {
+      "heading": "A função de cada tecnologia",
+      "paragraphs": [
+        "HTML organiza o conteúdo: um título é um título, um link leva a um destino e um botão executa uma ação. CSS cuida da apresentação; JavaScript adiciona comportamento. Uma aparência correta não compensa uma estrutura sem significado.",
+        "Uma página de catálogo pode usar header para a introdução global, nav para os links principais, main para o conteúdo dominante e article para uma unidade que faz sentido isoladamente. Não coloque vários main visíveis na mesma página."
+      ]
+    },
+    {
+      "heading": "O documento mínimo",
+      "paragraphs": [
+        "O doctype ativa o modo padrão. lang identifica o idioma para tecnologias assistivas. A codificação UTF-8 preserva acentos e o viewport permite que o layout acompanhe a largura do dispositivo.",
+        "title nomeia a aba e não substitui o título visível. h1 expressa o assunto principal; os demais níveis de heading devem representar a hierarquia do texto, não apenas um tamanho de fonte."
+      ],
+      "code": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>Catálogo de dados</title>\n</head>\n<body>\n  <header><p>Trama</p></header>\n  <main>\n    <h1>Catálogo de dados</h1>\n    <p>Conheça as tabelas disponíveis.</p>\n  </main>\n</body>\n</html>"
+    },
+    {
+      "heading": "Link ou botão?",
+      "paragraphs": [
+        "Use a com href quando a interação navega para outro recurso. Use button quando altera o estado da interface, como abrir uma lateral ou aplicar um filtro. Um div clicável perde comportamento nativo de teclado e exige reconstruir recursos que o navegador já fornece.",
+        "Uma imagem informativa precisa de texto alternativo relevante; uma imagem puramente decorativa deve usar alt vazio. O nome de um botão deve dizer o que acontece, não apenas clique aqui."
+      ]
+    },
+    {
+      "heading": "Como conferir",
+      "paragraphs": [
+        "Abra o arquivo local em um navegador e inspecione o DOM nas ferramentas de desenvolvimento. Percorra links e botões com Tab e ative-os pelo teclado. Observe a ordem de leitura e a árvore de acessibilidade.",
+        "O exemplo apresenta uma página com título e parágrafo. Ele não carrega um banco real nem cria um catálogo automático. Para isso, seria necessário fornecer dados e implementar uma camada de leitura."
+      ]
+    }
+  ],
+  "exercise": "Crie uma página de descrição de uma tabela fictícia. Use main, h1, um parágrafo com a granularidade e um link para a fonte. Explique por que esse link não deveria ser um botão.",
+  "pitfalls": [
+    "Usar títulos apenas para aumentar a fonte.",
+    "Usar div clicável no lugar de button ou a.",
+    "Esquecer lang, title ou um texto alternativo adequado."
+  ],
+  "review": [
+    {
+      "question": "HTML busca dados automaticamente?",
+      "answer": "Não. HTML estrutura o conteúdo. A coleta exige outra camada, como uma geração estática ou JavaScript com um endpoint permitido."
+    },
+    {
+      "question": "Quando usar article?",
+      "answer": "Quando o bloco tem sentido como conteúdo independente. Semântica não é uma obrigação de envolver qualquer caixa em article."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — html",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

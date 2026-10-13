@@ -1,0 +1,57 @@
+{
+  "id": "excel-001",
+  "track": "excel",
+  "title": "Tabelas e referências estruturadas",
+  "level": "Fundamentos",
+  "minutes": 9,
+  "objective": "Organizar dados em tabela e construir fórmulas que acompanhem linhas novas.",
+  "intro": "Uma tabela estruturada dá cabeçalhos e limites explícitos a um conjunto de registros. Isso melhora referência, filtros e expansão de fórmulas. Antes de fórmula, uma coluna deve representar um atributo e cada linha uma unidade de observação claramente definida.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Transforme faixa em Tabela",
+      "paragraphs": [
+        "Use cabeçalhos únicos, uma linha por registro e tipos coerentes. Evite células mescladas, subtotais manuais e linhas em branco no meio da base. Dê um nome informativo à tabela."
+      ]
+    },
+    {
+      "heading": "Referencie pelo significado",
+      "paragraphs": [
+        "Referências estruturadas usam nome da tabela/coluna e tendem a acompanhar expansão. Em instalações localizadas, nomes de funções e separadores podem variar; verifique idioma e versão do Excel."
+      ],
+      "code": "=SUM(Orders[Amount])\n=COUNTIF(Orders[Status],\"Paid\")"
+    },
+    {
+      "heading": "Separe dado, cálculo e apresentação",
+      "paragraphs": [
+        "Mantenha coluna de entrada diferente de cálculo derivado. Valide total, linhas vazias, duplicidades de chave e erro de fórmula. Proteção de planilha ajuda a evitar edição acidental, mas não substitui controle de acesso a informação confidencial."
+      ]
+    }
+  ],
+  "exercise": "Converta uma base de pedidos fictícia em Tabela; nomeie-a Orders e proponha uma fórmula para somar valor e outra para contar pedidos pagos. Explique o comportamento ao adicionar uma linha.",
+  "pitfalls": [
+    "Misturar subtotais, observações e dados na mesma tabela.",
+    "Usar endereço fixo que não inclui linhas futuras.",
+    "Assumir que nome/separador de função é igual em toda localidade."
+  ],
+  "review": [
+    {
+      "question": "Por que preferir tabela a intervalo solto?",
+      "answer": "Ela explicita o conjunto e permite referências mais robustas à expansão."
+    },
+    {
+      "question": "Uma aba protegida garante confidencialidade?",
+      "answer": "Não; proteção de edição não equivale a segurança de acesso."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Support — funções do Excel por categoria",
+      "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+    },
+    {
+      "label": "Microsoft Support — referências estruturadas",
+      "url": "https://support.microsoft.com/en-us/office/using-structured-references-with-excel-tables-f5ed2452-2337-4f71-bed3-c8ae6d2b276e"
+    }
+  ]
+}

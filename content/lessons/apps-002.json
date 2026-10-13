@@ -1,0 +1,56 @@
+{
+  "id": "apps-002",
+  "track": "power-apps",
+  "title": "Formulários e gravação com validação",
+  "level": "Primeiros usos",
+  "minutes": 11,
+  "objective": "Planejar criação/edição de registros considerando obrigatoriedade, erro, fonte e permissões.",
+  "intro": "Formulário é contrato de entrada. Controle visual obrigatório não garante que a fonte aceite o dado. A regra deve existir onde for apropriado, com validação, mensagens e confirmação da operação.",
+  "prerequisites": "Noções de telas, controles e Power Fx.",
+  "sections": [
+    {
+      "heading": "Valide antes de enviar",
+      "paragraphs": [
+        "Confira tipo, campo obrigatório, formato e regra de negócio. Mostre quais campos precisam de correção sem revelar informação desnecessária. Evite guardar valores em estado compartilhado se puder usar controles/formulários nativos."
+      ]
+    },
+    {
+      "heading": "Estados são parte da tarefa",
+      "paragraphs": [
+        "Diferencie carregando, salvo, falha de validação, falha de rede e falta de permissão. Só mostre sucesso após a operação confirmar. Se houver timeout, consulte o destino antes de reenviar para não duplicar."
+      ]
+    },
+    {
+      "heading": "Acesso depende da plataforma",
+      "paragraphs": [
+        "Conectores, Dataverse, permissões de ambiente e licenças variam. Faça teste com contas e papéis autorizados; não embuta credenciais no app. Use dados fictícios até o ambiente estar aprovado."
+      ]
+    }
+  ],
+  "exercise": "Desenhe os estados de um formulário de solicitação: inválido, enviando, concluído, erro de conexão e sem permissão. Indique a ação segura para cada estado.",
+  "pitfalls": [
+    "Trocar tela para “concluído” antes de confirmar gravação.",
+    "Permitir que usuário altere campos protegidos só com UI escondida.",
+    "Reenviar após timeout sem reconciliar possível gravação inicial."
+  ],
+  "review": [
+    {
+      "question": "O que fazer após timeout de gravação?",
+      "answer": "Verificar se a operação foi concluída antes de enviar novamente."
+    },
+    {
+      "question": "Onde a permissão precisa ser aplicada?",
+      "answer": "Na fonte/serviço de dados, além de ajustar a interface."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — primeiros passos com apps de tela",
+      "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/getting-started"
+    },
+    {
+      "label": "Microsoft Learn — visão geral do Power Fx",
+      "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/overview"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="136" viewBox="0 0 640 136" role="img" aria-labelledby="title desc">
+<title id="title">Trama — rede de conhecimento</title>
+<desc id="desc">Três conexões equilibradas convergem em um núcleo; o nome Trama aparece ao lado do descritor Rede de conhecimento.</desc>
+<g transform="translate(4 4)">
+  <rect width="120" height="120" rx="30" fill="#E9EFF0"/>
+  <g fill="none" stroke="#20505A" stroke-width="7" stroke-linecap="round">
+    <path d="M60 27v26"/>
+    <path d="M33 81l19-18"/>
+    <path d="M87 81L68 63"/>
+  </g>
+  <circle cx="60" cy="27" r="7" fill="#7563AD"/>
+  <circle cx="33" cy="81" r="7" fill="#7563AD"/>
+  <circle cx="87" cy="81" r="7" fill="#7563AD"/>
+  <circle cx="60" cy="60" r="11" fill="#20505A" stroke="#fffefe" stroke-width="4"/>
+</g>
+<text x="152" y="73" fill="#20505A" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="70" font-weight="750" letter-spacing="-3.5">trama</text>
+<text x="158" y="103" fill="#6C717B" font-family="Inter, system-ui, -apple-system, Segoe UI, sans-serif" font-size="13" font-weight="700" letter-spacing="2.3">REDE DE CONHECIMENTO</text>
+</svg>

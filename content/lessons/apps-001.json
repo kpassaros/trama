@@ -1,0 +1,56 @@
+{
+  "id": "apps-001",
+  "track": "power-apps",
+  "title": "App Canvas: telas, fórmulas e estado",
+  "level": "Fundamentos",
+  "minutes": 10,
+  "objective": "Estruturar uma experiência simples e usar Power Fx para derivar valores e controlar interação.",
+  "intro": "Apps Canvas permitem compor uma interface com controles e fórmulas. Power Fx usa conceitos familiares a planilhas, mas o app também precisa lidar com estado, dados remotos, validação, delegação e permissões.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Desenhe a tarefa antes da tela",
+      "paragraphs": [
+        "Identifique quem usa, ação principal, dados necessários e saída. Agrupe componentes por tarefa, rotule campos e comunique estado vazio, carregamento e erro. Layout responsivo depende de propriedades e abordagem adotadas."
+      ]
+    },
+    {
+      "heading": "Fórmula não é autorização",
+      "paragraphs": [
+        "Power Fx calcula valores e respostas de controles; `If`, `Filter`, `LookUp` e variáveis governam comportamento da UI. A fórmula local não substitui regra/segurança da fonte de dados."
+      ]
+    },
+    {
+      "heading": "Delegação muda escala",
+      "paragraphs": [
+        "Algumas operações são delegáveis ao conector; outras calculam localmente sobre limite parcial. Ícones/avisos e limites dependem da operação/conector. Teste com mais linhas que o limite e não conclua completude com amostra pequena."
+      ]
+    }
+  ],
+  "exercise": "Esboce uma tela de busca de pedidos: entrada, botão, lista, estado sem resultado e mensagem de erro. Identifique uma operação que deve ser validada quanto à delegação.",
+  "pitfalls": [
+    "Confundir botão oculto com autorização do dado.",
+    "Ignorar warning de delegação e testar só poucas linhas.",
+    "Usar texto de entrada sem validação em ação sensível."
+  ],
+  "review": [
+    {
+      "question": "Power Fx substitui controles de acesso da fonte?",
+      "answer": "Não; autorização precisa existir na fonte/serviço também."
+    },
+    {
+      "question": "O que é risco de não delegação?",
+      "answer": "A consulta pode operar localmente em subconjunto limitado e não refletir todo o conjunto remoto."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — primeiros passos com apps de tela",
+      "url": "https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/getting-started"
+    },
+    {
+      "label": "Microsoft Learn — visão geral do Power Fx",
+      "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/overview"
+    }
+  ]
+}

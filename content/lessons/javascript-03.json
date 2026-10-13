@@ -1,0 +1,69 @@
+{
+  "id": "javascript-03",
+  "track": "javascript",
+  "title": "Fetch: dados, falhas e uma resposta honesta",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Consultar JSON, verificar status HTTP e distinguir falha de rede, falha HTTP e resposta inválida.",
+  "intro": "Uma requisição não é bem-sucedida só porque a Promise de fetch foi resolvida. HTTP, conteúdo e esquema precisam ser avaliados separadamente.",
+  "prerequisites": "Arrays, funções, async/await e DOM básico",
+  "sections": [
+    {
+      "heading": "Três camadas de verificação",
+      "paragraphs": [
+        "fetch pode rejeitar por falha de rede, mas uma resposta 404 ou 500 normalmente resolve a Promise com um objeto Response. response.ok informa se o status está na faixa 200.",
+        "Mesmo um status 200 pode trazer JSON inválido ou um objeto diferente do contrato. Primeiro verifique HTTP, depois leia o corpo e finalmente valide a estrutura de que seu cálculo depende."
+      ]
+    },
+    {
+      "heading": "Requisição tratada",
+      "paragraphs": [
+        "O caminho relativo pedidos.json é fictício e deve existir no mesmo site com o esquema declarado. Rode por um servidor HTTP local, não espere o mesmo comportamento em file://.",
+        "await aguarda a Promise; try/catch reúne falhas de rede, status, parsing e validação. O exemplo confirma um array e os campos usados antes de processar. A interface real também deve mostrar estados de carregamento, vazio e erro.",
+        "A função é declarada, mas não é chamada automaticamente. Um chamador deve usar await carregarPedidos() dentro de try/catch para consumir o retorno e apresentar o erro. A ausência de chamada não é falha de rede: é ausência de execução."
+      ],
+      "code": "async function carregarPedidos() {\n  try {\n    const response = await fetch('./pedidos.json');\n    if (!response.ok) {\n      throw new Error(`HTTP ${response.status}`);\n    }\n    const pedidos = await response.json();\n    if (!Array.isArray(pedidos) || !pedidos.every(p =>\n      p && typeof p.status === 'string' &&\n      Number.isFinite(p.total))) {\n      throw new Error('Formato de dados inesperado');\n    }\n    return pedidos;\n  } catch (erro) {\n    console.error('Falha ao carregar pedidos:', erro.message);\n    throw erro;\n  }\n}"
+    },
+    {
+      "heading": "Permissões e fronteiras",
+      "paragraphs": [
+        "CORS é uma regra do navegador para acesso entre origens; não é autenticação e não permite esconder segredos em um frontend. Um token em JavaScript público pode ser extraído.",
+        "APIs com credenciais privadas precisam de uma camada autorizada fora do bundle público. Não faça chamadas a serviços externos durante um exemplo sem compreender termos, limites e dados enviados."
+      ]
+    },
+    {
+      "heading": "Planeje o tempo e a recuperação",
+      "paragraphs": [
+        "AbortController permite interromper uma requisição e conectar um limite de tempo definido pela aplicação. Cancele também quando a resposta já não é relevante, como numa busca substituída por outra.",
+        "Retentativas precisam considerar idempotência, limites e backoff. Nunca reenvie POST indiscriminadamente: uma operação pode ter sido processada mesmo que a resposta tenha sido perdida."
+      ]
+    }
+  ],
+  "exercise": "Crie um pedidos.json válido com dois registros e teste. Depois altere o caminho para gerar 404, quebre o JSON e troque um número por texto. Compare as três falhas.",
+  "pitfalls": [
+    "Achar que fetch rejeita automaticamente status 404.",
+    "Chamar response.json sem conferir o contrato.",
+    "Publicar um segredo no código do navegador."
+  ],
+  "review": [
+    {
+      "question": "O que response.ok verifica?",
+      "answer": "Somente se o status está entre 200 e 299. Não valida o corpo nem o esquema."
+    },
+    {
+      "question": "Por que verificar os campos depois do JSON?",
+      "answer": "Porque JSON válido só garante a sintaxe do formato, não que os dados atendam ao contrato da aplicação."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — fetch",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+    },
+    {
+      "label": "MDN — js",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

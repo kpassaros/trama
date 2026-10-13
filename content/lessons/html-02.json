@@ -1,0 +1,64 @@
+{
+  "id": "html-02",
+  "track": "html",
+  "title": "Tabelas de dados que fazem sentido",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Representar dados tabulares com caption, cabeçalhos e associação entre células.",
+  "intro": "Uma tabela mostra relações entre linhas e colunas. Para dados de pedidos isso faz sentido; para posicionar uma página em duas colunas, prefira CSS.",
+  "prerequisites": "Nenhuma experiência prévia obrigatória",
+  "sections": [
+    {
+      "heading": "Qual é a granularidade?",
+      "paragraphs": [
+        "Antes do markup, diga o que cada linha representa. Se for um pedido, um identificador deve separar pedidos diferentes. Total, cliente e status são atributos dessa mesma unidade.",
+        "HTML não valida a qualidade da fonte. Linhas repetidas, moedas misturadas e números sem unidade continuam sendo problemas, mesmo que a tabela seja visualmente bonita."
+      ]
+    },
+    {
+      "heading": "Cabeçalhos que orientam a leitura",
+      "paragraphs": [
+        "caption nomeia o conjunto; thead organiza cabeçalhos e tbody contém os registros. th com scope=\"col\" associa um cabeçalho à coluna. Quando uma célula identifica a linha, scope=\"row\" pode ser apropriado.",
+        "O exemplo contém dois pedidos fictícios e informa explicitamente a moeda. Não usa tabela para layout e não depende de cor para distinguir o significado dos campos."
+      ],
+      "code": "<table>\n  <caption>Pedidos fictícios — valores em BRL</caption>\n  <thead>\n    <tr>\n      <th scope=\"col\">Pedido</th>\n      <th scope=\"col\">Status</th>\n      <th scope=\"col\">Total (BRL)</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr><th scope=\"row\">101</th><td>Pago</td><td>150,00</td></tr>\n    <tr><th scope=\"row\">102</th><td>Pendente</td><td>80,00</td></tr>\n  </tbody>\n</table>"
+    },
+    {
+      "heading": "Responsive sem perder informação",
+      "paragraphs": [
+        "Em telas estreitas, uma região de rolagem horizontal pode preservar as relações tabulares. O contêiner deve ter indicação compreensível e não causar rolagem horizontal de toda a página.",
+        "Converter cada linha em card pode funcionar, mas exige preservar os nomes dos campos. Não esconda uma coluna essencial apenas para fazer a tabela caber."
+      ]
+    },
+    {
+      "heading": "Verificação prática",
+      "paragraphs": [
+        "Confirme que cada linha contém o mesmo conjunto de campos, que os cabeçalhos descrevem as unidades e que dados ausentes são apresentados sem virar zero silenciosamente.",
+        "Teste leitura por teclado e, quando possível, com leitor de tela. Tabelas complexas com cabeçalhos multinível podem exigir associações mais explícitas que scope simples."
+      ]
+    }
+  ],
+  "exercise": "Adicione uma coluna Data ao exemplo e um terceiro pedido com valor não informado. Como representar esse caso sem afirmar que a receita foi zero?",
+  "pitfalls": [
+    "Usar table para alinhar a página.",
+    "Omitir unidades e caption.",
+    "Transformar ausência em zero sem uma regra de negócio."
+  ],
+  "review": [
+    {
+      "question": "Qual a função de caption?",
+      "answer": "Identificar o conteúdo global da tabela, não um campo de uma linha."
+    },
+    {
+      "question": "Uma tabela bonita garante dados corretos?",
+      "answer": "Não. Granularidade, qualidade e coerência dos valores precisam de revisão independente."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — html",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

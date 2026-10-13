@@ -1,0 +1,60 @@
+{
+  "id": "fabric-002",
+  "track": "fabric",
+  "title": "Lakehouse ou Warehouse? Escolha pelo trabalho",
+  "level": "Primeiros usos",
+  "minutes": 12,
+  "objective": "Justificar uma escolha inicial entre Lakehouse e Warehouse e reconhecer os limites do SQL analytics endpoint.",
+  "intro": "Dois projetos podem usar o mesmo armazenamento lógico e ainda exigir experiências de trabalho diferentes. Lakehouse e Warehouse armazenam dados em formato Delta em OneLake, mas oferecem estilos distintos de desenvolvimento e operação. A decisão começa pelo tipo de dado, linguagem, transações e equipe — não pelo nome mais popular.",
+  "prerequisites": "Vocabulário básico de tabela, arquivo e consulta; a primeira aula explica o ambiente.",
+  "sections": [
+    {
+      "heading": "Lakehouse: arquivos, tabelas e Spark",
+      "paragraphs": [
+        "Lakehouse combina arquivos e tabelas para análise, com experiências de engenharia que usam Spark e notebooks. É um ponto de partida frequente para dados com formatos variados e preparação programática. Isso não significa que todo arquivo importado já esteja pronto para SQL ou Power BI: schema, tipos, chave e qualidade precisam ser definidos.",
+        "O Lakehouse oferece um SQL analytics endpoint para consultar tabelas Delta com T-SQL. Ele não deve ser confundido com uma interface de escrita dessas tabelas. A preparação e a escrita seguem os caminhos suportados pela experiência de engenharia ou integração escolhida."
+      ]
+    },
+    {
+      "heading": "Warehouse: desenvolvimento analítico em T-SQL",
+      "paragraphs": [
+        "Warehouse é orientado ao desenvolvimento relacional e analítico principalmente em T-SQL. É um candidato quando a equipe trabalha com dados estruturados e precisa de operações de carga e transformação SQL, além de transações em várias tabelas conforme os recursos suportados.",
+        "O fato de usar T-SQL não torna Fabric Warehouse um SQL Server idêntico: suporte a comandos, tipos, administração e limites são próprios do serviço. Consulte a documentação do item e teste em ambiente autorizado. Lakehouse e Warehouse também podem coexistir, desde que a divisão de responsabilidades tenha justificativa."
+      ]
+    },
+    {
+      "heading": "Antes de escrever, identifique o endpoint",
+      "paragraphs": [
+        "Uma consulta de leitura pode parecer semelhante nas duas experiências, mas as ações permitidas não são iguais. O SQL analytics endpoint do Lakehouse permite consulta às tabelas Delta, enquanto escrita nas tabelas do Lakehouse não é feita por DML nesse endpoint. No Warehouse, cargas e alterações seguem as capacidades T-SQL suportadas pelo produto.",
+        "O exemplo abaixo é apenas uma consulta de leitura T-SQL sobre uma tabela fictícia. Confirme schema, colunas, acesso e ambiente. Uma amostra ajuda a verificar tipos e forma do dado, mas não comprova completude ou qualidade da população."
+      ],
+      "code": "-- Fabric: leitura T-SQL em Warehouse ou SQL analytics endpoint\n-- dbo.orders e suas colunas são fictícios; adapte só em laboratório autorizado.\nSELECT TOP (20) order_id, order_date, total_amount\nFROM dbo.orders\nORDER BY order_date DESC, order_id;"
+    }
+  ],
+  "exercise": "Compare dois cenários fictícios: arquivos variados tratados em notebooks e uma equipe que prepara tabelas relacionais usando T-SQL. Proponha um candidato para cada caso, liste duas verificações antes da decisão e explique por que o SQL endpoint do Lakehouse não é um caminho para atualizar suas tabelas.",
+  "pitfalls": [
+    "Tentar executar INSERT/UPDATE nas tabelas do Lakehouse pelo SQL analytics endpoint.",
+    "Escolher pela linguagem de uma consulta isolada sem avaliar escrita, transações e tipos de dados.",
+    "Presumir equivalência completa entre Fabric Warehouse, SQL Server e Databricks SQL."
+  ],
+  "review": [
+    {
+      "question": "Quando Lakehouse costuma ser um candidato inicial?",
+      "answer": "Quando o trabalho inclui arquivos e dados variados, preparação com Spark/notebooks e análise sobre tabelas no lake; a escolha ainda depende dos requisitos."
+    },
+    {
+      "question": "O SQL analytics endpoint do Lakehouse escreve nas tabelas Delta por DML?",
+      "answer": "Não. A consulta SQL desse endpoint não deve ser tratada como interface de escrita nas tabelas do Lakehouse."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — como escolher Lakehouse ou Warehouse",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/decision-guide-lakehouse-warehouse"
+    },
+    {
+      "label": "Microsoft Learn — visão geral do Microsoft Fabric",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview"
+    }
+  ]
+}

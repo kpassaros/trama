@@ -1,0 +1,61 @@
+{
+  "id": "sql-002",
+  "track": "sql",
+  "title": "JOIN sem duplicar o resultado",
+  "level": "Fundamentos",
+  "minutes": 11,
+  "objective": "Escolher um tipo de JOIN e conferir a cardinalidade antes de interpretar totais.",
+  "intro": "Um join combina linhas por uma chave. O risco menos óbvio não é o comando falhar: é a consulta retornar linhas duplicadas porque a relação entre as tabelas não é a esperada. Desenhe a granularidade de cada lado antes de combinar.",
+  "prerequisites": "Conforto com SELECT e WHERE.",
+  "sections": [
+    {
+      "heading": "Uma linha de cada lado?",
+      "paragraphs": [
+        "Se customers tem uma linha por cliente e orders tem muitas por cliente, a relação é um-para-muitos. Juntar cliente a pedido cria uma linha por pedido; atributos do cliente se repetem, o que é correto para essa granularidade. Somar depois uma coluna repetida do cliente pode inflar o valor."
+      ]
+    },
+    {
+      "heading": "Escolha a preservação desejada",
+      "paragraphs": [
+        "INNER JOIN conserva somente chaves encontradas dos dois lados. LEFT JOIN conserva todas as linhas à esquerda e preenche colunas sem correspondência com NULL. A tabela à esquerda não é automaticamente “a principal”: escolha a partir da população que a pergunta precisa preservar."
+      ],
+      "code": "-- SQL: Databricks SQL / PostgreSQL / SQL Server\nSELECT\n  c.customer_id,\n  o.order_id,\n  o.total_amount\nFROM customers AS c\nLEFT JOIN orders AS o\n  ON o.customer_id = c.customer_id;"
+    },
+    {
+      "heading": "Teste as chaves",
+      "paragraphs": [
+        "Compare contagens antes e depois, procure chaves repetidas no lado que deveria ser único e quantifique linhas sem correspondência. Um `COUNT(*)` depois de LEFT JOIN conta pedidos e também clientes sem pedido. `COUNT(o.order_id)` conta só linhas com pedido não nulo, se order_id for chave não nula."
+      ]
+    }
+  ],
+  "exercise": "Junte uma tabela de clientes (uma linha por cliente) a pedidos (vários por cliente). Antes de agregar, escreva em uma frase qual será a granularidade resultante e qual contagem responde à pergunta.",
+  "pitfalls": [
+    "Usar `DISTINCT` para esconder uma cardinalidade inesperada em vez de descobrir a causa.",
+    "Colocar filtro da tabela direita em WHERE após LEFT JOIN pode remover as linhas sem correspondência; avalie se o filtro pertence à condição ON.",
+    "Somar uma métrica do lado “um” depois de expandi-la para o lado “muitos”."
+  ],
+  "review": [
+    {
+      "question": "O que muda de INNER para LEFT JOIN?",
+      "answer": "LEFT JOIN mantém todas as linhas do lado esquerdo; INNER mantém somente correspondências."
+    },
+    {
+      "question": "Por que a quantidade de linhas pode aumentar?",
+      "answer": "A chave de junção pode ocorrer várias vezes em um ou ambos os lados."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}
