@@ -1,0 +1,57 @@
+{
+  "id": "pbi-002",
+  "track": "power-bi",
+  "title": "DAX: medidas, contexto de filtro e DIVIDE",
+  "level": "Primeiros usos",
+  "minutes": 12,
+  "objective": "Escrever medidas reutilizáveis e explicar como filtros do relatório alteram o cálculo.",
+  "intro": "DAX avalia expressões dentro de um contexto. Medidas normalmente são recalculadas para filtros/slices de cada visual. Distinguir contexto de linha e contexto de filtro é um fundamento: a expressão pode estar correta e ainda responder à pergunta errada se o modelo ou contexto não for o esperado.",
+  "prerequisites": "Noção de tabela fato/dimensão e agregação.",
+  "sections": [
+    {
+      "heading": "Comece por medidas nomeadas",
+      "paragraphs": [
+        "Uma medida de soma é avaliada para o contexto atual; a mesma medida pode aparecer por mês, produto ou total. Medidas são distintas de colunas calculadas, que armazenam resultado por linha no momento de processamento."
+      ]
+    },
+    {
+      "heading": "CALCULATE transforma filtros",
+      "paragraphs": [
+        "CALCULATE avalia uma expressão sob filtros modificados. Use-a conscientemente: filtros removidos/substituídos ou relações ativadas podem mudar o significado. `DIVIDE` permite definir o resultado alternativo quando o denominador é zero/blank."
+      ],
+      "code": "-- DAX ilustrativo; nomes de tabelas dependem do modelo\nReceita = SUM ( Sales[Amount] )\nPedidos = DISTINCTCOUNT ( Sales[OrderId] )\nTicket médio = DIVIDE ( [Receita], [Pedidos] )"
+    },
+    {
+      "heading": "Valide em pequenos visuais",
+      "paragraphs": [
+        "Compare a medida em total, por dimensão e por período. Confirme filtros, relacionamentos, blanks e total geral. Em DAX, total geralmente recalcula a expressão no contexto total; não é necessariamente soma aritmética das linhas exibidas."
+      ]
+    }
+  ],
+  "exercise": "Crie a medida de receita e quantidade de pedidos no modelo fictício. Depois explique qual denominador dá “ticket médio” e como você verificaria o resultado por mês e no total.",
+  "pitfalls": [
+    "Esperar que total geral seja sempre soma dos valores arredondados nas linhas.",
+    "Confundir coluna calculada com medida.",
+    "Usar DIVIDE ou COALESCE para ocultar uma regra de negócio não definida."
+  ],
+  "review": [
+    {
+      "question": "O que faz uma medida mudar por mês?",
+      "answer": "O contexto de filtro do visual, propagado pelo modelo e pela expressão DAX."
+    },
+    {
+      "question": "O que `DIVIDE` ajuda a tratar?",
+      "answer": "Divisão por denominador zero/blank com resultado alternativo explícito."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power BI",
+      "url": "https://learn.microsoft.com/en-us/power-bi/"
+    },
+    {
+      "label": "Microsoft Learn — referência DAX",
+      "url": "https://learn.microsoft.com/en-us/dax/"
+    }
+  ]
+}

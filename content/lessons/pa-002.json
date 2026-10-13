@@ -1,0 +1,56 @@
+{
+  "id": "pa-002",
+  "track": "power-automate",
+  "title": "Falhas, retries e observabilidade do fluxo",
+  "level": "Aplicação intermediária",
+  "minutes": 11,
+  "objective": "Configurar recuperação e monitoramento sem repetir ações de forma insegura.",
+  "intro": "Fluxo em nuvem precisa ser compreensível quando falha. O histórico de execução ajuda a diagnosticar, mas dados sensíveis em entradas/saídas podem aparecer ali; configure política de dados e retenção do ambiente.",
+  "prerequisites": "Fluxo, conectores e lógica condicional.",
+  "sections": [
+    {
+      "heading": "Agrupe e classifique",
+      "paragraphs": [
+        "Organize ações em escopos de trabalho, erro e conclusão; configure execução após falha/time-out de forma explícita. Diferencie falha transitória de erro permanente de validação, credencial ou schema."
+      ]
+    },
+    {
+      "heading": "Retries e duplicidade",
+      "paragraphs": [
+        "Retries podem repetir efeitos. Antes de ativar, pergunte se ação é idempotente, se há identificador de operação, deduplicação e reconciliação. Configure limites e backoff conforme política do serviço/conector."
+      ]
+    },
+    {
+      "heading": "Monitore com informação mínima",
+      "paragraphs": [
+        "Registre identificador técnico, estado, duração e erro necessário à correção. Evite payloads completos com dados pessoais/segredos em alertas. Defina responsável, alerta e procedimento de reprocessamento."
+      ]
+    }
+  ],
+  "exercise": "Simule no papel uma falha 429 seguida de sucesso e outra falha de permissão permanente. Defina quais seriam repetidas, quais seriam encerradas e o que o log deveria revelar sem expor segredo.",
+  "pitfalls": [
+    "Repetir erro permanente em loop.",
+    "Enviar toda a saída do conector por e-mail de alerta sem filtrar conteúdo.",
+    "Assumir que conclusão do fluxo prova correção do dado produzido."
+  ],
+  "review": [
+    {
+      "question": "Quando usar retry?",
+      "answer": "Em erro transitório e com limite; confirme idempotência ou proteção de duplicidade."
+    },
+    {
+      "question": "O que um log útil contém?",
+      "answer": "Contexto mínimo para correção, evitando segredos e dados desnecessários."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power Automate",
+      "url": "https://learn.microsoft.com/en-us/power-automate/"
+    },
+    {
+      "label": "Microsoft Learn — tratamento robusto de erros",
+      "url": "https://learn.microsoft.com/en-us/power-automate/guidance/coding-guidelines/error-handling"
+    }
+  ]
+}

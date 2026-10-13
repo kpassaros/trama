@@ -1,0 +1,56 @@
+{
+  "id": "dbx-001",
+  "track": "databricks",
+  "title": "Entenda o mapa do Databricks",
+  "level": "Fundamentos",
+  "minutes": 9,
+  "objective": "Distinguir ambiente de desenvolvimento, recursos de execução, dados e governança.",
+  "intro": "Databricks reúne experiências de desenvolvimento e operação de dados. Não é uma linguagem única: notebooks e editores organizam trabalho; compute executa; tabelas/arquivos guardam dados; governança controla descoberta e acesso.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Quatro peças para se localizar",
+      "paragraphs": [
+        "Notebook organiza texto, código e resultados. Compute fornece recursos de execução. Dados são arquivos e tabelas consultados/transformados. Unity Catalog centraliza governança e acesso quando configurado no workspace."
+      ]
+    },
+    {
+      "heading": "Uma falha tem mais de uma causa possível",
+      "paragraphs": [
+        "Um comando pode estar correto e ainda falhar por compute indisponível, nome incorreto, esquema não encontrado ou permissão insuficiente. Diagnostique mensagem, recurso selecionado, objeto qualificado e permissão antes de reescrever código."
+      ]
+    },
+    {
+      "heading": "Limites do mapa mental",
+      "paragraphs": [
+        "Analogia: notebook é caderno de trabalho; não trabalha sozinho. As opções disponíveis dependem do workspace, plano, região, política e permissões. Esta aula não exige conta nem executa comandos."
+      ]
+    }
+  ],
+  "exercise": "Explique em voz própria a diferença entre notebook, compute, tabela e catálogo. Para cada um, dê um exemplo de erro que não seja erro de sintaxe.",
+  "pitfalls": [
+    "Confundir notebook com o recurso que processa o código.",
+    "Supor que toda opção de documentação está habilitada na conta.",
+    "Confundir visibilidade do objeto com permissão para alterá-lo."
+  ],
+  "review": [
+    {
+      "question": "Notebook e compute são a mesma coisa?",
+      "answer": "Não. O notebook organiza trabalho; compute executa."
+    },
+    {
+      "question": "Ver uma tabela garante permissão de escrita?",
+      "answer": "Não; visibilidade e permissão para ações são controles distintos."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks — introdução à plataforma",
+      "url": "https://docs.databricks.com/aws/en/introduction/"
+    },
+    {
+      "label": "Databricks — notebooks",
+      "url": "https://docs.databricks.com/aws/en/notebooks/notebooks-code"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "fabric-001",
+  "track": "fabric",
+  "title": "O mapa do Fabric: OneLake, workspaces e capacidades",
+  "level": "Fundamentos",
+  "minutes": 11,
+  "objective": "Distinguir plataforma, armazenamento, workspace, item e capacidade antes de escolher uma experiência do Fabric.",
+  "intro": "Imagine uma equipe que recebe arquivos de pedidos, prepara tabelas e compartilha indicadores. Esse cenário é didático. Microsoft Fabric reúne experiências de integração, engenharia, análise e Power BI em uma plataforma SaaS. Não é só um novo nome para Power BI nem uma linguagem: cada experiência resolve uma parte do trabalho, e OneLake fornece a base lógica compartilhada de armazenamento.",
+  "prerequisites": "Nenhum. A leitura não exige conta ou laboratório.",
+  "sections": [
+    {
+      "heading": "Uma plataforma, diferentes tarefas",
+      "paragraphs": [
+        "Pense em uma oficina com bancadas diferentes: Data Factory ajuda a integrar e orquestrar dados; experiências de engenharia oferecem notebooks e Spark; Warehouse atende ao trabalho analítico orientado a T-SQL; Power BI oferece modelagem semântica e consumo por relatórios. A analogia explica a divisão das tarefas, mas não transforma os itens em ferramentas intercambiáveis: execução, permissões e recursos dependem do tipo de item.",
+        "Comece pela pergunta que quer responder, pelo dado necessário e pelo modo como pretende prepará-lo. Não crie todos os tipos de item só porque estão disponíveis. Um ambiente integrado ainda exige qualidade, modelagem, autorização e escolhas técnicas."
+      ]
+    },
+    {
+      "heading": "Tenant, workspace, item e OneLake",
+      "paragraphs": [
+        "O tenant representa o ambiente organizacional. Dentro dele, workspaces organizam itens e colaboração; um item pode ser um Lakehouse, Warehouse, notebook, pipeline ou modelo semântico. OneLake é o data lake lógico compartilhado da plataforma. Ter armazenamento compartilhado não significa que todo usuário possa ler todos os dados.",
+        "Diferencie o contêiner de colaboração do dado e do cálculo: workspace organiza; item implementa uma capacidade; OneLake armazena; a experiência escolhida processa ou consulta. As permissões continuam necessárias em cada contexto. Uma captura de tela de um workspace não prova que o leitor possui o mesmo acesso."
+      ]
+    },
+    {
+      "heading": "Capacidade não é licença de usuário",
+      "paragraphs": [
+        "Capacidade fornece recursos para cargas de trabalho e não é sinônimo de licença individual. O tipo de capacidade do workspace, as licenças dos usuários, as configurações do tenant e os papéis de acesso afetam o que pode ser criado, executado e compartilhado. Power BI Pro ou PPU, por si só, não devem ser interpretados como habilitação de todas as experiências do Fabric.",
+        "Para um laboratório, confirme com o administrador um ambiente autorizado e a capacidade adequada. Trial, quando disponível, é temporário e sujeito às regras do serviço; não é uma garantia de acesso gratuito permanente nem uma decisão de produção. Consulte a documentação vigente em vez de decorar preços ou SKUs nesta aula."
+      ]
+    }
+  ],
+  "exercise": "Desenhe o caminho de uma tabela fictícia de pedidos até um relatório. Nomeie tenant, workspace, item de dados, experiência de processamento e item de consumo. Marque onde seriam necessárias permissões e o que precisaria ser confirmado sobre capacidade/licença.",
+  "pitfalls": [
+    "Confundir OneLake com compute ou supor que armazenamento compartilhado torna os dados públicos.",
+    "Achar que uma licença Power BI individual garante uso de todas as cargas do Fabric.",
+    "Criar itens antes de definir a tarefa, a população do dado e o resultado esperado."
+  ],
+  "review": [
+    {
+      "question": "Fabric e Power BI são a mesma coisa?",
+      "answer": "Não. Power BI é parte do ecossistema Fabric; a plataforma também oferece outras experiências de integração, engenharia e análise."
+    },
+    {
+      "question": "Qual é a diferença entre workspace e capacidade?",
+      "answer": "Workspace organiza itens e colaboração; capacidade fornece recursos para executar cargas. Licenças e permissões são dimensões adicionais."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — visão geral do Microsoft Fabric",
+      "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview"
+    },
+    {
+      "label": "Microsoft Learn — licenças e capacidade do Fabric",
+      "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "css-02",
+  "track": "css",
+  "title": "Layout responsivo: Flexbox e Grid",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Escolher Flexbox ou Grid e criar um catálogo que se adapta sem esconder conteúdo.",
+  "intro": "Um bom layout acompanha o conteúdo e o dispositivo. Breakpoints são decisões sobre quando a composição deixa de funcionar, não uma lista universal de marcas de celular.",
+  "prerequisites": "HTML e a aula de cascata/box model",
+  "sections": [
+    {
+      "heading": "Uma dimensão ou duas?",
+      "paragraphs": [
+        "Flexbox organiza principalmente uma linha ou coluna e distribui espaço entre itens. Grid define relações em linhas e colunas. Os dois podem coexistir: Grid no catálogo e Flexbox na barra de ações.",
+        "O fluxo normal continua sendo a base. position:absolute tira um elemento desse fluxo e pode causar sobreposição quando o texto cresce; não é o método padrão para montar cards."
+      ]
+    },
+    {
+      "heading": "Catálogo que se reorganiza",
+      "paragraphs": [
+        "repeat com auto-fit cria quantas colunas couberem. minmax define o mínimo de cada card e permite ocupar uma fração do espaço restante. min(100%, 280px) evita um mínimo maior que a própria tela.",
+        "O gap separa itens sem adicionar margens duplicadas. O resultado será uma coluna em telas estreitas e várias colunas quando houver largura disponível, respeitando o conteúdo."
+      ],
+      "code": ".catalogo {\n  display: grid;\n  grid-template-columns:\n    repeat(auto-fit, minmax(min(100%, 280px), 1fr));\n  gap: 16px;\n}\n.acoes {\n  display: flex;\n  gap: 12px;\n  flex-wrap: wrap;\n}"
+    },
+    {
+      "heading": "O problema das larguras mínimas",
+      "paragraphs": [
+        "Itens de Flexbox e Grid podem resistir a encolher por causa de seus mínimos automáticos. min-width:0 no filho adequado e uma regra de quebra podem resolver textos longos; tabelas e códigos devem rolar em sua própria região.",
+        "Imagens precisam de limites adequados, como max-width:100%, para não exceder o contêiner. Não use overflow:hidden global para esconder defeitos de layout que também ocultam conteúdo."
+      ]
+    },
+    {
+      "heading": "Testes que revelam o layout",
+      "paragraphs": [
+        "Reduza a janela gradualmente, não apenas entre dois tamanhos. Teste textos longos, ampliação de 200%, cards com diferentes alturas e navegação por teclado.",
+        "Use uma media query quando a organização precisar mudar: por exemplo, ações empilhadas em uma área estreita. A regra deve preservar ordem de leitura e conteúdo essencial."
+      ]
+    }
+  ],
+  "exercise": "Monte um catálogo com cinco cards de títulos curtos e longos. Teste 390px, 768px e 1440px. Corrija qualquer rolagem horizontal da página sem ocultar os títulos.",
+  "pitfalls": [
+    "Usar absolute para compor toda a página.",
+    "Ocultar conteúdo para forçar encaixe.",
+    "Testar só um tamanho de tela."
+  ],
+  "review": [
+    {
+      "question": "Grid substitui Flexbox?",
+      "answer": "Não. Cada um resolve relações diferentes e pode ser combinado."
+    },
+    {
+      "question": "Por que min(100%, 280px)?",
+      "answer": "Para que o mínimo da coluna não ultrapasse a largura do contêiner em uma tela muito estreita."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — layout",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout"
+    },
+    {
+      "label": "MDN — css",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

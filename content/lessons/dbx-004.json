@@ -1,0 +1,56 @@
+{
+  "id": "dbx-004",
+  "track": "databricks",
+  "title": "Jobs, monitoramento e recuperação de falhas",
+  "level": "Aplicação intermediária",
+  "minutes": 12,
+  "objective": "Planejar uma execução automatizada com dependências, observabilidade e recuperação explícitas.",
+  "intro": "Automatizar um notebook não basta para tornar um pipeline confiável. É preciso indicar gatilho, parâmetros, dependências, destino, critérios de sucesso e ação quando uma etapa falhar. O mecanismo concreto depende do recurso de Jobs/Lakeflow habilitado no workspace.",
+  "prerequisites": "Noções de tabelas, transformação e qualidade.",
+  "sections": [
+    {
+      "heading": "Defina contrato da execução",
+      "paragraphs": [
+        "Documente entrada, intervalo de processamento, saída, owner, frequência e atraso tolerado. Separe reexecução de backfill e identifique quais etapas podem rodar em paralelo. Use parâmetros explícitos em vez de valores fixos ocultos."
+      ]
+    },
+    {
+      "heading": "Observe o que ajuda a recuperar",
+      "paragraphs": [
+        "Registre estado e erro sem expor segredos. Métricas úteis incluem duração, linhas lidas/escritas, falhas e freshness. Retry só ajuda em falhas transitórias; repetição de escrita exige estratégia idempotente."
+      ]
+    },
+    {
+      "heading": "Prepare a recuperação",
+      "paragraphs": [
+        "Defina checkpoint ou watermark, reprocessamento por partição/intervalo, validação de saída e como interromper a cadeia. Teste erro de entrada, indisponibilidade, timeout e execução duplicada em ambiente seguro."
+      ]
+    }
+  ],
+  "exercise": "Esboce um job diário com três etapas. Especifique dependências, uma condição que bloqueie a publicação e o modo de reprocessar um dia sem repetir registros.",
+  "pitfalls": [
+    "Retentar indefinidamente erro permanente de schema/permissão.",
+    "Ignorar falha parcial porque a execução principal marcou concluída.",
+    "Dar por recuperada uma execução sem reconciliar o destino."
+  ],
+  "review": [
+    {
+      "question": "Quando retry é apropriado?",
+      "answer": "Em falhas transitórias, com limites e atenção à idempotência."
+    },
+    {
+      "question": "O que caracteriza saída confiável?",
+      "answer": "Resultado validado, atualizado conforme contrato e rastreável à execução."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks — Jobs",
+      "url": "https://docs.databricks.com/aws/en/jobs/"
+    },
+    {
+      "label": "Databricks — Lakeflow",
+      "url": "https://docs.databricks.com/aws/en/ldp/"
+    }
+  ]
+}

@@ -1,0 +1,1307 @@
+{
+  "items": [
+    {
+      "id": "ref-001",
+      "tool": "SQL",
+      "category": "Funções",
+      "name": "SELECT",
+      "description": "Escolhe quais colunas e expressões serão devolvidas pela consulta. Use SELECT para montar a saída sem alterar os dados da tabela.",
+      "code": "SELECT order_id, total_amount\nFROM orders;",
+      "dialect": "Databricks SQL / PostgreSQL / SQL Server",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Inspecionar pedidos ou preparar apenas os campos necessários para um relatório.",
+      "result": "Uma linha por pedido, com order_id e total_amount. SELECT sozinho não filtra, ordena ou elimina duplicatas.",
+      "steps": [
+        "SELECT declara as colunas que serão devolvidas.",
+        "FROM orders informa de qual tabela ler as linhas.",
+        "Sem WHERE, todas as linhas acessíveis entram no resultado; as colunas não selecionadas ficam de fora."
+      ],
+      "pitfall": "Evite SELECT * em consultas mantidas. Sem ORDER BY, a ordem da saída não é garantida."
+    },
+    {
+      "id": "ref-002",
+      "tool": "SQL",
+      "category": "Filtros",
+      "name": "WHERE",
+      "description": "Filtra registros pela condição de negócio antes da agregação. A consulta só mantém as linhas em que a expressão de WHERE é verdadeira.",
+      "code": "SELECT order_id, total_amount\nFROM orders\nWHERE status = 'paid'\n  AND total_amount > 0;",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Selecionar somente pedidos pagos com valor positivo antes de calcular indicadores.",
+      "result": "Somente linhas com status = paid e total_amount maior que zero. Pedidos pendentes, zerados ou com condição desconhecida ficam de fora.",
+      "steps": [
+        "FROM define a tabela de entrada.",
+        "WHERE testa cada linha: status deve ser paid e total_amount deve ser maior que 0.",
+        "AND exige as duas condições. Este filtro ocorre antes de GROUP BY e dos cálculos agregados."
+      ],
+      "pitfall": "Use parênteses ao misturar AND e OR. Comparações com NULL não produzem verdadeiro; teste a ausência com IS NULL."
+    },
+    {
+      "id": "ref-003",
+      "tool": "SQL",
+      "category": "Filtros",
+      "name": "IS NULL",
+      "description": "Testa ausência/valor desconhecido; igualdade com NULL não é teste de nulidade.",
+      "code": "WHERE delivered_at IS NULL",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Encontrar entregas ainda sem data registrada e revisar campos ausentes.",
+      "result": "Linhas em que delivered_at é NULL. Isso não distingue automaticamente ausência legítima de falha de ingestão.",
+      "steps": [
+        "IS NULL verifica a ausência do valor, não uma string vazia.",
+        "WHERE conserva as linhas cujo teste é verdadeiro.",
+        "IS NOT NULL faz o teste inverso para valores presentes."
+      ],
+      "pitfall": "Nunca use = NULL. Zero, texto vazio e NULL representam situações diferentes."
+    },
+    {
+      "id": "ref-004",
+      "tool": "SQL",
+      "category": "Filtros",
+      "name": "IN",
+      "description": "Verifica pertença a um conjunto; cuidado com NULL dentro de NOT IN.",
+      "code": "WHERE status IN ('paid', 'shipped')",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Filtrar um conjunto curto de status aceitos sem repetir comparações com OR.",
+      "result": "Pedidos pagos ou enviados; outros status não são selecionados.",
+      "steps": [
+        "IN compara o valor à lista de candidatos.",
+        "Uma igualdade verdadeira já é suficiente para corresponder.",
+        "Para listas vindas de outra tabela, uma subconsulta ou JOIN pode ser mais adequada."
+      ],
+      "pitfall": "NOT IN com NULL na lista pode gerar UNKNOWN e excluir linhas inesperadamente. Para anti-join, avalie NOT EXISTS."
+    },
+    {
+      "id": "ref-005",
+      "tool": "SQL",
+      "category": "Filtros",
+      "name": "LIKE",
+      "description": "Busca padrões textuais com % e _; sensibilidade a caixa depende de collation/dialeto.",
+      "code": "WHERE name LIKE 'A%'",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Procurar nomes que começam com um prefixo quando não há um identificador exato.",
+      "result": "Nomes que correspondem ao padrão A%; o símbolo % admite zero ou mais caracteres.",
+      "steps": [
+        "LIKE compara texto com um padrão.",
+        "% significa qualquer sequência; _ significa exatamente um caractere.",
+        "O comportamento de maiúsculas, acentos e escape depende do banco e da collation."
+      ],
+      "pitfall": "Não confunda LIKE com expressão regular. Um curinga no início pode limitar o uso de índices."
+    },
+    {
+      "id": "ref-006",
+      "tool": "SQL",
+      "category": "Ordenação",
+      "name": "ORDER BY",
+      "description": "Define ordenação da saída; resultado sem ORDER BY não tem ordem garantida.",
+      "code": "ORDER BY order_date DESC, order_id",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Produzir uma saída previsível e desempatar pedidos da mesma data.",
+      "result": "Pedidos em data decrescente; empates são resolvidos por order_id em ordem crescente.",
+      "steps": [
+        "ORDER BY define a ordem do resultado final.",
+        "DESC coloca as datas mais recentes primeiro.",
+        "A segunda coluna desempata a primeira; use uma chave única se a ordem precisa ser total."
+      ],
+      "pitfall": "Ordenação pode custar caro. Ordem de NULL e sintaxe de NULLS FIRST/LAST variam entre dialetos."
+    },
+    {
+      "id": "ref-007",
+      "tool": "SQL",
+      "category": "Condições",
+      "name": "CASE",
+      "description": "Aplica regras condicionais dentro da consulta.",
+      "code": "CASE WHEN amount >= 100 THEN 'large' ELSE 'small' END",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Converter regras de negócio em rótulos, faixas ou indicadores dentro da consulta.",
+      "result": "O valor do primeiro WHEN verdadeiro; sem correspondência, o ELSE ou NULL se ELSE estiver ausente.",
+      "steps": [
+        "CASE avalia as condições na ordem declarada.",
+        "THEN entrega o valor da primeira regra correspondente.",
+        "ELSE cobre casos restantes; END encerra a expressão."
+      ],
+      "pitfall": "Ordene regras sobrepostas da mais específica à mais ampla e mantenha tipos de retorno compatíveis."
+    },
+    {
+      "id": "ref-008",
+      "tool": "SQL",
+      "category": "Nulos",
+      "name": "COALESCE",
+      "description": "Retorna o primeiro argumento não NULL; substituição precisa respeitar significado da métrica.",
+      "code": "COALESCE(discount, 0)",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Definir um valor alternativo quando o campo principal não está preenchido.",
+      "result": "O primeiro argumento não nulo, ou NULL se todos forem nulos.",
+      "steps": [
+        "COALESCE verifica argumentos da esquerda para a direita.",
+        "Um valor não nulo é devolvido sem consultar os posteriores.",
+        "O resultado precisa ter um tipo compatível entre os argumentos."
+      ],
+      "pitfall": "COALESCE não trata string vazia como NULL. Substituir desconhecido por zero pode mudar o significado de uma métrica."
+    },
+    {
+      "id": "ref-009",
+      "tool": "SQL",
+      "category": "Nulos",
+      "name": "NULLIF",
+      "description": "Retorna NULL quando duas expressões são iguais; útil para proteger denominador zero.",
+      "code": "revenue / NULLIF(order_count, 0)",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Evitar divisão por zero sem confundir o caso indefinido com uma taxa igual a zero.",
+      "result": "NULL quando os dois argumentos forem iguais; caso contrário, o primeiro argumento.",
+      "steps": [
+        "NULLIF(denominador, 0) devolve NULL para um denominador zero.",
+        "Uma divisão por esse NULL produz ausência em vez de divisão por zero.",
+        "Trate a apresentação do valor ausente separadamente da regra do indicador."
+      ],
+      "pitfall": "As regras de divisão inteira e erro aritmético dependem do tipo e do dialeto."
+    },
+    {
+      "id": "ref-010",
+      "tool": "SQL",
+      "category": "Conversão",
+      "name": "CAST",
+      "description": "Converte valor para tipo declarado; valores incompatíveis podem gerar erro.",
+      "code": "CAST(order_date AS DATE)",
+      "dialect": "Sintaxe varia por dialeto",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Converter um campo para o tipo necessário antes de comparar, somar ou integrar dados.",
+      "result": "O valor convertido para o tipo declarado, quando a conversão é válida.",
+      "steps": [
+        "CAST recebe uma expressão de entrada.",
+        "AS informa o tipo de destino.",
+        "Valide a precisão, o formato e a localidade dos dados antes de converter."
+      ],
+      "pitfall": "Valores inválidos podem gerar erro. TRY_CAST/SAFE_CAST e formatos de data não são portáveis entre bancos."
+    },
+    {
+      "id": "ref-011",
+      "tool": "SQL",
+      "category": "Agregação",
+      "name": "COUNT(*)",
+      "description": "Conta linhas; após JOIN, conte no nível da granularidade resultante.",
+      "code": "COUNT(*)",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Contar registros de entrada ou o volume de cada grupo.",
+      "result": "Uma contagem de linhas, inclusive quando alguma coluna contém NULL.",
+      "steps": [
+        "COUNT(*) conta as linhas que chegaram à agregação.",
+        "WHERE reduz as linhas antes da contagem.",
+        "Com GROUP BY, há uma contagem separada por grupo."
+      ],
+      "pitfall": "COUNT(coluna) ignora NULL. JOINs podem multiplicar as linhas e inflar COUNT(*)."
+    },
+    {
+      "id": "ref-012",
+      "tool": "SQL",
+      "category": "Agregação",
+      "name": "COUNT(DISTINCT x)",
+      "description": "Conta valores únicos não NULL da expressão; custo e detalhes variam pelo engine.",
+      "code": "COUNT(DISTINCT customer_id)",
+      "dialect": "Dialeto pode afetar precisão/desempenho",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Medir quantos clientes diferentes apareceram, sem contar suas compras repetidas.",
+      "result": "Quantidade de valores distintos não nulos da expressão.",
+      "steps": [
+        "DISTINCT elimina repetições para a contagem.",
+        "COUNT ignora NULL na expressão.",
+        "A chave escolhida define o que significa único: nome nem sempre identifica uma pessoa."
+      ],
+      "pitfall": "COUNT(DISTINCT em múltiplas colunas) tem sintaxe variável. Valide a granularidade e o custo."
+    },
+    {
+      "id": "ref-013",
+      "tool": "SQL",
+      "category": "Agregação",
+      "name": "SUM / AVG",
+      "description": "Agrega valor numérico por conjunto/grupo; nulos são ignorados por agregações comuns.",
+      "code": "SUM(total_amount), AVG(total_amount)",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Calcular total e média de valores no nível correto de análise.",
+      "result": "SUM entrega a soma; AVG divide a soma dos valores não nulos pela quantidade desses valores.",
+      "steps": [
+        "O filtro define quais linhas entram.",
+        "GROUP BY, se presente, separa os conjuntos de cálculo.",
+        "NULL é ignorado nessas agregações; uma média ponderada exige pesos explícitos."
+      ],
+      "pitfall": "AVG de médias não é a média global. Verifique moeda, duplicidade, tipos numéricos e valores ausentes."
+    },
+    {
+      "id": "ref-014",
+      "tool": "SQL",
+      "category": "Agregação",
+      "name": "GROUP BY",
+      "description": "Forma grupos para agregação; lista a granularidade do resultado.",
+      "code": "GROUP BY customer_id, status",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Resumir pedidos por cliente, mês ou outra dimensão.",
+      "result": "Uma linha por combinação de chaves de agrupamento.",
+      "steps": [
+        "Escolha a granularidade desejada.",
+        "GROUP BY reúne linhas com as mesmas chaves.",
+        "Agregue as outras medidas no SELECT; colunas não agrupadas exigem regras específicas do banco."
+      ],
+      "pitfall": "Acrescentar uma coluna à chave muda a granularidade. Não use agrupamento só para esconder um JOIN incorreto."
+    },
+    {
+      "id": "ref-015",
+      "tool": "SQL",
+      "category": "Agregação",
+      "name": "HAVING",
+      "description": "Filtra grupos depois da agregação; WHERE filtra linhas antes.",
+      "code": "HAVING COUNT(*) > 1",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Manter somente clientes ou grupos cuja métrica agregada atende a um limite.",
+      "result": "Grupos aprovados pela condição, depois do agrupamento e da agregação.",
+      "steps": [
+        "WHERE, se presente, filtra as linhas de origem.",
+        "GROUP BY constrói os grupos e as agregações.",
+        "HAVING testa os resultados agregados e remove grupos inteiros."
+      ],
+      "pitfall": "Para filtrar linhas individuais, use WHERE. Acesso a aliases no HAVING varia entre dialetos."
+    },
+    {
+      "id": "ref-016",
+      "tool": "SQL",
+      "category": "Junções",
+      "name": "INNER JOIN",
+      "description": "Retém combinações com correspondência nos dois lados; pode multiplicar linhas.",
+      "code": "FROM orders o JOIN customers c ON c.customer_id=o.customer_id",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Combinar pedidos com clientes quando só interessam correspondências nas duas tabelas.",
+      "result": "Uma linha por par que satisfaz a condição ON; uma chave repetida pode gerar vários pares.",
+      "steps": [
+        "Identifique as chaves e a cardinalidade de cada lado.",
+        "ON define a relação entre as linhas.",
+        "INNER JOIN remove linhas sem correspondência no outro lado."
+      ],
+      "pitfall": "O JOIN não garante uma linha por pedido. Verifique a unicidade da dimensão antes de somar medidas."
+    },
+    {
+      "id": "ref-017",
+      "tool": "SQL",
+      "category": "Junções",
+      "name": "LEFT JOIN",
+      "description": "Mantém todas as linhas do lado esquerdo; faltas no lado direito tornam-se NULL.",
+      "code": "SELECT o.order_id, o.customer_id, c.name\nFROM orders o\nLEFT JOIN customers c ON o.customer_id = c.customer_id;",
+      "dialect": "SQL comum",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Preservar todos os pedidos mesmo quando o cadastro do cliente está faltando.",
+      "result": "Todos os pedidos, incluindo os sem cliente correspondente. Para estes, c.name recebe NULL. Chaves de cliente duplicadas podem multiplicar um pedido.",
+      "steps": [
+        "FROM orders define os pedidos como a base preservada.",
+        "LEFT JOIN customers associa o cadastro por customer_id sem excluir pedidos sem correspondência.",
+        "SELECT devolve a identificação do pedido e o nome do cliente; uma chave repetida em customers pode multiplicar linhas."
+      ],
+      "pitfall": "Um WHERE que rejeita NULL em campos da direita pode retirar justamente as linhas preservadas pelo LEFT JOIN."
+    },
+    {
+      "id": "ref-018",
+      "tool": "SQL",
+      "category": "Estrutura",
+      "name": "WITH / CTE",
+      "description": "Nomeia uma subconsulta dentro da instrução; não implica tabela persistente/materializada.",
+      "code": "WITH recent AS (SELECT ... ) SELECT ... FROM recent",
+      "dialect": "Escopo/otimização dependem do engine",
+      "source": {
+        "label": "PostgreSQL — SELECT",
+        "url": "https://www.postgresql.org/docs/current/sql-select.html"
+      },
+      "use": "Dividir uma consulta complexa em passos nomeados e mais legíveis.",
+      "result": "O resultado da consulta final que usa os nomes definidos no WITH.",
+      "steps": [
+        "Cada CTE define um resultado intermediário no escopo da instrução.",
+        "As CTEs podem ser referenciadas pelos passos seguintes.",
+        "A consulta final seleciona ou agrega esse resultado."
+      ],
+      "pitfall": "CTE não é uma tabela persistente e não garante materialização ou ganho de desempenho."
+    },
+    {
+      "id": "ref-019",
+      "tool": "SQL",
+      "category": "Janelas",
+      "name": "ROW_NUMBER",
+      "description": "Numera linhas na partição segundo uma ordenação; desempate deve ser determinístico.",
+      "code": "ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date, order_id)",
+      "dialect": "Databricks SQL / PostgreSQL; confira T-SQL",
+      "source": {
+        "label": "Databricks SQL — funções de janela",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual/sql-ref-window-functions"
+      },
+      "use": "Numerar compras por cliente, escolher a mais recente ou deduplicar com uma regra explícita.",
+      "result": "Um número sequencial para cada linha dentro de sua partição.",
+      "steps": [
+        "PARTITION BY reinicia a sequência a cada cliente.",
+        "ORDER BY define a ordem da numeração.",
+        "ROW_NUMBER sempre separa linhas empatadas; acrescente uma chave de desempate."
+      ],
+      "pitfall": "Para filtrar o número calculado, use uma CTE/subconsulta ou QUALIFY quando suportado. Ordem incompleta torna a seleção arbitrária."
+    },
+    {
+      "id": "ref-020",
+      "tool": "SQL",
+      "category": "Janelas",
+      "name": "RANK / DENSE_RANK",
+      "description": "Classifica linhas e trata empates; RANK deixa lacunas e DENSE_RANK não.",
+      "code": "DENSE_RANK() OVER (PARTITION BY region ORDER BY revenue DESC)",
+      "dialect": "Função de janela",
+      "source": {
+        "label": "PostgreSQL — funções de janela",
+        "url": "https://www.postgresql.org/docs/current/functions-window.html"
+      },
+      "use": "Classificar valores e decidir como representar empates.",
+      "result": "RANK deixa lacunas depois de empates; DENSE_RANK não deixa.",
+      "steps": [
+        "ORDER BY define a medida de classificação.",
+        "Valores empatados recebem o mesmo número.",
+        "RANK reflete a posição seguinte; DENSE_RANK enumera apenas as faixas distintas."
+      ],
+      "pitfall": "Acrescentar uma chave única ao ORDER BY desfaz empates. Defina a regra de negócio antes de escolher a função."
+    },
+    {
+      "id": "ref-021",
+      "tool": "SQL",
+      "category": "Janelas",
+      "name": "LAG / LEAD",
+      "description": "Lê valor anterior/próximo na ordem da janela sem colapsar as linhas.",
+      "code": "LAG(amount) OVER (PARTITION BY customer_id ORDER BY order_date)",
+      "dialect": "Disponibilidade/argumentos variam",
+      "source": {
+        "label": "Databricks SQL — funções de janela",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual/sql-ref-window-functions"
+      },
+      "use": "Comparar um valor com o período anterior ou seguinte sem um autojoin.",
+      "result": "LAG acessa uma linha anterior; LEAD, uma posterior, na ordenação da janela.",
+      "steps": [
+        "PARTITION BY limita a comparação à mesma entidade.",
+        "ORDER BY organiza a sequência.",
+        "O deslocamento padrão é uma linha; nas bordas, a função entrega NULL ou um padrão declarado."
+      ],
+      "pitfall": "Linha anterior não significa dia anterior quando faltam datas. Complete a série temporal se necessário."
+    },
+    {
+      "id": "ref-022",
+      "tool": "SQL",
+      "category": "Janelas",
+      "name": "SUM() OVER",
+      "description": "Agrega por janela mantendo as linhas; explicite partição, ordenação e frame quando necessário.",
+      "code": "SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)",
+      "dialect": "A sintaxe de frame pode variar",
+      "source": {
+        "label": "PostgreSQL — funções de janela",
+        "url": "https://www.postgresql.org/docs/current/functions-window.html"
+      },
+      "use": "Calcular acumulados preservando cada linha de detalhe.",
+      "result": "Uma medida por linha calculada sobre o quadro definido na janela.",
+      "steps": [
+        "PARTITION BY separa os acumulados por entidade.",
+        "ORDER BY define a progressão.",
+        "ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW explicita um acumulado até a linha atual."
+      ],
+      "pitfall": "O quadro padrão pode usar RANGE e incluir empates juntos. Defina frame e desempate para o resultado pretendido."
+    },
+    {
+      "id": "ref-023",
+      "tool": "SQL",
+      "category": "Datas",
+      "name": "DATE_TRUNC",
+      "description": "Trunca timestamp/data a uma unidade; nomes de função e unidade mudam entre bancos.",
+      "code": "DATE_TRUNC('month', order_date)",
+      "dialect": "Databricks/PostgreSQL usam formas próprias",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Padronizar datas em períodos para análises mensais ou semanais.",
+      "result": "A data/hora ajustada ao início da unidade indicada, conforme tipo e dialeto.",
+      "steps": [
+        "O argumento month escolhe a granularidade mensal.",
+        "A data de entrada é truncada, não arredondada.",
+        "Use a expressão como chave temporal para agrupar pedidos."
+      ],
+      "pitfall": "DATE_TRUNC muda de assinatura entre bancos. Fuso horário e início da semana precisam de definição explícita."
+    },
+    {
+      "id": "ref-024",
+      "tool": "SQL",
+      "category": "Datas",
+      "name": "DATEDIFF",
+      "description": "Calcula diferença temporal; ordem dos argumentos e unidade diferem por dialeto.",
+      "code": "DATEDIFF(\n  CAST(delivered_at AS DATE),\n  CAST(order_date AS DATE)\n)",
+      "dialect": "Databricks SQL · diferença em dias",
+      "source": {
+        "label": "Databricks — datediff(endDate, startDate)",
+        "url": "https://docs.databricks.com/aws/en/sql/language-manual/functions/datediff"
+      },
+      "use": "Medir quantos dias de calendário separam pedido e entrega no Databricks.",
+      "result": "No Databricks, a forma de dois argumentos devolve a diferença em dias entre delivered_at e order_date.",
+      "steps": [
+        "CAST transforma os valores em DATE, descartando a parte de horário.",
+        "No Databricks, o primeiro argumento é a data final; o segundo é a inicial.",
+        "O resultado é inteiro e pode ser negativo se a entrega preceder o pedido."
+      ],
+      "pitfall": "Isto mede diferença entre datas, não horas completas decorridas. Defina o fuso de negócio antes da conversão. SQL Server usa outra assinatura."
+    },
+    {
+      "id": "ref-025",
+      "tool": "SQL",
+      "category": "Desempenho",
+      "name": "EXPLAIN",
+      "description": "Inspeciona estratégia/plano estimado de consulta; não substitui medição controlada.",
+      "code": "EXPLAIN SELECT order_id FROM orders WHERE status = 'paid';",
+      "dialect": "Comandos e visualização variam",
+      "source": {
+        "label": "Databricks SQL — referência da linguagem e funções",
+        "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+      },
+      "use": "Investigar o plano de consulta antes de tentar otimizar por intuição.",
+      "result": "Estimativas de operações, acessos e junções escolhidas pelo otimizador.",
+      "steps": [
+        "EXPLAIN pede o plano previsto.",
+        "Observe leitura, cardinalidade estimada, joins e ordenações.",
+        "Compare o plano com a granularidade e os filtros esperados."
+      ],
+      "pitfall": "EXPLAIN ANALYZE executa a instrução em muitos bancos. Pode custar caro ou alterar dados; use um ambiente seguro."
+    },
+    {
+      "id": "ref-026",
+      "tool": "Power BI / DAX",
+      "category": "Medidas",
+      "name": "CALCULATE",
+      "description": "Avalia expressão em contexto de filtro modificado; filtros e modelo determinam o resultado.",
+      "code": "Receita Ano = CALCULATE([Receita], DimData[Ano] = 2026)",
+      "dialect": "DAX",
+      "source": {
+        "label": "Microsoft Learn — referência DAX",
+        "url": "https://learn.microsoft.com/en-us/dax/"
+      },
+      "use": "Calcular uma medida sob um contexto de filtro explicitamente modificado.",
+      "result": "Receita no ano de 2026, sujeita aos demais filtros e relações do modelo.",
+      "steps": [
+        "[Receita] é avaliada como medida.",
+        "DimData[Ano] = 2026 modifica o filtro dessa coluna.",
+        "CALCULATE aplica o contexto resultante à medida."
+      ],
+      "pitfall": "Filtros na mesma coluna podem ser substituídos; KEEPFILTERS muda esse comportamento. Valide relações e contexto de linha."
+    },
+    {
+      "id": "ref-027",
+      "tool": "Power BI / DAX",
+      "category": "Medidas",
+      "name": "DIVIDE",
+      "description": "Faz divisão com resultado alternativo opcional para denominador zero/blank.",
+      "code": "Ticket = DIVIDE([Receita], [Pedidos])",
+      "dialect": "DAX",
+      "source": {
+        "label": "Microsoft Learn — referência DAX",
+        "url": "https://learn.microsoft.com/en-us/dax/"
+      },
+      "use": "Criar taxas sem gerar erro quando o denominador é zero ou BLANK.",
+      "result": "Quociente ou BLANK, salvo resultado alternativo declarado.",
+      "steps": [
+        "O primeiro argumento é o numerador.",
+        "O segundo é o denominador.",
+        "A função trata o caso inválido e admite um resultado alternativo constante."
+      ],
+      "pitfall": "Uma taxa BLANK não é necessariamente zero. Não substitua ausência por zero sem a definição do indicador."
+    },
+    {
+      "id": "ref-028",
+      "tool": "Power BI / DAX",
+      "category": "Contagem",
+      "name": "DISTINCTCOUNT",
+      "description": "Conta valores distintos de uma coluna; confirme como blanks entram na métrica.",
+      "code": "Clientes = DISTINCTCOUNT(Vendas[ClienteId])",
+      "dialect": "DAX",
+      "source": {
+        "label": "Microsoft Learn — referência DAX",
+        "url": "https://learn.microsoft.com/en-us/dax/"
+      },
+      "use": "Contar entidades distintas no contexto atual de um relatório.",
+      "result": "Quantidade distinta da coluna, incluindo BLANK quando presente.",
+      "steps": [
+        "Escolha uma coluna identificadora.",
+        "Os filtros do relatório definem os registros considerados.",
+        "Valores repetidos contam uma vez dentro desse contexto."
+      ],
+      "pitfall": "Ao contrário de COUNT(DISTINCT) SQL, DISTINCTCOUNT DAX conta BLANK. Totais de distintos não são aditivos."
+    },
+    {
+      "id": "ref-029",
+      "tool": "Power Query / M",
+      "category": "Tabelas",
+      "name": "Table.SelectRows",
+      "description": "Mantém linhas que satisfazem condição M; folding depende de conector e expressão.",
+      "code": "Table.SelectRows(Source, each [Status] = \"Paid\")",
+      "dialect": "M; nomes são case-sensitive",
+      "source": {
+        "label": "Microsoft Learn — Power Query M",
+        "url": "https://learn.microsoft.com/en-us/powerquery-m/"
+      },
+      "use": "Manter registros que atendam a uma regra na preparação de dados.",
+      "result": "Uma tabela com as linhas em que Status é Paid.",
+      "steps": [
+        "Source é a tabela de entrada.",
+        "each define a função aplicada a cada registro.",
+        "[Status] acessa o campo e o predicado seleciona as linhas."
+      ],
+      "pitfall": "Tipos, maiúsculas e null afetam o filtro. Query folding depende do conector e dos passos anteriores."
+    },
+    {
+      "id": "ref-030",
+      "tool": "Power Query / M",
+      "category": "Tipos",
+      "name": "Table.TransformColumnTypes",
+      "description": "Aplica tipos de coluna; localidade pode afetar leitura de texto de data/número.",
+      "code": "Table.TransformColumnTypes(Source, {{\"Data\", type date}})",
+      "dialect": "M",
+      "source": {
+        "label": "Microsoft Learn — Power Query M",
+        "url": "https://learn.microsoft.com/en-us/powerquery-m/"
+      },
+      "use": "Atribuir tipos corretos às colunas antes de cálculos e junções.",
+      "result": "Uma tabela com os tipos especificados e possíveis erros onde dados não puderem ser convertidos.",
+      "steps": [
+        "Informe a tabela e pares coluna/tipo.",
+        "A cultura opcional controla formatos de números e datas.",
+        "Inspecione erros e valores ausentes após a conversão."
+      ],
+      "pitfall": "Não esconda erros com substituições indiscriminadas. Datas ambíguas devem ter localidade e regra explícitas."
+    },
+    {
+      "id": "ref-031",
+      "tool": "Power Query / M",
+      "category": "Junções",
+      "name": "Table.NestedJoin",
+      "description": "Combina tabelas por chaves e retorna coluna aninhada; cardinalidade continua relevante.",
+      "code": "Table.NestedJoin(A, {\"Id\"}, B, {\"Id\"}, \"Lookup\", JoinKind.LeftOuter)",
+      "dialect": "M",
+      "source": {
+        "label": "Microsoft Learn — Power Query M",
+        "url": "https://learn.microsoft.com/en-us/powerquery-m/"
+      },
+      "use": "Relacionar duas tabelas no Power Query mantendo o resultado associado como tabela aninhada.",
+      "result": "Uma coluna de tabelas com as correspondências da junção; expandir pode multiplicar linhas.",
+      "steps": [
+        "Indique tabelas e chaves na ordem correta.",
+        "JoinKind define quais linhas preservar.",
+        "Table.ExpandTableColumn transforma a tabela aninhada em colunas quando necessário."
+      ],
+      "pitfall": "Confirme unicidade e tipo das chaves. A quantidade de linhas pode crescer após a expansão."
+    },
+    {
+      "id": "ref-032",
+      "tool": "Excel",
+      "category": "Busca",
+      "name": "XLOOKUP / PROCX",
+      "description": "Localiza valor em uma faixa e retorna correspondente; suporte/nome variam por versão e idioma.",
+      "code": "=XLOOKUP(A2, Customers[Id], Customers[Name], \"Not found\")",
+      "dialect": "Excel moderno; locale pode mudar nome/separador",
+      "source": {
+        "label": "Microsoft Support — funções do Excel por categoria",
+        "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+      },
+      "use": "Trazer um atributo a partir de uma chave, sem depender da posição física da coluna.",
+      "result": "O primeiro valor correspondente no intervalo de retorno, ou o valor de ausência configurado.",
+      "steps": [
+        "O valor procurado é comparado ao intervalo de busca.",
+        "O intervalo de retorno deve ter tamanho compatível.",
+        "A correspondência exata é o padrão, mas os modos podem ser alterados."
+      ],
+      "pitfall": "Chaves repetidas devolvem a primeira ocorrência por padrão. Nome, separador e disponibilidade variam por versão/localidade."
+    },
+    {
+      "id": "ref-033",
+      "tool": "Excel",
+      "category": "Agregação",
+      "name": "SUMIFS / SOMASES",
+      "description": "Soma uma faixa com múltiplos critérios; valide tipos e fronteiras de data.",
+      "code": "=SUMIFS(Orders[Amount], Orders[Status], \"Paid\")",
+      "dialect": "Nome/argumentos localizados",
+      "source": {
+        "label": "Microsoft Support — funções do Excel por categoria",
+        "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+      },
+      "use": "Somar valores somente quando uma ou mais condições forem atendidas.",
+      "result": "Soma dos Amount nas linhas cujo Status é Paid.",
+      "steps": [
+        "O primeiro intervalo contém os valores a somar.",
+        "Cada par intervalo/critério adiciona uma condição.",
+        "As condições são combinadas por AND."
+      ],
+      "pitfall": "Intervalos devem ter dimensões compatíveis. Datas e números armazenados como texto podem não corresponder."
+    },
+    {
+      "id": "ref-034",
+      "tool": "Excel",
+      "category": "Matrizes",
+      "name": "FILTER / FILTRO",
+      "description": "Retorna linhas que atendem a condição; requer versão com matrizes dinâmicas.",
+      "code": "=FILTER(Orders, Orders[Status]=\"Paid\")",
+      "dialect": "Excel moderno; locale varia",
+      "source": {
+        "label": "Microsoft Support — funções do Excel por categoria",
+        "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+      },
+      "use": "Exibir um subconjunto de uma tabela por uma condição calculada.",
+      "result": "Uma matriz dinâmica com as linhas selecionadas.",
+      "steps": [
+        "A matriz define os dados devolvidos.",
+        "include contém valores verdadeiro/falso compatíveis.",
+        "O argumento if_empty evita um erro quando não há correspondências."
+      ],
+      "pitfall": "A área de derramamento deve estar livre. Erros no predicado e versões sem matrizes dinâmicas exigem tratamento."
+    },
+    {
+      "id": "ref-035",
+      "tool": "Excel",
+      "category": "Matrizes",
+      "name": "UNIQUE / ÚNICO",
+      "description": "Retorna elementos distintos em versões que suportam matrizes dinâmicas.",
+      "code": "=UNIQUE(Orders[CustomerId])",
+      "dialect": "Excel moderno; locale varia",
+      "source": {
+        "label": "Microsoft Support — funções do Excel por categoria",
+        "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+      },
+      "use": "Listar valores únicos para filtros ou conferência de categorias.",
+      "result": "Uma matriz dinâmica de valores distintos, conforme os argumentos.",
+      "steps": [
+        "A matriz é a origem.",
+        "by_col altera comparação por linhas ou por colunas.",
+        "exactly_once pode restringir a itens que ocorrem uma única vez."
+      ],
+      "pitfall": "Único e exatamente uma ocorrência não são a mesma pergunta. Verifique derramamento, espaços e tipos."
+    },
+    {
+      "id": "ref-036",
+      "tool": "Power Apps / Power Fx",
+      "category": "Consulta",
+      "name": "Filter",
+      "description": "Filtra registros por condição; confirme se a operação é delegável ao conector.",
+      "code": "Filter(Orders, Status = \"Paid\")",
+      "dialect": "Power Fx; delegação depende da fonte",
+      "source": {
+        "label": "Microsoft Learn — visão geral do Power Fx",
+        "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/overview"
+      },
+      "use": "Mostrar registros de um aplicativo que atendam a uma regra.",
+      "result": "Uma tabela com todas as correspondências da condição.",
+      "steps": [
+        "Orders é a origem de registros.",
+        "O predicado é avaliado no contexto de cada registro.",
+        "Filter devolve uma tabela, não um único registro."
+      ],
+      "pitfall": "Verifique delegação no conector; o app pode pesquisar apenas um subconjunto quando a expressão não é delegável."
+    },
+    {
+      "id": "ref-037",
+      "tool": "Power Apps / Power Fx",
+      "category": "Consulta",
+      "name": "LookUp",
+      "description": "Retorna o primeiro registro que satisfaz a condição; chave não única pode esconder duplicidade.",
+      "code": "LookUp(Orders, OrderId = selectedId)",
+      "dialect": "Power Fx",
+      "source": {
+        "label": "Microsoft Learn — visão geral do Power Fx",
+        "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/overview"
+      },
+      "use": "Encontrar o primeiro registro que atende a uma condição no aplicativo.",
+      "result": "Um registro, um valor reduzido ou Blank quando não há correspondência.",
+      "steps": [
+        "A origem define onde pesquisar.",
+        "A fórmula seleciona a primeira correspondência.",
+        "O terceiro argumento opcional reduz o registro a um campo."
+      ],
+      "pitfall": "LookUp não resolve múltiplas correspondências. Use uma chave estável e confira delegação."
+    },
+    {
+      "id": "ref-038",
+      "tool": "Power Apps / Power Fx",
+      "category": "Dados",
+      "name": "Patch",
+      "description": "Cria ou atualiza registro; valide permissão, resultado e possibilidade de repetição.",
+      "code": "Patch(Orders, Defaults(Orders), {Status: \"New\"})",
+      "dialect": "Power Fx; formato depende da fonte",
+      "source": {
+        "label": "Microsoft Learn — visão geral do Power Fx",
+        "url": "https://learn.microsoft.com/en-us/power-platform/power-fx/overview"
+      },
+      "use": "Criar ou alterar registros sem depender de um formulário inteiro.",
+      "result": "O registro criado/modificado, ou erro que precisa ser tratado.",
+      "steps": [
+        "Defaults(origem) indica criação; um registro existente indica alteração.",
+        "O objeto de mudanças define campos enviados.",
+        "Acompanhe erros com IfError/Errors e confirme a resposta."
+      ],
+      "pitfall": "Patch escreve dados. Não use em produção sem permissões, validação, identificação do registro e tratamento de conflito."
+    },
+    {
+      "id": "ref-039",
+      "tool": "Power Automate",
+      "category": "Expressões",
+      "name": "coalesce",
+      "description": "Retorna primeira expressão não nula; sintaxe/uso depende da linguagem de expressão do fluxo.",
+      "code": "coalesce(triggerBody()?['name'], 'unknown')",
+      "dialect": "Power Automate cloud expressions",
+      "source": {
+        "label": "Microsoft Learn — Power Automate",
+        "url": "https://learn.microsoft.com/en-us/power-automate/"
+      },
+      "use": "Escolher uma alternativa quando um valor da automação é nulo.",
+      "result": "O primeiro argumento diferente de null.",
+      "steps": [
+        "triggerBody() acessa o corpo do evento.",
+        "O operador ? permite acesso seguro ao campo.",
+        "unknown é a alternativa para null."
+      ],
+      "pitfall": "Uma string vazia não é null e é devolvida sem recorrer à alternativa."
+    },
+    {
+      "id": "ref-040",
+      "tool": "Power Automate",
+      "category": "Expressões",
+      "name": "empty",
+      "description": "Testa coleção/valor vazios conforme tipos aceitos pela expressão.",
+      "code": "empty(outputs('Get_item')?['body'])",
+      "dialect": "Consulte referências do workflow",
+      "source": {
+        "label": "Microsoft Learn — Power Automate",
+        "url": "https://learn.microsoft.com/en-us/power-automate/"
+      },
+      "use": "Testar ausência de conteúdo em uma string, array ou objeto da automação.",
+      "result": "Um booleano indicando se o conteúdo está vazio.",
+      "steps": [
+        "Escolha uma entrada de tipo suportado.",
+        "empty retorna true ou false para a condição.",
+        "Use o retorno para controlar uma ramificação do fluxo."
+      ],
+      "pitfall": "Não confunda vazio com valor numérico zero. Valide o comportamento de null conforme a expressão e o conector."
+    },
+    {
+      "id": "ref-041",
+      "tool": "Power Automate",
+      "category": "Resiliência",
+      "name": "Configure run after",
+      "description": "Controla execução subsequente após sucesso, falha, timeout ou salto; desenhe escopos de tratamento.",
+      "code": "Scope: Try → Catch (run after failure/timeout) → Finally",
+      "dialect": "UI e opções dependem do tipo de fluxo",
+      "source": {
+        "label": "Microsoft Learn — tratamento robusto de erros",
+        "url": "https://learn.microsoft.com/en-us/power-automate/guidance/coding-guidelines/error-handling"
+      },
+      "use": "Acionar uma etapa de tratamento de falha, timeout ou recuperação.",
+      "result": "Uma configuração de execução por status da etapa anterior; não é uma expressão de código.",
+      "steps": [
+        "Abra Configure run after da ação seguinte.",
+        "Escolha Failed, Timed out ou outro status necessário.",
+        "Registre o erro e defina se a execução deve continuar, terminar ou tentar novamente."
+      ],
+      "pitfall": "Uma etapa de recuperação concluída não prova que a operação de negócio original deu certo."
+    },
+    {
+      "id": "ref-042",
+      "tool": "HTTP / APIs",
+      "category": "Métodos",
+      "name": "GET",
+      "description": "Solicita representação/recurso; comportamento e parâmetros vêm do contrato da API.",
+      "code": "GET /v1/orders?limit=50",
+      "dialect": "HTTP; RFC 9110",
+      "source": {
+        "label": "IETF — HTTP Semantics (RFC 9110)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+      },
+      "use": "Consultar um recurso sem solicitar alteração de estado no servidor.",
+      "result": "Uma resposta HTTP com status, headers e corpo definidos pelo contrato.",
+      "steps": [
+        "GET indica a operação de leitura.",
+        "O caminho aponta ao recurso.",
+        "limit é um parâmetro de exemplo, cuja semântica pertence à API."
+      ],
+      "pitfall": "GET pode ser paginado e autenticado. Não trate HTTP 200 como garantia de esquema válido ou dados completos."
+    },
+    {
+      "id": "ref-043",
+      "tool": "HTTP / APIs",
+      "category": "Métodos",
+      "name": "POST",
+      "description": "Submete representação ou ação; não presuma segurança de repetição/idempotência.",
+      "code": "POST /v1/orders\nContent-Type: application/json",
+      "dialect": "Contrato do serviço determina efeito",
+      "source": {
+        "label": "IETF — HTTP Semantics (RFC 9110)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+      },
+      "use": "Enviar dados para criação ou processamento conforme o contrato da API.",
+      "result": "Uma resposta de criação/processamento ou erro; o contrato define a saída.",
+      "steps": [
+        "Use Content-Type compatível com o corpo.",
+        "Valide campos obrigatórios e autenticação.",
+        "Interprete status e eventual identificador devolvido."
+      ],
+      "pitfall": "POST não é idempotente por padrão. Retentativas podem duplicar uma operação se não houver chave de idempotência."
+    },
+    {
+      "id": "ref-044",
+      "tool": "HTTP / APIs",
+      "category": "Status",
+      "name": "2xx / 4xx / 5xx",
+      "description": "Famílias indicam resultado geral; status e corpo exatos fazem parte do contrato.",
+      "code": "401: autenticação; 429: limite; 503: indisponibilidade temporária",
+      "dialect": "RFC 9110; consulte API específica",
+      "source": {
+        "label": "IETF — HTTP Semantics (RFC 9110)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+      },
+      "use": "Separar sucesso HTTP, erro de cliente e falha de servidor para decidir o próximo passo.",
+      "result": "Uma classe de status; o código específico e o corpo explicam melhor a resposta.",
+      "steps": [
+        "2xx indica sucesso HTTP.",
+        "4xx sinaliza erro na requisição ou acesso; 429 pode exigir espera.",
+        "5xx indica falha do lado do servidor, sem garantir que nada foi processado."
+      ],
+      "pitfall": "Não repita todas as falhas cegamente. Considere Retry-After, idempotência e logs sem segredos."
+    },
+    {
+      "id": "ref-045",
+      "tool": "HTTP / APIs",
+      "category": "Formato",
+      "name": "JSON object / array",
+      "description": "Formato leve de dados; schema, obrigatoriedade e significado dos campos vêm da API.",
+      "code": "{\"items\": [], \"nextCursor\": null}",
+      "dialect": "IETF RFC 8259",
+      "source": {
+        "label": "IETF — JSON (RFC 8259)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc8259"
+      },
+      "use": "Interpretar corretamente registros e listas em uma resposta estruturada.",
+      "result": "Um objeto mapeia chaves para valores; um array mantém uma sequência de elementos.",
+      "steps": [
+        "{ } delimita um objeto.",
+        "[ ] delimita um array.",
+        "Strings usam aspas duplas; null, booleanos e números não precisam delas."
+      ],
+      "pitfall": "JSON não admite comentários nem vírgula final. Um JSON válido ainda pode violar o esquema esperado."
+    },
+    {
+      "id": "ref-046",
+      "tool": "HTTP / APIs",
+      "category": "Autenticação",
+      "name": "Bearer token",
+      "description": "Credencial no header autorizado; guarde em segredo e evite logs/query string.",
+      "code": "Authorization: Bearer <TOKEN>",
+      "dialect": "IETF RFC 6750; avalie OAuth adequado",
+      "source": {
+        "label": "IETF — OAuth 2.0 Bearer Token (RFC 6750)",
+        "url": "https://datatracker.ietf.org/doc/html/rfc6750"
+      },
+      "use": "Enviar uma credencial ao endpoint que exige autenticação Bearer.",
+      "result": "Um header Authorization; a API decide aceitar ou rejeitar o token.",
+      "steps": [
+        "Substitua o marcador por uma credencial obtida por fluxo autorizado.",
+        "Envie o token apenas por HTTPS ao domínio correto.",
+        "Controle escopo, expiração e renovação fora do código público."
+      ],
+      "pitfall": "Nunca coloque segredos em JavaScript público, GitHub, screenshots ou logs. CORS não protege um token exposto."
+    },
+    {
+      "id": "ref-047",
+      "tool": "Copilot Studio",
+      "category": "Avaliação",
+      "name": "Testes de agente",
+      "description": "Mantenha conjunto representativo de perguntas, lacunas, falhas de ferramenta e limites de segurança.",
+      "code": "Fonte citada? Resposta correta? Ação autorizada?",
+      "dialect": "Copilot Studio; validar no ambiente",
+      "source": {
+        "label": "Microsoft Learn — o que é Copilot Studio",
+        "url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio"
+      },
+      "use": "Verificar comportamento do agente antes de publicar alterações.",
+      "result": "Um conjunto de casos e evidências de resposta, não um teste automatizado executado aqui.",
+      "steps": [
+        "Defina pergunta, contexto permitido e resposta esperada.",
+        "Inclua erros, ambiguidades e tentativas de extrapolar as fontes.",
+        "Repita casos após mudanças de instruções, fontes ou ferramentas."
+      ],
+      "pitfall": "Um exemplo correto não prova confiabilidade geral. Não use dados privados e registre falhas, não só acertos."
+    },
+    {
+      "id": "ref-048",
+      "tool": "Microsoft Fabric",
+      "category": "Arquitetura",
+      "name": "OneLake",
+      "description": "Data lake lógico compartilhado do Fabric; compartilhar armazenamento não equivale a liberar acesso a todos.",
+      "code": "Tenant → workspaces → itens e dados em OneLake",
+      "dialect": "Fabric · mapa conceitual, não comando",
+      "source": {
+        "label": "Microsoft Learn — visão geral do Microsoft Fabric",
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview"
+      },
+      "use": "Entender onde os dados do Fabric se organizam antes de escolher uma experiência.",
+      "result": "Um mapa conceitual de tenant, workspaces e itens; não um comando executável.",
+      "steps": [
+        "OneLake fornece a camada de armazenamento lógico da plataforma.",
+        "Os dados se organizam sob workspaces e itens.",
+        "Experiências como Lakehouse e Warehouse usam esse ecossistema de armazenamento."
+      ],
+      "pitfall": "OneLake não elimina a necessidade de governança, modelagem ou permissões. Um shortcut não é sempre uma cópia dos dados."
+    },
+    {
+      "id": "ref-049",
+      "tool": "Microsoft Fabric",
+      "category": "Ambiente",
+      "name": "Workspace / capacidade",
+      "description": "Workspace organiza itens e colaboração; capacidade fornece recursos para executar cargas. Confirme licenças e permissões também.",
+      "code": "Workspace: itens e papéis\nCapacidade: recursos de execução\nLicença: direitos do usuário",
+      "dialect": "Fabric · configuração depende do ambiente",
+      "source": {
+        "label": "Microsoft Learn — licenças e capacidade do Fabric",
+        "url": "https://learn.microsoft.com/en-us/fabric/enterprise/licenses"
+      },
+      "use": "Distinguir organização colaborativa, capacidade computacional e licença de usuário.",
+      "result": "Uma separação conceitual entre workspace e capacidade.",
+      "steps": [
+        "Workspace organiza os itens e o acesso colaborativo.",
+        "A capacidade fornece recursos computacionais às experiências habilitadas.",
+        "Licença, permissões e configuração determinam o que cada pessoa pode usar."
+      ],
+      "pitfall": "Ter acesso ao workspace não significa ter todas as permissões de item/dado. Custos e limites dependem do plano."
+    },
+    {
+      "id": "ref-050",
+      "tool": "Microsoft Fabric",
+      "category": "Dados",
+      "name": "Lakehouse / SQL analytics endpoint",
+      "description": "Lakehouse reúne arquivos e tabelas; o SQL analytics endpoint consulta tabelas Delta com T-SQL, mas não faz escrita DML nessas tabelas.",
+      "code": "Arquivos/tabelas → preparação suportada → consulta T-SQL",
+      "dialect": "Fabric · endpoint de consulta, não escrita Delta",
+      "source": {
+        "label": "Microsoft Learn — como escolher Lakehouse ou Warehouse",
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/decision-guide-lakehouse-warehouse"
+      },
+      "use": "Combinar arquivos/tabelas Delta e consulta SQL de leitura sobre tabelas do Lakehouse.",
+      "result": "Um Lakehouse para engenharia e um endpoint SQL de leitura; não uma escrita T-SQL no Lakehouse.",
+      "steps": [
+        "Ingestão e transformação podem usar Spark e outras experiências.",
+        "Tabelas Delta compatíveis ficam disponíveis no SQL analytics endpoint.",
+        "O endpoint permite consulta SQL; os dados não são escritos nele por DML T-SQL como num Warehouse."
+      ],
+      "pitfall": "Arquivos em Files não viram tabelas SQL automaticamente. Confira formatos, sincronização e funções suportadas."
+    },
+    {
+      "id": "ref-051",
+      "tool": "Microsoft Fabric",
+      "category": "Dados",
+      "name": "Warehouse",
+      "description": "Experiência analítica relacional orientada a T-SQL; valide recursos, tipos e transações suportados sem assumir paridade com SQL Server.",
+      "code": "SELECT TOP (20) order_id FROM dbo.orders;",
+      "dialect": "Fabric Warehouse · T-SQL; tabela fictícia",
+      "source": {
+        "label": "Microsoft Learn — como escolher Lakehouse ou Warehouse",
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/decision-guide-lakehouse-warehouse"
+      },
+      "use": "Construir uma camada analítica relacional com operações de escrita T-SQL suportadas.",
+      "result": "Um item Warehouse com tabelas e semântica de warehouse no Fabric.",
+      "steps": [
+        "Warehouse atende um fluxo predominantemente SQL.",
+        "Defina fatos, dimensões e granularidade.",
+        "Use comandos suportados e valide transações, acesso e performance."
+      ],
+      "pitfall": "Compatibilidade T-SQL não significa paridade completa com SQL Server. Verifique a documentação antes de migrar."
+    },
+    {
+      "id": "ref-052",
+      "tool": "Microsoft Fabric",
+      "category": "Integração",
+      "name": "Data Factory / pipeline",
+      "description": "Pipeline coordena atividades; cópia move dados e transformações preparam dados. Reexecuções pedem proteção contra duplicidade.",
+      "code": "Fonte → cópia → transformação → validação → destino",
+      "dialect": "Fabric Data Factory · desenho ilustrativo",
+      "source": {
+        "label": "Microsoft Learn — Data Factory no Fabric",
+        "url": "https://learn.microsoft.com/en-us/fabric/data-factory/data-factory-overview"
+      },
+      "use": "Orquestrar ingestão e transformação com dependências e acompanhamento operacional.",
+      "result": "Um fluxo coordenado de atividades; a movimentação pode ser feita por Copy e a transformação por outras atividades.",
+      "steps": [
+        "O pipeline define a sequência e dependências.",
+        "Parâmetros permitem variar origem, destino e janela.",
+        "Monitoramento, retentativas e checkpoints ajudam a acompanhar falhas."
+      ],
+      "pitfall": "Pipeline não define sozinho a qualidade dos dados. Planeje idempotência e estratégia de recarga."
+    },
+    {
+      "id": "ref-053",
+      "tool": "Microsoft Fabric",
+      "category": "Consumo",
+      "name": "Modelo semântico / relatório",
+      "description": "Modelo semântico organiza relações e cálculos para consumo; relatório apresenta resultados. Tabela disponível não garante medida correta.",
+      "code": "Tabela validada → modelo semântico → relatório",
+      "dialect": "Fabric / Power BI · conceito, não comando",
+      "source": {
+        "label": "Microsoft Learn — visão geral do Microsoft Fabric",
+        "url": "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview"
+      },
+      "use": "Separar armazenamento, modelo de indicadores e visualização para manter medidas consistentes.",
+      "result": "Um modelo semântico com relações e medidas consumido por relatórios.",
+      "steps": [
+        "A fonte armazena os dados.",
+        "O modelo define relações, regras e medidas.",
+        "O relatório apresenta resultados filtrados pelo contexto."
+      ],
+      "pitfall": "Modo de armazenamento, atualização, segurança e Direct Lake precisam ser definidos; nem todo cenário usa Direct Lake."
+    },
+    {
+      "id": "ref-054",
+      "tool": "HTML",
+      "category": "Semântica",
+      "name": "main / article",
+      "description": "Marca conteúdo principal e uma unidade independente. Esses elementos comunicam significado, não um estilo visual.",
+      "code": "<main>\n  <article>\n    <h1>Catálogo de pedidos</h1>\n    <p>Uma linha por pedido.</p>\n  </article>\n</main>",
+      "dialect": "HTML5",
+      "source": {
+        "label": "MDN — html",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      },
+      "use": "Estruturar uma página de conteúdo ou catálogo.",
+      "result": "Um título e parágrafo no conteúdo principal.",
+      "steps": [
+        "main delimita o conteúdo dominante.",
+        "article deve fazer sentido de maneira independente."
+      ],
+      "pitfall": "Não use vários main visíveis nem escolha tags apenas pela aparência.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-055",
+      "tool": "HTML",
+      "category": "Formulários",
+      "name": "label / input",
+      "description": "Associa o nome de um campo ao controle, permitindo identificar sua finalidade.",
+      "code": "<label for=\"termo\">Buscar referência</label>\n<input id=\"termo\" name=\"q\" type=\"search\">",
+      "dialect": "HTML5",
+      "source": {
+        "label": "MDN — html",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      },
+      "use": "Dar um nome persistente e clicável a um campo de busca.",
+      "result": "O rótulo aponta para o input de id termo.",
+      "steps": [
+        "for deve corresponder exatamente ao id.",
+        "name define o parâmetro usado numa submissão."
+      ],
+      "pitfall": "Placeholder não substitui label. Ids devem ser únicos.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-056",
+      "tool": "HTML",
+      "category": "Dados tabulares",
+      "name": "table / scope",
+      "description": "Representa relações entre linhas e colunas com cabeçalhos explícitos.",
+      "code": "<table>\n  <caption>Receita (BRL)</caption>\n  <tr><th scope=\"col\">Mês</th><th scope=\"col\">Total</th></tr>\n  <tr><td>Janeiro</td><td>150,00</td></tr>\n</table>",
+      "dialect": "HTML5",
+      "source": {
+        "label": "MDN — html",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+      },
+      "use": "Apresentar indicadores com dimensão e unidade.",
+      "result": "Uma tabela de receita com cabeçalhos de coluna.",
+      "steps": [
+        "caption nomeia o conjunto.",
+        "th e scope associam o significado às colunas."
+      ],
+      "pitfall": "Não use tabela para diagramar a página.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-057",
+      "tool": "CSS",
+      "category": "Layout",
+      "name": "box-sizing",
+      "description": "Controla quais partes da caixa entram na largura e altura declaradas.",
+      "code": ".card {\n  box-sizing: border-box;\n  width: 320px;\n  padding: 20px;\n  border: 1px solid #c5d5d8;\n}",
+      "dialect": "CSS",
+      "source": {
+        "label": "MDN — css",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics"
+      },
+      "use": "Prever a largura de um componente com borda e espaçamento interno.",
+      "result": "A caixa ocupa 320px externos, sem incluir margem.",
+      "steps": [
+        "border-box inclui conteúdo, padding e border.",
+        "O conteúdo disponível se reduz conforme borda e padding crescem."
+      ],
+      "pitfall": "Margin fica fora da largura. Uma largura fixa ainda pode exceder telas estreitas.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-058",
+      "tool": "CSS",
+      "category": "Layout",
+      "name": "display: grid",
+      "description": "Organiza conteúdo em linhas e colunas com regras explícitas de distribuição.",
+      "code": ".catalogo {\n  display: grid;\n  grid-template-columns: repeat(auto-fit,\n    minmax(min(100%, 280px), 1fr));\n  gap: 16px;\n}",
+      "dialect": "CSS",
+      "source": {
+        "label": "MDN — layout",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout"
+      },
+      "use": "Montar um catálogo responsivo de cards.",
+      "result": "O número de colunas se adapta à largura disponível.",
+      "steps": [
+        "auto-fit cria faixas que cabem no contêiner.",
+        "minmax limita o mínimo e permite ocupar espaço proporcional."
+      ],
+      "pitfall": "Conteúdo longo pode exigir min-width:0 e uma regra de quebra ou rolagem interna.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-059",
+      "tool": "CSS",
+      "category": "Acessibilidade",
+      "name": "prefers-reduced-motion",
+      "description": "Detecta a preferência do usuário por menos movimento e permite reduzir efeitos decorativos.",
+      "code": "@media (prefers-reduced-motion: reduce) {\n  .card { transition: none; transform: none; }\n}",
+      "dialect": "CSS",
+      "source": {
+        "label": "MDN — layout",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout"
+      },
+      "use": "Desativar inclinação e transições não essenciais.",
+      "result": "Cards sem as transformações declaradas quando a preferência é reduce.",
+      "steps": [
+        "A media query testa a preferência.",
+        "As regras internas substituem o efeito para essa condição."
+      ],
+      "pitfall": "Animações JavaScript também precisam respeitar a preferência; CSS não desliga todo comportamento sozinho.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-060",
+      "tool": "JavaScript",
+      "category": "Transformação",
+      "name": "filter / reduce",
+      "description": "Seleciona registros e calcula um acumulado a partir de uma coleção.",
+      "code": "const receita = pedidos\n  .filter(p => p.status === 'paid')\n  .reduce((soma, p) => soma + p.total, 0);",
+      "dialect": "JavaScript ES2015+",
+      "source": {
+        "label": "MDN — js",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
+      },
+      "use": "Somar valores de registros aprovados por uma condição.",
+      "result": "A soma dos totais pagos, ou 0 para lista vazia.",
+      "steps": [
+        "filter conserva as linhas aprovadas.",
+        "reduce recebe a soma anterior e o próximo registro."
+      ],
+      "pitfall": "Valide Number.isFinite nos valores. Strings e duplicidade podem alterar o resultado.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-061",
+      "tool": "JavaScript",
+      "category": "Interface",
+      "name": "addEventListener",
+      "description": "Registra uma função que responde a um evento sem sobrescrever outros ouvintes.",
+      "code": "const botao = document.querySelector('#adicionar');\nif (botao) {\n  botao.addEventListener('click', () => {\n    console.log('Exemplo adicionado');\n  });\n}",
+      "dialect": "DOM / navegador",
+      "source": {
+        "label": "MDN — js",
+        "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
+      },
+      "use": "Executar uma ação ao ativar um botão real.",
+      "result": "Uma mensagem no console a cada clique ou ativação do botão.",
+      "steps": [
+        "querySelector pode devolver null.",
+        "O handler roda quando o evento acontece."
+      ],
+      "pitfall": "Carregue depois do DOM ou com defer. Um div clicável não ganha acessibilidade nativa de botão.",
+      "editorialStatus": "initial-release"
+    },
+    {
+      "id": "ref-062",
+      "tool": "JavaScript",
+      "category": "HTTP",
+      "name": "fetch / response.ok",
+      "description": "Consulta um recurso e verifica o status antes de interpretar seu corpo.",
+      "code": "async function carregar() {\n  const r = await fetch('./pedidos.json');\n  if (!r.ok) throw new Error(`HTTP ${r.status}`);\n  return r.json();\n}",
+      "dialect": "Fetch API / navegador",
+      "source": {
+        "label": "MDN — fetch",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+      },
+      "use": "Buscar um JSON público do mesmo site.",
+      "result": "Uma Promise com os dados ou rejeição a ser tratada pelo chamador.",
+      "steps": [
+        "fetch resolve também para muitos status de erro.",
+        "ok verifica a faixa HTTP 200–299.",
+        "json lê e interpreta o corpo."
+      ],
+      "pitfall": "Acrescente catch no chamador e validação de esquema. HTTP 200 não prova dados corretos; nunca exponha segredos.",
+      "editorialStatus": "initial-release"
+    }
+  ]
+}

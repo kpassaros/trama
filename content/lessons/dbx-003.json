@@ -1,0 +1,56 @@
+{
+  "id": "dbx-003",
+  "track": "databricks",
+  "title": "Delta Lake: tabela transacional e evolução segura",
+  "level": "Construção da base",
+  "minutes": 13,
+  "objective": "Compreender a função de Delta Lake e quais verificações antecedem escrita e reprocessamento.",
+  "intro": "Delta Lake é a camada de armazenamento/tabela com capacidades transacionais e recursos de gestão de dados; a disponibilidade exata de recursos depende da compatibilidade e configuração. Aprender o vocabulário evita tratar uma tabela como um conjunto de arquivos intercambiáveis.",
+  "prerequisites": "Leitura de tabelas e conceitos de schema.",
+  "sections": [
+    {
+      "heading": "Diferencie formato, tabela e catálogo",
+      "paragraphs": [
+        "O formato e o protocolo definem como dados e metadados são representados; a tabela gerenciada no metastore/catálogo oferece nome, esquema e controles. Um caminho de arquivo não é automaticamente uma tabela governada."
+      ]
+    },
+    {
+      "heading": "Escrita pede contrato de qualidade",
+      "paragraphs": [
+        "Antes de inserir/atualizar, defina chave natural/técnica, duplicidade esperada, schema, política de nulos e estratégia de reprocessamento. Idempotência é propriedade do desenho: rodar de novo não deve duplicar ou corromper o resultado."
+      ]
+    },
+    {
+      "heading": "Evolução precisa de controle",
+      "paragraphs": [
+        "Mudança de schema, merge e histórico podem ter regras e limites específicos. Teste em ambiente descartável, valide contagens/uniqueness e consulte a documentação da versão. Não execute comandos de alteração em produção a partir desta aula."
+      ]
+    }
+  ],
+  "exercise": "Desenhe (sem executar) uma ingestão repetível para uma tabela de pedidos. Mostre como você detectaria duplicatas e como um reprocessamento evitaria duplicar os mesmos pedidos.",
+  "pitfalls": [
+    "Presumir que transação elimina a necessidade de validação de dados.",
+    "Usar MERGE sem uma condição de correspondência única e bem definida.",
+    "Alterar schema em produção sem revisar consumidores e permissões."
+  ],
+  "review": [
+    {
+      "question": "Delta Lake elimina a necessidade de modelagem?",
+      "answer": "Não; chaves, granularidade, qualidade e regras de atualização continuam necessárias."
+    },
+    {
+      "question": "Reprocessar é necessariamente idempotente?",
+      "answer": "Não; isso precisa ser projetado e testado."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks — Delta Lake",
+      "url": "https://docs.databricks.com/aws/en/delta/"
+    },
+    {
+      "label": "Databricks — governança e catálogo",
+      "url": "https://docs.databricks.com/aws/en/data-governance/unity-catalog/"
+    }
+  ]
+}

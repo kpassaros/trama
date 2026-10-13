@@ -1,0 +1,56 @@
+{
+  "id": "pq-002",
+  "track": "power-query",
+  "title": "M, parâmetros e query folding",
+  "level": "Aplicação intermediária",
+  "minutes": 12,
+  "objective": "Usar etapas e parâmetros com atenção ao folding, à credencial e ao refresh.",
+  "intro": "Parâmetros tornam filtros e endereços configuráveis. Query folding é a capacidade de traduzir etapas para a fonte quando conector, origem e transformação permitem. Não é garantido por adicionar uma etapa nem deve ser inferido apenas pelo editor.",
+  "prerequisites": "Etapas, funções M e tipos básicos.",
+  "sections": [
+    {
+      "heading": "Escreva M legível",
+      "paragraphs": [
+        "`let` define nomes de etapas e `in` escolhe a saída. Funções como Table.SelectRows e Table.TransformColumnTypes mantêm a lógica explícita. Considere tratamento de erro com política: substituir, rejeitar ou registrar é decisão do produto."
+      ]
+    },
+    {
+      "heading": "Folding exige verificação",
+      "paragraphs": [
+        "Filtros e seleção de colunas podem ser delegados a algumas origens; função personalizada ou transformação pode interromper folding. A avaliação muda por conector/versão. Use indicadores e ferramentas oficiais, e observe consulta enviada à fonte quando disponível."
+      ]
+    },
+    {
+      "heading": "Parâmetro não é segredo",
+      "paragraphs": [
+        "Parâmetros ajudam a alternar valores de ambiente, mas não são um cofre de credenciais. Credenciais devem ser geridas pela plataforma. O refresh agendado depende de permissões, gateway, capacidade e compatibilidade de origem."
+      ]
+    }
+  ],
+  "exercise": "Para uma fonte relacional fictícia, ordene as etapas para projetar colunas e filtrar período cedo. Anote como verificaria se houve folding e como manteria credenciais fora do arquivo.",
+  "pitfalls": [
+    "Presumir que todas as etapas são enviadas à fonte.",
+    "Tentar melhorar folding sem testar o resultado funcional.",
+    "Guardar senha em parâmetro ou código M."
+  ],
+  "review": [
+    {
+      "question": "O que query folding descreve?",
+      "answer": "Tradução/delegação de operações do Power Query para a fonte, quando suportada."
+    },
+    {
+      "question": "Parâmetro protege segredo?",
+      "answer": "Não. Deve-se usar gestão de credenciais do ambiente."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power Query M",
+      "url": "https://learn.microsoft.com/en-us/powerquery-m/"
+    },
+    {
+      "label": "Microsoft Learn — boas práticas do Power Query",
+      "url": "https://learn.microsoft.com/en-us/power-query/best-practices"
+    }
+  ]
+}

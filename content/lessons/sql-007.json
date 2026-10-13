@@ -1,0 +1,60 @@
+{
+  "id": "sql-007",
+  "track": "sql",
+  "title": "Modelo, plano e desempenho: investigue antes de otimizar",
+  "level": "Aprofundamento",
+  "minutes": 14,
+  "objective": "Detectar causas comuns de consulta lenta e validar uma mudança pelo plano e por métricas observáveis.",
+  "intro": "Desempenho não é sinônimo de “SQL curto”. Ele depende de volume, distribuição, chaves, estatísticas, armazenamento, mecanismo e concorrência. Otimize depois de registrar a consulta, a versão, filtros, volume, tempo e plano; não prometa ganho sem medir.",
+  "prerequisites": "Joins, agregações e leitura de resultados.",
+  "sections": [
+    {
+      "heading": "Primeiro, confira o contrato dos dados",
+      "paragraphs": [
+        "Documente fonte, chave, granularidade, atualização, filtros e regras de nulos/duplicidades. Uma consulta rápida que calcula um total errado é defeito, não otimização. Compare amostras e totais antes e depois."
+      ]
+    },
+    {
+      "heading": "Reduza trabalho desnecessário",
+      "paragraphs": [
+        "Projete apenas colunas necessárias, aplique filtros seletivos quando corretos e evite joins que multiplicam linhas. Funções em colunas de filtro podem limitar certos índices, mas soluções dependem do mecanismo. Índices podem ajudar bancos transacionais; em plataformas distribuídas, particionamento, clustering e estatísticas têm mecanismos próprios."
+      ]
+    },
+    {
+      "heading": "Leia o plano com evidência",
+      "paragraphs": [
+        "Use a ferramenta de plano do mecanismo (por exemplo, EXPLAIN, quando disponível), examine varreduras, estimativas, shuffle, cardinalidade e skew. Meça com os mesmos dados e cache/condições controlados. Não altere um plano de produção ou índices sem autorização."
+      ]
+    }
+  ],
+  "exercise": "Escolha uma consulta lenta real somente em ambiente autorizado. Registre a hipótese, a mudança única, o resultado correto, o plano e o tempo medido. Se não houver ambiente, faça a análise como checklist, sem inventar um benchmark.",
+  "pitfalls": [
+    "Acreditar que índices são sempre a melhor solução para qualquer plataforma.",
+    "Reescrever a consulta antes de verificar cardinalidade, plano, estatísticas e qualidade do dado.",
+    "Comparar tempos em condições diferentes ou declarar melhora sem evidência."
+  ],
+  "review": [
+    {
+      "question": "Qual a primeira confirmação antes de otimizar?",
+      "answer": "Que a consulta representa a pergunta e a granularidade corretas."
+    },
+    {
+      "question": "Um plano EXPLAIN prova o tempo real de produção?",
+      "answer": "Não. É evidência de estratégia/estimativas; o comportamento real depende do ambiente e deve ser medido."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}

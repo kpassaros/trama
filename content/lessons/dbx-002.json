@@ -1,0 +1,61 @@
+{
+  "id": "dbx-002",
+  "track": "databricks",
+  "title": "Databricks SQL: catálogo, warehouse e consulta",
+  "level": "Primeiros usos",
+  "minutes": 11,
+  "objective": "Reconhecer o caminho de execução SQL e qualificar a tabela antes de consultar.",
+  "intro": "Em Databricks SQL, a consulta é submetida por uma interface e executada em um SQL warehouse autorizado. O catálogo ajuda a localizar objetos; não substitui a seleção do compute nem as permissões. O nome de três partes costuma seguir `catalog.schema.table`, sujeito ao ambiente configurado.",
+  "prerequisites": "SQL básico e leitura do mapa Databricks.",
+  "sections": [
+    {
+      "heading": "Separe interface, engine e objeto",
+      "paragraphs": [
+        "SQL Editor ou notebook é a interface; SQL warehouse é o recurso de execução no fluxo SQL; tabela/view é o objeto consultado. Um catálogo não é uma pasta local. Descoberta de schema e acesso efetivo dependem de Unity Catalog ou da configuração do workspace."
+      ]
+    },
+    {
+      "heading": "Qualifique e limite o trabalho",
+      "paragraphs": [
+        "Comece identificando catalog/schema/table, colunas necessárias e filtro temporal. Use amostra pequena em ambiente autorizado; evite varrer tabelas largas sem necessidade. O exemplo abaixo é um molde, não um comando testado no seu workspace."
+      ],
+      "code": "-- Databricks SQL — exemplo ilustrativo\nSELECT order_id, order_date, total_amount\nFROM catalogo.schema.orders\nWHERE order_date >= CAST('2026-01-01' AS DATE)\nLIMIT 100;"
+    },
+    {
+      "heading": "Diagnóstico em camadas",
+      "paragraphs": [
+        "Se falhar, verifique primeiro o warehouse selecionado e estado, depois o nome qualificado, o schema e as permissões de uso/seleção. Registre erro e contexto sem copiar tokens ou dados privados."
+      ]
+    }
+  ],
+  "exercise": "Em um ambiente de aprendizagem, localize uma tabela pública/sintética e escreva uma consulta que devolva três colunas e limite temporal. Sem workspace, identifique no exemplo o catálogo, schema, tabela, compute e filtro.",
+  "pitfalls": [
+    "Assumir que `LIMIT` torna barata qualquer consulta de origem.",
+    "Executar em warehouse errado, parado ou sem autorização.",
+    "Incluir nome de tabela ou dado de produção em material publicado."
+  ],
+  "review": [
+    {
+      "question": "Para que serve o warehouse?",
+      "answer": "É o recurso de computação que executa cargas SQL no fluxo do Databricks SQL."
+    },
+    {
+      "question": "`catalog.schema.table` substitui autorização?",
+      "answer": "Não; nomes e privilégios precisam estar corretos."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks — introdução à plataforma",
+      "url": "https://docs.databricks.com/aws/en/introduction/"
+    },
+    {
+      "label": "Databricks — notebooks",
+      "url": "https://docs.databricks.com/aws/en/notebooks/notebooks-code"
+    },
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    }
+  ]
+}

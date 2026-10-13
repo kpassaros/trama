@@ -1,0 +1,61 @@
+{
+  "id": "sql-004",
+  "track": "sql",
+  "title": "CASE, CTE e NULL: componha regras legíveis",
+  "level": "Construção da base",
+  "minutes": 12,
+  "objective": "Separar uma consulta em etapas nomeadas, tornar regras explícitas e tratar nulos com intenção.",
+  "intro": "Quando a consulta cresce, dividir o raciocínio em etapas ajuda a conferir a origem de cada métrica. Um CTE (`WITH`) nomeia uma subconsulta dentro da mesma instrução; não é, por padrão, uma tabela permanente nem garantia de materialização.",
+  "prerequisites": "Filtros, agregações e tratamento básico de NULL.",
+  "sections": [
+    {
+      "heading": "Registre cada regra",
+      "paragraphs": [
+        "CASE transforma condições em categorias. COALESCE escolhe o primeiro argumento não nulo; NULLIF devolve NULL quando os argumentos são iguais. Essas funções são úteis, mas não substituem decidir se NULL representa “desconhecido”, “não aplicável” ou zero."
+      ]
+    },
+    {
+      "heading": "Use CTEs como etapas revisáveis",
+      "paragraphs": [
+        "Nomeie cada etapa pelo que ela representa. Deixe explícita a data, a população e a granularidade. A etapa final pode agregar apenas quando a base já estiver no nível esperado."
+      ],
+      "code": "-- SQL: Databricks SQL / PostgreSQL / SQL Server\nWITH paid_orders AS (\n  SELECT order_id, customer_id, total_amount\n  FROM orders\n  WHERE status = 'paid'\n),\nby_customer AS (\n  SELECT customer_id, SUM(total_amount) AS paid_total\n  FROM paid_orders\n  GROUP BY customer_id\n)\nSELECT customer_id, paid_total,\n       CASE WHEN paid_total >= 1000 THEN 'high'\n            ELSE 'standard' END AS segment\nFROM by_customer;"
+    },
+    {
+      "heading": "Evite divisões indefinidas",
+      "paragraphs": [
+        "`numerator / NULLIF(denominator, 0)` evita dividir por zero em muitos dialetos; ainda é preciso decidir o que mostrar quando o denominador é zero. COALESCE para 0 só é correto se isso representar a regra de negócio, e arredondamento deve ser feito na apresentação quando possível."
+      ]
+    }
+  ],
+  "exercise": "Escreva uma consulta em duas CTEs para filtrar vendas válidas e depois agregar por cliente. Marque qual etapa define a população, qual define a granularidade e como valores nulos serão apresentados.",
+  "pitfalls": [
+    "Criar CTEs só para encurtar nomes sem deixar clara a lógica.",
+    "Trocar valores ausentes por zero automaticamente e alterar silenciosamente o significado da métrica.",
+    "Depender de alias ou função que só exista em um dialeto sem rotular o laboratório."
+  ],
+  "review": [
+    {
+      "question": "CTE cria uma tabela permanente?",
+      "answer": "Não; é uma expressão nomeada no escopo da instrução, salvo recursos específicos do mecanismo."
+    },
+    {
+      "question": "Para que usar NULLIF no denominador?",
+      "answer": "Para retornar NULL quando o denominador é zero, evitando uma divisão indefinida; a regra de exibição ainda precisa ser escolhida."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}

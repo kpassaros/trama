@@ -1,0 +1,56 @@
+{
+  "id": "excel-002",
+  "track": "excel",
+  "title": "Busca, agregação e conferência de fórmulas",
+  "level": "Primeiros usos",
+  "minutes": 11,
+  "objective": "Escolher função de busca/agregação e validar resultados contra a estrutura da tabela.",
+  "intro": "Funções reduzem trabalho repetitivo, mas uma fórmula correta depende de chave, tipo, valores ausentes e duplicidade. Uma busca que encontra a primeira ocorrência pode mascarar duplicatas, então valide a unicidade antes de confiar nela.",
+  "prerequisites": "Tabelas e tipos básicos.",
+  "sections": [
+    {
+      "heading": "Busque por chave conhecida",
+      "paragraphs": [
+        "XLOOKUP/PROCX procura valor em uma matriz e retorna correspondente; alternativas e disponibilidade variam por versão. Se a chave tem múltiplas linhas, primeiro defina se quer primeira, última, todas ou um agregado."
+      ]
+    },
+    {
+      "heading": "Agregue com critérios explícitos",
+      "paragraphs": [
+        "SUMIFS/SOMASES e COUNTIFS/CONT.SES combinam critérios. Verifique se datas são datas reais, se números são numéricos e se o critério inclui fronteira correta. FILTER/FILTRO e UNIQUE/ÚNICO dependem de suporte a matrizes dinâmicas."
+      ]
+    },
+    {
+      "heading": "Teste fórmula por casos",
+      "paragraphs": [
+        "Teste correspondência exata, chave ausente, duplicata, célula em branco e valor extremo. Não converta todos os erros em zero sem classificar o erro: isso esconde tanto dados inválidos como referências quebradas."
+      ]
+    }
+  ],
+  "exercise": "Monte uma busca por ID para retornar status e uma soma por período. Escreva dois testes que mostrariam uma chave duplicada e uma data armazenada como texto.",
+  "pitfalls": [
+    "Usar correspondência aproximada sem intenção.",
+    "Envolver fórmula em IFERROR/SEERRO e apagar a evidência do erro.",
+    "Confiar no resultado sem conferir duplicidade e tipos."
+  ],
+  "review": [
+    {
+      "question": "O que checar antes de usar XLOOKUP/PROCX?",
+      "answer": "Se a chave é única e a regra para ausências/duplicatas está definida."
+    },
+    {
+      "question": "Por que SEERRO pode ser perigoso?",
+      "answer": "Pode transformar defeitos diferentes em um valor aparentemente válido."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Support — funções do Excel por categoria",
+      "url": "https://support.microsoft.com/en-us/office/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb"
+    },
+    {
+      "label": "Microsoft Support — referências estruturadas",
+      "url": "https://support.microsoft.com/en-us/office/using-structured-references-with-excel-tables-f5ed2452-2337-4f71-bed3-c8ae6d2b276e"
+    }
+  ]
+}

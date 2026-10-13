@@ -1,0 +1,56 @@
+{
+  "id": "pbi-001",
+  "track": "power-bi",
+  "title": "Modelo semântico: tabelas, relações e granularidade",
+  "level": "Fundamentos",
+  "minutes": 11,
+  "objective": "Modelar dimensões e fatos para que filtros e totais tenham significado.",
+  "intro": "Um relatório consistente começa antes dos visuais. O modelo precisa explicitar o que cada fato representa, qual chave liga dimensões e fatos e como os filtros fluem. Um visual bonito não corrige duplicidades, relações ambíguas ou mistura de granularidades.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Fato e dimensão respondem perguntas diferentes",
+      "paragraphs": [
+        "Tabela fato costuma registrar eventos/medidas em granularidade definida; dimensão descreve entidades usadas para filtrar e agrupar. O desenho estrela é um ponto de partida frequente, não receita universal; valide a realidade dos dados."
+      ]
+    },
+    {
+      "heading": "Relações mudam as medidas",
+      "paragraphs": [
+        "Chaves únicas nas dimensões e relações com cardinalidade apropriada ajudam a propagar filtros de modo previsível. Relação muitos-para-muitos e filtro bidirecional podem ser válidos, mas aumentam ambiguidade e exigem teste."
+      ]
+    },
+    {
+      "heading": "Reconcilie antes de publicar",
+      "paragraphs": [
+        "Confira linhas, chaves, nulos, datas, filtros e totais contra a origem. Declare atualização, população e regra de cada KPI. RLS protege consumo por identidade/permissão configurada; não esconda coluna como substituto de segurança."
+      ]
+    }
+  ],
+  "exercise": "Desenhe um modelo mínimo para eventos de pedidos, clientes, produtos e calendário. Anote granularidade, chaves e direção esperada de filtro. Não publique dados corporativos reais em workspace de teste.",
+  "pitfalls": [
+    "Juntar duas tabelas fato de granularidade diferente sem agregação explícita.",
+    "Ativar filtros bidirecionais para “consertar” qualquer relacionamento.",
+    "Tratar um visual como prova de que os totais reconciliam."
+  ],
+  "review": [
+    {
+      "question": "Por que registrar a granularidade da fato?",
+      "answer": "Para saber o que uma linha significa e evitar somas/contagens inválidas."
+    },
+    {
+      "question": "RLS é equivalente a esconder um campo?",
+      "answer": "Não; segurança depende de roles e identidades configuradas e testadas."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power BI",
+      "url": "https://learn.microsoft.com/en-us/power-bi/"
+    },
+    {
+      "label": "Microsoft Learn — referência DAX",
+      "url": "https://learn.microsoft.com/en-us/dax/"
+    }
+  ]
+}

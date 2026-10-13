@@ -1,0 +1,64 @@
+{
+  "id": "javascript-01",
+  "track": "javascript",
+  "title": "JavaScript: transformar dados com clareza",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Filtrar uma lista e calcular uma soma sem modificar os registros originais.",
+  "intro": "JavaScript trabalha com valores, coleções e funções. Em analytics no navegador, pequenas transformações são úteis, mas não substituem um processamento confiável no servidor para volumes e dados sensíveis.",
+  "prerequisites": "HTML básico e noções de valores/coleções",
+  "sections": [
+    {
+      "heading": "Valores e estrutura",
+      "paragraphs": [
+        "Um array mantém uma lista ordenada; um objeto reúne propriedades de um registro. const impede reatribuir a variável, mas não torna o objeto imutável. A responsabilidade de não modificar a entrada continua no código.",
+        "Valores numéricos devem ser realmente números. Uma string como \"150\" pode causar concatenação ou coerção inesperada. Antes de agregar uma API, valide o esquema e defina o tratamento de ausências."
+      ]
+    },
+    {
+      "heading": "Filtrar e depois agregar",
+      "paragraphs": [
+        "filter cria um array com os registros aprovados pelo predicado. reduce percorre a coleção mantendo um acumulador; o valor inicial 0 permite tratar também uma lista vazia.",
+        "No exemplo, os dois pedidos pagos somam 200. O pendente não entra. Os arrays originais não são alterados por filter; não há conexão com um banco real."
+      ],
+      "code": "const pedidos = [\n  { id: 101, status: 'paid', total: 150 },\n  { id: 102, status: 'pending', total: 80 },\n  { id: 103, status: 'paid', total: 50 }\n];\nconst pagos = pedidos.filter(p => p.status === 'paid');\nconst receita = pagos.reduce((soma, p) => soma + p.total, 0);\nconsole.log(receita); // 200"
+    },
+    {
+      "heading": "Comparação e precisão",
+      "paragraphs": [
+        "=== compara sem conversão implícita entre tipos. O texto paid precisa corresponder exatamente ao contrato, inclusive maiúsculas. Normalização deve ser uma decisão explícita, não uma tentativa de adivinhar valores.",
+        "Number usa ponto flutuante binário. Dinheiro pode exigir unidades inteiras, como centavos, ou uma estratégia decimal adequada. Formatar com duas casas não corrige por si só os erros da aritmética."
+      ]
+    },
+    {
+      "heading": "Testes pequenos que protegem a regra",
+      "paragraphs": [
+        "Confira lista vazia, nenhum pedido pago, um registro com total ausente e duplicidade de id. Defina se registros inválidos geram erro ou são separados para revisão; não substitua todos por zero silenciosamente.",
+        "Escreva um resultado esperado para cada caso antes de alterar o código. Esse exercício testa a regra, não apenas se o programa executa sem exceção."
+      ]
+    }
+  ],
+  "exercise": "Acrescente um pedido pago de total 25 e confira 225. Depois use uma lista vazia e confira 0. Explique o que faria com um pedido pago cujo total fosse uma string inválida.",
+  "pitfalls": [
+    "Somar texto sem validar o tipo.",
+    "Confundir const com imutabilidade profunda.",
+    "Usar média de médias sem ponderação."
+  ],
+  "review": [
+    {
+      "question": "filter altera o array de origem?",
+      "answer": "Não diretamente: retorna outro array. Os objetos contidos podem continuar sendo as mesmas referências."
+    },
+    {
+      "question": "Por que dar 0 ao reduce?",
+      "answer": "Para definir o acumulador numérico e tratar a lista vazia sem erro de ausência de valor inicial."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — js",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

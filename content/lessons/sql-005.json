@@ -1,0 +1,57 @@
+{
+  "id": "sql-005",
+  "track": "sql",
+  "title": "Funções de janela: compare linhas sem colapsá-las",
+  "level": "Construção da base",
+  "minutes": 13,
+  "objective": "Usar OVER para calcular rankings e comparações mantendo cada linha do resultado.",
+  "intro": "GROUP BY reduz muitas linhas a uma por grupo. Uma função de janela calcula sobre linhas relacionadas e mantém linhas individuais. Isso serve para ranking por cliente, diferença para o período anterior ou acumulado, mas é necessário declarar partição, ordenação e, em alguns casos, janela móvel.",
+  "prerequisites": "CTEs, ordenação determinística e SELECT.",
+  "sections": [
+    {
+      "heading": "PARTITION BY e ORDER BY",
+      "paragraphs": [
+        "PARTITION BY reinicia o cálculo por grupo; ORDER BY estabelece a sequência dentro desse grupo. `ROW_NUMBER` atribui posição única, mas empates recebem ordem não determinística se não houver um critério de desempate estável."
+      ]
+    },
+    {
+      "heading": "Compare a linha atual com vizinhas",
+      "paragraphs": [
+        "LAG lê um valor anterior na ordem da janela. `SUM(...) OVER (...)` calcula totais cumulativos se a moldura da janela estiver correta. O default de frame varia por função/dialeto; especifique a moldura quando a intenção for acumulado por linha."
+      ],
+      "code": "-- SQL: Databricks SQL / PostgreSQL\nSELECT customer_id, order_date, total_amount,\n       ROW_NUMBER() OVER (\n         PARTITION BY customer_id\n         ORDER BY order_date, order_id\n       ) AS order_number,\n       LAG(total_amount) OVER (\n         PARTITION BY customer_id\n         ORDER BY order_date, order_id\n       ) AS previous_order_amount\nFROM orders;"
+    },
+    {
+      "heading": "Ranking não é deduplicação mágica",
+      "paragraphs": [
+        "Para escolher uma linha por chave, filtre `ROW_NUMBER() = 1` em uma subconsulta/CTE, definindo qual registro vence e como tratar empates. `RANK` e `DENSE_RANK` preservam empates de formas diferentes. Confirme a sintaxe do dialeto e o custo do plano."
+      ]
+    }
+  ],
+  "exercise": "Calcule a ordem cronológica dos pedidos por cliente. Escolha uma chave estável para desempate e descreva como distinguir “primeiro registro” de “empate no primeiro lugar”.",
+  "pitfalls": [
+    "Omitir ORDER BY e supor uma sequência natural.",
+    "Confundir ROW_NUMBER, RANK e DENSE_RANK.",
+    "Usar uma janela cumulativa sem definir claramente a moldura e o tratamento de empates."
+  ],
+  "review": [
+    {
+      "question": "O que PARTITION BY faz?",
+      "answer": "Define grupos independentes; as funções reiniciam seu cálculo em cada partição."
+    },
+    {
+      "question": "A função de janela reduz o número de linhas?",
+      "answer": "Não. Ela acrescenta um valor calculado a cada linha do conjunto de entrada."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — funções de janela",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual/sql-ref-window-functions"
+    },
+    {
+      "label": "PostgreSQL — funções de janela",
+      "url": "https://www.postgresql.org/docs/current/functions-window.html"
+    }
+  ]
+}

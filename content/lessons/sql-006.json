@@ -1,0 +1,60 @@
+{
+  "id": "sql-006",
+  "track": "sql",
+  "title": "Funções SQL de bolso — texto, datas e conversões",
+  "level": "Aplicação intermediária",
+  "minutes": 10,
+  "objective": "Selecionar funções comuns sem supor que nomes, formatos e comportamento sejam iguais entre bancos.",
+  "intro": "Funções ajudam a normalizar texto, extrair partes de datas, converter tipos e evitar erros de divisão. O maior alerta de portabilidade é que SQL tem dialetos: função equivalente pode ter nome, argumentos, tipos ou semântica diferentes. Use a central de consultas rápidas para pesquisar assinaturas e fontes oficiais.",
+  "prerequisites": "SELECT, tipos de dados e valores NULL.",
+  "sections": [
+    {
+      "heading": "Texto e comparação",
+      "paragraphs": [
+        "TRIM remove espaços nas pontas em muitos mecanismos; UPPER/LOWER mudam caixa. `LIKE` usa curingas e regras de collation do banco. Normalizar a coluna no filtro pode impedir uso de índice ou otimização; prefira colunas previamente padronizadas quando isso for recorrente."
+      ]
+    },
+    {
+      "heading": "Datas e horas",
+      "paragraphs": [
+        "Filtros por intervalo tipado são mais confiáveis que concatenar texto de data. `DATE_TRUNC`, `DATEDIFF`, extração de partes e fuso horário variam. Defina timezone do dado, início/fim do dia e regras de horário de verão antes de comparar períodos."
+      ]
+    },
+    {
+      "heading": "Conversão e segurança",
+      "paragraphs": [
+        "CAST converte valores conforme tipos e regras do mecanismo; conversões inválidas podem falhar. Funções tolerantes a erro também diferem. Verifique a documentação da versão, execute com amostra não sensível e teste valores extremos e ausentes."
+      ]
+    }
+  ],
+  "exercise": "Use a central de referência para encontrar a função de arredondamento, conversão de tipo e diferença entre datas no dialeto escolhido. Confirme o link oficial antes de levar a expressão para produção.",
+  "pitfalls": [
+    "Copiar função de outro dialeto sem testar tipos, timezone, locale e semântica.",
+    "Converter a coluna filtrada em cada linha e prejudicar índices ou pushdown.",
+    "Formatar data como texto antes de calcular ou ordenar cronologicamente."
+  ],
+  "review": [
+    {
+      "question": "SQL é uma única sintaxe idêntica em todo banco?",
+      "answer": "Não. Há uma base comum, mas funções, tipos e detalhes variam por dialeto e versão."
+    },
+    {
+      "question": "O que validar em uma função de data?",
+      "answer": "Tipo de entrada/saída, timezone, limites de intervalo, versão e casos de nulo."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}

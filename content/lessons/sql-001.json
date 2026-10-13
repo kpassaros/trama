@@ -1,0 +1,61 @@
+{
+  "id": "sql-001",
+  "track": "sql",
+  "title": "SELECT sem mistério: colunas, filtros e ordenação",
+  "level": "Fundamentos",
+  "minutes": 9,
+  "objective": "Montar uma consulta pequena e previsível usando seleção de colunas, filtros e ordenação.",
+  "intro": "Pergunta de trabalho: quais pedidos pagos foram feitos em determinado período? SQL transforma a pergunta em seleção, filtragem e apresentação. Os nomes e linhas dos exemplos são didáticos. A sintaxe deste exemplo é comum a Databricks SQL, PostgreSQL e SQL Server, mas sempre confirme a versão do seu banco.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Comece pela granularidade",
+      "paragraphs": [
+        "Antes do código, diga o que representa uma linha. Aqui, cada linha da tabela orders é um pedido. Defina também o período, o status válido e as colunas necessárias; isso evita devolver dados a mais ou contar a entidade errada."
+      ]
+    },
+    {
+      "heading": "Selecione e filtre",
+      "paragraphs": [
+        "SELECT define as colunas de saída; WHERE reduz as linhas antes da apresentação. Use tipos compatíveis para as datas, e não compare datas formatadas como texto. ORDER BY só é necessário se a ordem fizer parte da pergunta."
+      ],
+      "code": "SELECT order_id, customer_id, order_date, total_amount\nFROM orders\nWHERE status = 'paid'\n  AND order_date >= CAST('2026-01-01' AS DATE)\n  AND order_date <  CAST('2026-02-01' AS DATE)\nORDER BY order_date DESC, order_id;"
+    },
+    {
+      "heading": "Valores ausentes não são zero",
+      "paragraphs": [
+        "NULL representa valor desconhecido ou ausente e não participa de comparações comuns como `= NULL`. Use IS NULL/IS NOT NULL. `SELECT *` é cômodo para exploração pontual, mas é frágil para consultas que serão reutilizadas: novas colunas alteram o resultado e podem expor informação desnecessária."
+      ]
+    }
+  ],
+  "exercise": "Adapte o intervalo para fevereiro, liste apenas `order_id` e `total_amount`, e explique se a ordenação escolhida é necessária para responder à pergunta. Não execute contra dados sensíveis.",
+  "pitfalls": [
+    "Esquecer que `BETWEEN` inclui as duas extremidades; intervalos de datas costumam ser mais claros como início inclusivo e próximo início exclusivo.",
+    "Filtrar `NULL` usando `= NULL` em vez de `IS NULL`.",
+    "Confiar na ordem física da tabela sem `ORDER BY`."
+  ],
+  "review": [
+    {
+      "question": "O que define as colunas exibidas?",
+      "answer": "A lista de expressões depois de SELECT."
+    },
+    {
+      "question": "Como localizar os valores ausentes?",
+      "answer": "Com `IS NULL` ou `IS NOT NULL`, não com igualdade."
+    }
+  ],
+  "references": [
+    {
+      "label": "Databricks SQL — referência da linguagem e funções",
+      "url": "https://docs.databricks.com/aws/pt/sql/language-manual"
+    },
+    {
+      "label": "PostgreSQL — SELECT",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    {
+      "label": "SQL Server — SELECT (Transact-SQL)",
+      "url": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-transact-sql"
+    }
+  ]
+}

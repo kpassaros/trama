@@ -1,0 +1,64 @@
+{
+  "id": "html-03",
+  "track": "html",
+  "title": "Formulários: rótulo, validação e limites",
+  "level": "Fundamentos",
+  "minutes": 7,
+  "objective": "Associar campos a rótulos, usar controles nativos e diferenciar validação do navegador de segurança.",
+  "intro": "Um formulário bem construído reduz ambiguidades na entrada. A validação do navegador ajuda a pessoa, mas pode ser contornada e não substitui validação no servidor.",
+  "prerequisites": "Nenhuma experiência prévia obrigatória",
+  "sections": [
+    {
+      "heading": "O campo precisa de um nome",
+      "paragraphs": [
+        "label com for aponta para o id do controle. Isso cria associação e amplia a área clicável. Placeholder não substitui label: desaparece quando se digita e pode ter contraste insuficiente.",
+        "name determina a chave enviada no formulário. id identifica o elemento no documento. Usar ids duplicados quebra associações e seleções."
+      ]
+    },
+    {
+      "heading": "Um formulário que envia uma busca",
+      "paragraphs": [
+        "O método GET representa uma busca e coloca seus parâmetros na URL. Neste exemplo, a ação aponta para a central de consulta; o site precisa ler o parâmetro q para aplicar o filtro automaticamente.",
+        "required exige conteúdo pelo comportamento nativo. Um botão dentro de form pode submeter por padrão: declare type=\"button\" para ações que não devem enviar."
+      ],
+      "code": "<form action=\"consultas.html\" method=\"get\">\n  <label for=\"termo\">O que você quer consultar?</label>\n  <input id=\"termo\" name=\"q\" type=\"search\" required>\n  <button type=\"submit\">Buscar</button>\n</form>"
+    },
+    {
+      "heading": "Validar não é proteger",
+      "paragraphs": [
+        "Limites de comprimento e tipos adequados melhoram a experiência, mas qualquer requisição pode ser montada fora da página. Endpoints que armazenam dados precisam autenticar, autorizar e validar todas as entradas.",
+        "Não coloque dados sensíveis em parâmetros de URL: podem aparecer em histórico, logs e links compartilhados. POST também não torna o envio privado sozinho; HTTPS e regras do servidor continuam necessários."
+      ]
+    },
+    {
+      "heading": "Teste além do caso feliz",
+      "paragraphs": [
+        "Envie um valor válido, tente enviar vazio e percorra o formulário com teclado. O foco deve ser visível e o erro precisa indicar o campo e a correção esperada.",
+        "Em um exemplo estático local, não há armazenamento remoto. Nunca simule envio bem-sucedido de informações que não foram realmente persistidas."
+      ]
+    }
+  ],
+  "exercise": "Acrescente uma opção de ferramenta usando select e label. Explique quais parâmetros seriam enviados e quais regras teriam de existir no destino.",
+  "pitfalls": [
+    "Usar só placeholder.",
+    "Afirmar que required protege o banco.",
+    "Enviar informações privadas na URL."
+  ],
+  "review": [
+    {
+      "question": "name e id são intercambiáveis?",
+      "answer": "Não. name nomeia o parâmetro enviado; id identifica um elemento para associações e seleção."
+    },
+    {
+      "question": "Quando usar type=\"button\"?",
+      "answer": "Para botões de ação dentro do formulário que não devem disparar a submissão."
+    }
+  ],
+  "references": [
+    {
+      "label": "MDN — html",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

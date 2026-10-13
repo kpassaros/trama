@@ -1,0 +1,57 @@
+{
+  "id": "pq-001",
+  "track": "power-query",
+  "title": "Power Query: etapas, tipos e dados confiáveis",
+  "level": "Fundamentos",
+  "minutes": 10,
+  "objective": "Planejar uma transformação reexecutável e preservar tipos e origem dos campos.",
+  "intro": "Power Query é uma experiência de conexão e transformação; etapas documentam como preparar dados para carga. A linguagem M expressa essas transformações. Pense numa consulta como uma receita reaplicável, não como uma planilha editada à mão.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Declare fonte e tipos cedo",
+      "paragraphs": [
+        "Identifique origem, credenciais e atualização. Confira tipos de data, número, texto e identificadores antes de agregar. Código postal/ID pode ser texto mesmo quando contém apenas dígitos, porque zeros à esquerda e operações aritméticas têm outra semântica."
+      ]
+    },
+    {
+      "heading": "Etapas devem ser auditáveis",
+      "paragraphs": [
+        "Renomeie etapas, remova colunas que não serão usadas e trate erros/nulos de acordo com a regra. M diferencia maiúsculas/minúsculas e usa expressões `let ... in`."
+      ],
+      "code": "// M — exemplo ilustrativo\nlet\n    Source = Excel.CurrentWorkbook(){[Name=\"Orders\"]}[Content],\n    Typed = Table.TransformColumnTypes(Source,\n        {{\"OrderId\", type text}, {\"OrderDate\", type date}, {\"Amount\", Currency.Type}})\nin\n    Typed"
+    },
+    {
+      "heading": "Reprodução importa",
+      "paragraphs": [
+        "Atualize desde a fonte em um ambiente autorizado e compare contagem, tipos e valores com uma amostra conhecida. Credenciais e gateways pertencem à configuração segura do produto; nunca codifique segredos no M publicado."
+      ]
+    }
+  ],
+  "exercise": "Escolha uma tabela pequena e proponha três etapas: selecionar colunas, tipar uma data e filtrar linhas inválidas. Descreva como provaria que a atualização repete a mesma regra.",
+  "pitfalls": [
+    "Converter identificador em número e perder zeros à esquerda.",
+    "Remover erros sem entender sua causa ou quantos registros afeta.",
+    "Confundir transformação local com mudança na origem."
+  ],
+  "review": [
+    {
+      "question": "O que o script M representa?",
+      "answer": "Uma sequência declarativa/reexecutável de transformações da consulta."
+    },
+    {
+      "question": "Por que tipo é regra de negócio, não só formatação?",
+      "answer": "Ele determina operações válidas e como valores são interpretados."
+    }
+  ],
+  "references": [
+    {
+      "label": "Microsoft Learn — Power Query M",
+      "url": "https://learn.microsoft.com/en-us/powerquery-m/"
+    },
+    {
+      "label": "Microsoft Learn — boas práticas do Power Query",
+      "url": "https://learn.microsoft.com/en-us/power-query/best-practices"
+    }
+  ]
+}

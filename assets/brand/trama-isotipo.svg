@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="t d">
+<title id="t">Símbolo Trama</title>
+<desc id="d">Três conexões equilibradas convergem em um núcleo central.</desc>
+<rect x="4" y="4" width="120" height="120" rx="30" fill="#E9EFF0"/>
+<g fill="none" stroke="#20505A" stroke-width="7" stroke-linecap="round">
+  <path d="M64 27v26"/>
+  <path d="M37 81l19-18"/>
+  <path d="M91 81L72 63"/>
+</g>
+<circle cx="64" cy="27" r="7" fill="#7563AD"/>
+<circle cx="37" cy="81" r="7" fill="#7563AD"/>
+<circle cx="91" cy="81" r="7" fill="#7563AD"/>
+<circle cx="64" cy="64" r="11" fill="#20505A" stroke="#fffefe" stroke-width="4"/>
+</svg>

@@ -1,0 +1,60 @@
+{
+  "id": "api-002",
+  "track": "apis",
+  "title": "Autenticação, paginação e retries seguros",
+  "level": "Aplicação intermediária",
+  "minutes": 13,
+  "objective": "Integrar sem vazar credenciais, omitir páginas ou duplicar efeitos em reexecuções.",
+  "intro": "Uma integração robusta precisa considerar limites, tokens, expiração, paginação e falha transitória. O endpoint e a documentação do fornecedor prevalecem: não existe um único modelo de token, paginação ou retry para todas as APIs.",
+  "prerequisites": "HTTP, respostas JSON e contratos.",
+  "sections": [
+    {
+      "heading": "Proteja credenciais",
+      "paragraphs": [
+        "Use mecanismo de segredo do ambiente, escopo mínimo e rotação. Token Bearer deve trafegar por canal protegido e header autorizado; não o inclua em Git, logs, query string ou captura de tela. OAuth descreve fluxos diferentes; selecione o adequado ao cliente."
+      ]
+    },
+    {
+      "heading": "Percorra a paginação",
+      "paragraphs": [
+        "APIs podem retornar número de página, cursor, link next ou limite. Continue até critério terminal documentado e previna loop infinito. Registre cursor de forma segura se checkpoint for necessário."
+      ]
+    },
+    {
+      "heading": "Repita com política",
+      "paragraphs": [
+        "Retry exponencial com jitter e limite pode lidar com falhas transitórias/429/503 se o serviço indicar. Operação não idempotente exige chave de idempotência ou reconciliação definida pelo contrato. Timeout e retry devem respeitar orçamento de tempo."
+      ]
+    }
+  ],
+  "exercise": "Desenhe um processo que pagina uma API até o fim. Inclua armazenamento seguro do token, limite de tentativas, tratamento de 429 e prevenção de registros duplicados após interrupção.",
+  "pitfalls": [
+    "Repetir POST indiscriminadamente e criar a mesma operação mais de uma vez.",
+    "Encerrar após a primeira página e chamar o resultado de completo.",
+    "Logar header Authorization ou corpo com dados pessoais."
+  ],
+  "review": [
+    {
+      "question": "Retry resolve toda falha 5xx?",
+      "answer": "Não; precisa de política limitada, idempotência/contrato e classificação de erro."
+    },
+    {
+      "question": "Onde guardar token?",
+      "answer": "Em mecanismo seguro de segredos/credenciais, com acesso mínimo, não no código ou log."
+    }
+  ],
+  "references": [
+    {
+      "label": "IETF — HTTP Semantics (RFC 9110)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+    },
+    {
+      "label": "IETF — JSON (RFC 8259)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc8259"
+    },
+    {
+      "label": "IETF — OAuth 2.0 Bearer Token (RFC 6750)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc6750"
+    }
+  ]
+}

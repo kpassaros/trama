@@ -1,0 +1,61 @@
+{
+  "id": "api-001",
+  "track": "apis",
+  "title": "HTTP e REST: método, recurso e resposta",
+  "level": "Fundamentos",
+  "minutes": 11,
+  "objective": "Ler uma requisição HTTP e interpretar método, status, cabeçalhos e corpo.",
+  "intro": "Uma chamada de API é uma interação cliente-servidor com contrato. HTTP fornece semântica de requisição/resposta; REST é um estilo arquitetural, não sinônimo de “qualquer URL JSON”. O mesmo método e rota podem ter regras próprias do serviço.",
+  "prerequisites": "Nenhum.",
+  "sections": [
+    {
+      "heading": "Separe verbo e recurso",
+      "paragraphs": [
+        "GET normalmente recupera; POST costuma submeter/criar uma ação; PUT substitui estado do recurso conforme contrato; PATCH aplica atualização parcial; DELETE solicita remoção. Segurança e idempotência são propriedades distintas: não invente repetição automática sem conhecer o endpoint."
+      ]
+    },
+    {
+      "heading": "Leia status e cabeçalhos",
+      "paragraphs": [
+        "Respostas 2xx indicam sucesso conforme contexto; 4xx aponta problema associado à requisição; 5xx indica falha no servidor/intermediário. 429 costuma sinalizar limite, e Retry-After pode instruir espera. Status sozinho não descreve todo o corpo/contrato."
+      ]
+    },
+    {
+      "heading": "JSON é formato, não esquema",
+      "paragraphs": [
+        "JSON define objetos, arrays e valores, mas não decide o significado dos campos. Use documentação da API, schema, paginação e versão; trate campos opcionais e erros estruturados."
+      ],
+      "code": "GET /v1/orders?limit=50\nAccept: application/json\nAuthorization: Bearer <TOKEN>\n\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"items\": [], \"nextCursor\": null}"
+    }
+  ],
+  "exercise": "Para um serviço fictício, desenhe uma chamada de leitura e uma de criação. Anote método, caminho, autenticação, status esperado, formato do corpo e o que o cliente faz em 401, 429 e 500.",
+  "pitfalls": [
+    "Enviar segredo como query string, que pode aparecer em logs/histórico.",
+    "Presumir que GET sempre é cacheável ou que POST nunca pode ser repetido.",
+    "Tratar qualquer 2xx como se o corpo tivesse o formato esperado."
+  ],
+  "review": [
+    {
+      "question": "JSON especifica o significado de cada campo?",
+      "answer": "Não; o contrato da API define nomes, tipos, obrigatoriedade e semântica."
+    },
+    {
+      "question": "Idempotência é o mesmo que segurança?",
+      "answer": "Não. Idempotência diz respeito ao efeito de repetições; segurança trata se a operação altera estado."
+    }
+  ],
+  "references": [
+    {
+      "label": "IETF — HTTP Semantics (RFC 9110)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc9110"
+    },
+    {
+      "label": "IETF — JSON (RFC 8259)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc8259"
+    },
+    {
+      "label": "IETF — OAuth 2.0 Bearer Token (RFC 6750)",
+      "url": "https://datatracker.ietf.org/doc/html/rfc6750"
+    }
+  ]
+}
