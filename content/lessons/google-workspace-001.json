@@ -1,0 +1,74 @@
+{
+  "id": "google-workspace-001",
+  "track": "google-workspace",
+  "title": "Workspace: colaboração começa no acesso, não no link",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Organizar um fluxo de trabalho e justificar acesso de leitor, comentador ou editor sem tornar dados privados públicos.",
+  "intro": "Um arquivo estar na nuvem não significa que esteja bem governado. A primeira decisão é quem precisa acessar, com qual papel e por quanto tempo. Esta aula inicia a trilha de colaboração; não substitui a administração de uma organização Workspace.",
+  "prerequisites": "Conta do Google e noções de arquivos e tabelas",
+  "sections": [
+    {
+      "heading": "Separe ferramenta, arquivo e responsabilidade",
+      "paragraphs": [
+        "Google Workspace reúne ferramentas de colaboração. Drive organiza arquivos; Docs e Sheets são documentos de trabalho; Gmail e Calendar apoiam comunicação e agenda. Aprenda o fluxo antes de automatizar: onde está a versão oficial, quem responde pelo conteúdo e quem pode alterá-lo?",
+        "Imagine uma revisão de indicadores com dados fictícios. O autor prepara a base, um revisor comenta problemas e o público consulta somente o relatório aprovado. Usar o mesmo link com edição para todos elimina essa separação e pode permitir mudanças não previstas."
+      ]
+    },
+    {
+      "heading": "Escolha o menor papel necessário",
+      "paragraphs": [
+        "Em Compartilhar, mantenha Acesso geral como Restrito e convide apenas quem precisa. Leitor atende consulta; Comentador atende revisão; Editor permite alterar o arquivo. O pedido de acesso não deve ser resolvido automaticamente com qualquer pessoa com o link.",
+        "Compartilhar a URL não concede uma autorização inexistente. Já liberar o arquivo para qualquer pessoa com o link pode permitir acesso além da pasta restrita em que ele está. Confira o próprio arquivo, o público selecionado e as regras da organização antes de copiar o link."
+      ]
+    },
+    {
+      "heading": "Defina um fluxo simples de revisão",
+      "paragraphs": [
+        "Use comentários para registrar dúvidas e mantenha a versão de trabalho separada da entrega aprovada. O modelo abaixo é um roteiro de processo, não código nem configuração automática. Os papéis da tabela são decisões de acesso ao arquivo, não funções administrativas da organização.",
+        "Se o trabalho for recorrente e de uma equipe, avalie drives compartilhados com o administrador. Disponibilidade e permissões dependem da edição e das políticas do Workspace; não suponha que toda conta pessoal tenha os mesmos recursos."
+      ],
+      "codeBlocks": [
+        {
+          "code": "Etapa             Responsável       Papel no arquivo\nPreparar base     Autor             Editor\nRevisar critérios Revisor           Comentador\nConsultar entrega Público autorizado Leitor",
+          "language": "text",
+          "label": "Roteiro de colaboração · não executável"
+        }
+      ]
+    },
+    {
+      "heading": "Teste e revise o acesso",
+      "paragraphs": [
+        "Antes de enviar, teste com uma segunda conta autorizada ou peça que o destinatário confirme o papel recebido. Uma janela anônima ajuda a verificar exposição pública, mas não representa todas as regras de uma conta corporativa. Registre quem é responsável pela revisão do acesso.",
+        "Ao encerrar a colaboração, remova permissões que não fazem mais sentido e confira arquivos associados, como uma planilha de respostas. Não use dados reais de clientes neste exercício e não publique uma captura com endereços pessoais no portfólio."
+      ]
+    }
+  ],
+  "exercise": "Crie um documento com três linhas fictícias. Mantenha acesso restrito; conceda comentário a um revisor e leitura a um destinatário. Peça confirmação dos papéis. Depois remova o revisor e verifique o acesso novamente. Critério: ninguém fora do público definido consegue consultar ou editar o documento.",
+  "pitfalls": [
+    "Tratar qualquer pessoa com o link como equivalente a acesso restrito.",
+    "Dar edição quando comentário ou leitura seria suficiente.",
+    "Supor que recursos e políticas de uma conta pessoal e de um Workspace corporativo são iguais."
+  ],
+  "review": [
+    {
+      "question": "Enviar um link restrito garante acesso?",
+      "answer": "Não. O destinatário precisa ter a autorização adequada. O link apenas localiza o arquivo."
+    },
+    {
+      "question": "Por que revisar arquivos associados separadamente?",
+      "answer": "Porque permissões de objetos distintos podem mudar de forma independente; um formulário e sua planilha, por exemplo, exigem verificação própria."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Workspace — compartilhar arquivos e pastas",
+      "url": "https://support.google.com/a/users/answer/9310248?hl=pt-BR"
+    },
+    {
+      "label": "Google Workspace — drives compartilhados",
+      "url": "https://support.google.com/a/users/answer/9310249?hl=en"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

@@ -20,7 +20,7 @@ A proposta é encurtar essa distância, sem substituir as fontes oficiais nem ap
 
 | Estudar | Consultar | Aplicar com consciência |
 |---|---|---|
-| 13 trilhas independentes e 37 aulas iniciais | 62 referências pesquisáveis com sintaxe colorida | Intenção, saída esperada, passos e armadilhas |
+| 20 trilhas independentes e 44 aulas iniciais | 76 referências pesquisáveis com sintaxe colorida | Intenção, saída esperada, passos e armadilhas |
 | Objetivos, pré-requisitos e revisão | SQL, DAX, M, Excel, Power Fx, HTTP, automação, Fabric e web | Fontes oficiais e limites de ambiente |
 | Exemplos e exercícios opcionais | Código copiável, busca e filtros | Dados fictícios, sem credenciais |
 
@@ -122,3 +122,7 @@ A licença da fonte não se estende automaticamente ao código, conteúdo ou mar
 ## Transporte de ativos
 
 No envio automatizado inicial, arquivos binários usam representações `.base64`, decodificadas pelo build sem dependência externa. O ZIP completo também contém os binários prontos. O site servido usa WOFF e WebP reais, não essas representações textuais. Se existir uma versão binária no source, ela tem prioridade sobre a representação codificada.
+
+## Ecossistema Google — conteúdo inicial
+
+Inclui Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Cada trilha nova começa com uma aula e duas consultas, sem alegação de currículo completo. O guia [GA4 do zero](GA4-INICIO.md) separa criar a propriedade de ativar a coleta: analytics continua desligado nesta etapa.

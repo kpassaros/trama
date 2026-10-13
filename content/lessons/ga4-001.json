@@ -1,0 +1,85 @@
+{
+  "id": "ga4-001",
+  "track": "ga4",
+  "title": "GA4 do zero: conta, propriedade, fluxo e coleta responsável",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Criar a estrutura de uma propriedade Web, distinguir configuração de coleta ativa e planejar um teste sem dados pessoais.",
+  "intro": "O GA4 mede eventos. Antes de buscar um dashboard bonito, precisamos definir o que será medido, onde os eventos chegam e como respeitar as escolhas de privacidade. Esta aula usa a Trama como cenário, sem ativar a coleta automaticamente.",
+  "prerequisites": "Conta do Google e noções de arquivos e tabelas",
+  "sections": [
+    {
+      "heading": "Conta, propriedade e fluxo não são sinônimos",
+      "paragraphs": [
+        "A conta organiza o acesso e as propriedades. A propriedade concentra a configuração e os relatórios do projeto. O fluxo Web representa a origem dos dados do site. Para um projeto independente, uma estrutura simples é conta Trama, propriedade Trama — Web e fluxo Site Trama.",
+        "Acesse analytics.google.com com a conta Google que manterá o projeto. Se aparecer uma conta antiga, não a exclua: em Administrador, use Criar → Conta. Revise as opções de compartilhamento de dados antes de continuar. Nenhuma senha, chave de API ou token deve ser publicado no repositório."
+      ]
+    },
+    {
+      "heading": "Crie a propriedade e o fluxo Web",
+      "paragraphs": [
+        "Na propriedade, defina nome, fuso horário e moeda coerentes com a análise. O fuso define em qual dia a visita será contabilizada; não é apenas um detalhe de aparência. Preencha categoria, tamanho e objetivo de uso conforme a realidade do projeto e aceite os termos após revisar.",
+        "Em Fluxos de dados, escolha Web. Para a Trama, use o endereço HTTPS kpassaros.github.io/trama/ e um nome reconhecível para o fluxo. O ID de medição G-… identifica o destino da tag; ele não é a senha da conta e não concede acesso aos relatórios. Criar o fluxo por si só não instala a tag no site."
+      ],
+      "codeBlocks": [
+        {
+          "code": "Conta:       Trama\nPropriedade: Trama — Web\nFluxo:       Site Trama (Web)\nOrigem:      https://kpassaros.github.io/trama/\nMedição:     G-… (fornecido pelo GA4)",
+          "language": "text",
+          "label": "Estrutura de configuração · não executável"
+        }
+      ]
+    },
+    {
+      "heading": "Planeje os eventos sem enviar texto privado",
+      "paragraphs": [
+        "Comece com perguntas simples: quais aulas são visitadas e quais referências têm o botão Copiar utilizado? page_view atende visualização de página; um evento copy_reference pode informar apenas reference_id e tool. Prefira eventos recomendados quando atenderem ao caso; crie personalizados quando necessário.",
+        "Não envie conteúdo copiado, nome, e-mail nem o texto livre digitado na busca. URLs também podem carregar dados pessoais em parâmetros. A política do Google proíbe enviar informações de identificação pessoal; sanitização de URL e escolhas de medição otimizada devem ser revisadas, não presumidas como seguras."
+      ],
+      "codeBlocks": [
+        {
+          "code": "Evento proposto: copy_reference\nreference_id: ref-017\ntool: SQL\nNão enviar: código copiado ou identidade do visitante",
+          "language": "text",
+          "label": "Contrato de evento proposto · não é chamada à API"
+        }
+      ]
+    },
+    {
+      "heading": "Consentimento, validação e interpretação",
+      "paragraphs": [
+        "Na implementação conservadora proposta para a Trama, a tag só deve carregar após a escolha de aceitar analytics. Recusar deve manter o portal utilizável. É preciso um aviso de privacidade e um controle para revisar a escolha; um mecanismo de consentimento não certifica sozinho conformidade legal.",
+        "Após implementar e publicar, teste recusa, aceite, navegação entre páginas e repetição de cliques. Use DebugView e Tempo real para verificar evento, parâmetros e duplicidade. Só depois analise os relatórios processados. Bloqueadores, recusas e limitações da medição fazem com que os dados não representem todos os visitantes."
+      ]
+    }
+  ],
+  "exercise": "Crie conta, propriedade e fluxo Web, mas não instale a tag ainda. Faça uma lista de três perguntas e eventos mínimos, sem texto livre. Critério: explicar conta/propriedade/fluxo, guardar a configuração e identificar quais testes serão necessários antes de ligar a coleta. A instrumentação depende de revisão e consentimento.",
+  "pitfalls": [
+    "Achar que criar um fluxo já instala analytics no site.",
+    "Enviar pesquisas livres, parâmetros de URL ou conteúdo copiado ao GA4.",
+    "Confundir quantidade de eventos com pessoas únicas ou conclusão de aprendizado."
+  ],
+  "review": [
+    {
+      "question": "O ID G-… concede acesso à conta?",
+      "answer": "Não. Identifica o destino de medição da tag, não é uma credencial de acesso aos relatórios."
+    },
+    {
+      "question": "Uma visita ausente nos relatórios prova que ninguém acessou?",
+      "answer": "Não. Consentimento, bloqueadores, atrasos de processamento e configuração podem limitar a coleta."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Analytics — criar conta, propriedade e fluxo",
+      "url": "https://support.google.com/analytics/answer/9304153?hl=pt-BR"
+    },
+    {
+      "label": "Google Analytics — eventos e DebugView",
+      "url": "https://support.google.com/analytics/answer/9322688?hl=pt-BR"
+    },
+    {
+      "label": "Google Analytics — evitar dados pessoais",
+      "url": "https://support.google.com/analytics/answer/6366371?hl=pt-BR"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

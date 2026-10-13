@@ -1,0 +1,74 @@
+{
+  "id": "google-forms-001",
+  "track": "google-forms",
+  "title": "Formulários: colete só o necessário e proteja as respostas",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Desenhar um formulário pequeno, escolher o destino das respostas e verificar acesso ao formulário e à planilha separadamente.",
+  "intro": "Um formulário é o começo de uma cadeia de dados: pergunta, resposta, armazenamento e uso. Vamos construir uma pesquisa fictícia sobre cursos sem pedir nome, e-mail ou documento de identificação.",
+  "prerequisites": "Conta do Google e noções de arquivos e tabelas",
+  "sections": [
+    {
+      "heading": "Transforme a necessidade em perguntas",
+      "paragraphs": [
+        "A pergunta de negócio é qual trilha merece mais conteúdo. Use uma escolha única para a trilha principal e outra pergunta para o nível percebido. Se permitir múltiplas escolhas, documente que uma pessoa pode gerar várias escolhas; não conte seleções como se fossem pessoas distintas.",
+        "Evite coletar contato quando ele não é necessário para a decisão. Mesmo sem uma pergunta de e-mail, revise as configurações de coleta de e-mail, exigência de login e resumo de respostas. Uma exigência de conta não é uma prova de qualidade nem uma promessa de anonimato."
+      ]
+    },
+    {
+      "heading": "Estruture e teste o formulário",
+      "paragraphs": [
+        "No editor, escolha o tipo de pergunta e preencha opções sem sobreposição. Marque Obrigatória somente quando uma resposta ausente inviabilizar o objetivo. Se precisar de contextos diferentes, separe em seções; mantenha descrições curtas explicando o que responder.",
+        "Use Visualizar e envie respostas de teste fictícias: opção A, opção B e um caso com item opcional vazio. Perguntas claras reduzem esforço, mas não garantem respostas verdadeiras ou uma amostra representativa. Esta pesquisa de conveniência não deve ser apresentada como retrato de todos os profissionais de dados."
+      ]
+    },
+    {
+      "heading": "Escolha onde as respostas ficam",
+      "paragraphs": [
+        "Na área Respostas, escolha o destino: uma planilha nova ou existente. O formulário também mantém suas próprias respostas; a planilha é um arquivo relacionado, não a mesma coisa. A documentação atual informa que novos dados de respostas na planilha são organizados em tabela.",
+        "Teste a chegada de uma resposta e confira cabeçalhos e tipos. Não suponha que todas as mudanças de permissão do formulário serão sincronizadas à planilha: verifique ambos. Ao criar uma planilha de respostas, colaboradores do formulário podem receber acesso automaticamente."
+      ],
+      "codeBlocks": [
+        {
+          "code": "Pergunta → Resposta → Formulário\n                      ↓ vínculo\n                Planilha de respostas\n                      ↓\n                Análise agregada",
+          "language": "text",
+          "label": "Fluxo conceitual · não executável"
+        }
+      ]
+    },
+    {
+      "heading": "Desvincular não é apagar nem encerrar tudo",
+      "paragraphs": [
+        "Desvincular a planilha interrompe o envio de novas respostas para ela, mas preserva os dados existentes. Isso não é sinônimo de apagar respostas no formulário nem de impedir participantes de responder. Para encerrar a coleta, revise o controle de recebimento de respostas do próprio formulário.",
+        "Excluir respostas do formulário pode ser irreversível e não deve ser usado para esconder testes sem planejar a separação entre teste e produção. No portfólio, apresente somente resultados agregados ou uma base fictícia e deixe claro como ela foi criada."
+      ]
+    }
+  ],
+  "exercise": "Crie duas perguntas fechadas sobre trilha e nível, sem coleta de contato. Vincule uma planilha privada e envie três respostas fictícias. Confira o destino e os acessos. Desvincule a planilha e observe que os dados antigos permanecem. Critério: explicar o que muda no vínculo e o que não muda na coleta.",
+  "pitfalls": [
+    "Supor que formulário e planilha têm sempre as mesmas permissões.",
+    "Confundir desvincular, excluir respostas e encerrar recebimento.",
+    "Apresentar escolhas múltiplas como contagem de participantes únicos."
+  ],
+  "review": [
+    {
+      "question": "Desvincular a planilha exclui dados existentes?",
+      "answer": "Não. Para de enviar novas respostas àquela planilha, mas preserva os dados existentes."
+    },
+    {
+      "question": "Por que testar o caso opcional vazio?",
+      "answer": "Para compreender como uma ausência aparece na base e evitar interpretar ausência como resposta negativa ou zero."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Formulários — destino e permissões das respostas",
+      "url": "https://support.google.com/docs/answer/2917686?hl=pt-BR"
+    },
+    {
+      "label": "Google Formulários — editar perguntas e seções",
+      "url": "https://support.google.com/docs/answer/2839737?hl=pt-BR"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

@@ -1,0 +1,78 @@
+{
+  "id": "google-cloud-001",
+  "track": "google-cloud",
+  "title": "Google Cloud: projeto, acesso e custo antes da primeira consulta",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Explicar a função do projeto e da conta de faturamento e escolher um caminho de estudo BigQuery sem criar recursos pagos por engano.",
+  "intro": "Google Cloud é uma plataforma, não uma única ferramenta. Para dados, começaremos pelos fundamentos de projeto, acesso, faturamento e BigQuery. Não há criação de projeto, ativação de API ou cobrança automática pela leitura desta aula.",
+  "prerequisites": "Noções de SQL e conta Google; nenhum recurso pago é necessário para ler a aula",
+  "sections": [
+    {
+      "heading": "O projeto é uma fronteira de organização",
+      "paragraphs": [
+        "Recursos do Google Cloud pertencem a projetos. O projeto reúne configurações, permissões e metadados; permite separar ambientes e responsabilidades. O nome exibido não é a mesma coisa que todos os identificadores técnicos usados pelas APIs: confira o ID escolhido em cada comando e integração.",
+        "No modelo de acesso IAM, a pergunta é quem pode fazer qual ação sobre qual recurso. Para estudar, não conceda papéis amplos a terceiros por conveniência e não copie arquivos de chave para um repositório público. As permissões devem acompanhar a tarefa e ser revistas ao encerrar o trabalho."
+      ]
+    },
+    {
+      "heading": "Faturamento e alertas exigem atenção",
+      "paragraphs": [
+        "Uma conta de faturamento trata a cobrança; projetos podem usar serviços faturados conforme suas configurações. Não habilite billing ou recursos pagos só porque um tutorial pede, sem entender a unidade de cobrança, região, volume esperado e como encerrar o recurso.",
+        "Um orçamento do tipo somente alertas informa a evolução do gasto, mas não impede automaticamente novas cobranças. A documentação atual também descreve spend caps quando suportados; isso não significa que todo serviço ou configuração esteja protegido por um limite. Verifique o tipo de orçamento e as condições aplicáveis antes de executar uma carga."
+      ]
+    },
+    {
+      "heading": "Comece por um caminho controlado no BigQuery",
+      "paragraphs": [
+        "O sandbox BigQuery permite experimentar um conjunto limitado de recursos sem fornecer cartão ou criar conta de faturamento. Ele tem cotas, expiração de tabelas e funções não suportadas. Consulte as regras atuais e não o trate como ambiente permanente de produção.",
+        "Para a primeira consulta, use uma CTE com três pedidos fictícios em vez de varrer uma tabela pública enorme. A consulta abaixo não cria tabela nem escreve dados e deve retornar uma linha paid_revenue = 200. Execute apenas no ambiente de estudo autorizado e confira o dialeto GoogleSQL."
+      ],
+      "codeBlocks": [
+        {
+          "code": "WITH orders AS (\n  SELECT 101 AS order_id, 'paid' AS status, 150 AS amount\n  UNION ALL SELECT 102, 'pending', 80\n  UNION ALL SELECT 103, 'paid', 50\n)\nSELECT SUM(amount) AS paid_revenue\nFROM orders\nWHERE status = 'paid';",
+          "language": "sql",
+          "label": "BigQuery · GoogleSQL · dados fictícios em CTE"
+        }
+      ]
+    },
+    {
+      "heading": "Da consulta ao desenho de arquitetura",
+      "paragraphs": [
+        "Quando a necessidade crescer, registre fonte, armazenamento, transformação, camada de consumo e responsáveis. Escolher um serviço sem definir volume, latência, acesso e retenção costuma gerar um desenho caro ou difícil de operar. O objetivo desta unidade é reconhecer decisões, não cobrir toda a plataforma.",
+        "Antes de consultar bases maiores, avalie bytes estimados, filtros de partição e opções de limites de processamento quando aplicáveis. Não conclua que LIMIT 10 reduz necessariamente o volume lido. Registre o projeto utilizado, o resultado esperado e a limpeza de recursos se algum recurso tiver sido criado."
+      ]
+    }
+  ],
+  "exercise": "Desenhe um fluxo fictício arquivo → armazenamento → consulta → relatório, indicando responsáveis e riscos de custo/acesso. Se escolher o sandbox, confirme as limitações atuais e execute somente a CTE da aula. Critério: resultado 200, nenhum dado privado e nenhum recurso pago habilitado apenas para acompanhar o exercício.",
+  "pitfalls": [
+    "Achar que um orçamento de somente alertas é um bloqueio de cobrança.",
+    "Copiar chaves de serviço ou habilitar billing sem necessidade e sem plano de encerramento.",
+    "Confundir sandbox de estudo com uma solução permanente de produção."
+  ],
+  "review": [
+    {
+      "question": "Um alerta de orçamento sempre interrompe o serviço?",
+      "answer": "Não. Orçamentos somente de alertas notificam; verifique separadamente qualquer mecanismo de limite suportado."
+    },
+    {
+      "question": "A CTE apresentada cria uma tabela permanente?",
+      "answer": "Não. Os registros são construídos como entrada da consulta e não há comando de criação ou escrita de tabela."
+    }
+  ],
+  "references": [
+    {
+      "label": "Google Cloud — visão geral",
+      "url": "https://docs.cloud.google.com/docs/overview"
+    },
+    {
+      "label": "Google Cloud — orçamentos e alertas",
+      "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets"
+    },
+    {
+      "label": "BigQuery — sandbox e limitações",
+      "url": "https://docs.cloud.google.com/bigquery/docs/sandbox"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}

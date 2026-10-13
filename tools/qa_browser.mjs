@@ -3,6 +3,9 @@ import {spawn} from 'node:child_process';import {mkdtemp,rm,writeFile,readdir,re
 if(process.env.CI)throw Error('QA interativo é local; não executar conteúdo editável no CI.');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),profile=await mkdtemp(path.join(tmpdir(),'trama-qa-'));
 const cp=spawn('chromium',['--headless','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--allow-file-access-from-files','--disable-background-networking','--run-all-compositor-stages-before-draw','--remote-debugging-port=9377',`--user-data-dir=${profile}`,'about:blank'],{stdio:'ignore'});
+const catalog=JSON.parse(await readFile(root+'/content/catalog.json','utf8')).tracks;
+const referenceItems=JSON.parse(await readFile(root+'/content/reference.json','utf8')).items;
+const totalTracks=catalog.length,sqlReferences=referenceItems.filter(r=>r.tool==='SQL').length;
 const delay=ms=>new Promise(r=>setTimeout(r,ms));let ws;const results=[];const errors=[];
 try{
  let tabs;for(let i=0;i<50;i++){try{tabs=await(await fetch('http://127.0.0.1:9377/json')).json();break;}catch{await delay(100);}}
@@ -34,10 +37,10 @@ try{
  check('track category web',await evaluate(`(()=>{document.querySelector('[data-category-filter="Desenvolvimento web"]').click();return [...document.querySelectorAll('[data-track-card]')].filter(c=>!c.hidden).length===3;})()`));
  check('track search JavaScript',await evaluate(`(()=>{const i=document.querySelector('#track-search');i.value='JavaScript';i.dispatchEvent(new Event('input'));return [...document.querySelectorAll('[data-track-card]')].filter(c=>!c.hidden).length===1;})()`));
  check('track empty state',await evaluate(`(()=>{const i=document.querySelector('#track-search');i.value='zzzzzz';i.dispatchEvent(new Event('input'));return !document.querySelector('#track-empty').hidden;})()`));
- check('clear filters',await evaluate(`(()=>{document.querySelector('#clear-track-search').click();return [...document.querySelectorAll('[data-track-card]')].filter(c=>!c.hidden).length===13;})()`));
+ check('clear filters',await evaluate(`(()=>{document.querySelector('#clear-track-search').click();return [...document.querySelectorAll('[data-track-card]')].filter(c=>!c.hidden).length===${totalTracks};})()`));
  await load('consultas.html');
  check('reference shortcut focuses reference input',await evaluate(`(()=>{document.activeElement.blur();document.dispatchEvent(new KeyboardEvent('keydown',{key:'/',bubbles:true}));return document.activeElement.id==='ref-search';})()`));
- check('reference SQL filter',await evaluate(`(()=>{document.querySelector('[data-ref-tool="SQL"]').click();return [...document.querySelectorAll('[data-ref-card]')].filter(c=>!c.hidden).length===25;})()`));
+ check('reference SQL filter',await evaluate(`(()=>{document.querySelector('[data-ref-tool="SQL"]').click();return [...document.querySelectorAll('[data-ref-card]')].filter(c=>!c.hidden).length===${sqlReferences};})()`));
  check('reference search WHERE',await evaluate(`(()=>{const i=document.querySelector('#ref-search');i.value='WHERE';i.dispatchEvent(new Event('input'));return !document.querySelector('#ref-002').hidden;})()`));
  check('expand reference explanation',await evaluate(`(()=>{const d=document.querySelector('#ref-002 details');d.querySelector('summary').click();return d.open;})()`));
  // Sem escrever na área de transferência do usuário: substituição controlada só para o teste.

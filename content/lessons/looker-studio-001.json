@@ -1,0 +1,74 @@
+{
+  "id": "looker-studio-001",
+  "track": "looker-studio",
+  "title": "Looker Studio / Data Studio: conexão não substitui conferência",
+  "level": "Fundamentos",
+  "minutes": 8,
+  "objective": "Conectar uma propriedade GA4 autorizada, diferenciar dimensões e métricas e revisar as credenciais antes de compartilhar um relatório.",
+  "intro": "Um dashboard é a ponta visível de várias decisões: fonte, acesso, período, agregação e apresentação. Esta trilha usa as denominações Looker Studio / Data Studio para facilitar a busca; não é a mesma trilha de modelagem Looker e LookML.",
+  "prerequisites": "Conta do Google e noções de arquivos e tabelas",
+  "sections": [
+    {
+      "heading": "Separe conector, fonte e relatório",
+      "paragraphs": [
+        "O conector estabelece o caminho até o sistema de origem. A fonte de dados expõe campos, tipos e configuração para uso no relatório. O relatório combina gráficos e controles. Autorizar um conector não transforma automaticamente todos os números em indicadores confiáveis.",
+        "Comece pela pergunta: de quais canais vêm visitas às aulas? Defina período, dimensão de origem e métrica adequada. Antes de criar visuais, confira o que cada campo significa e se é compatível com a granularidade da pergunta. Sessões, usuários e eventos não são medidas intercambiáveis."
+      ]
+    },
+    {
+      "heading": "Conecte ao GA4 com uma conta autorizada",
+      "paragraphs": [
+        "Na ferramenta de relatórios, crie uma fonte, escolha Google Analytics, autorize o acesso e selecione conta e propriedade. Confirme no painel de campos os tipos e agregações. Crie o relatório a partir dessa fonte; não crie uma nova conta Analytics apenas para cada gráfico.",
+        "É preciso acesso suficiente à propriedade de origem. Sem dados coletados e processados, uma conexão correta pode produzir um relatório vazio. Não preencha a falta de tráfego com números inventados: se usar uma base simulada para demonstrar layout, identifique claramente a simulação."
+      ]
+    },
+    {
+      "heading": "Credenciais do proprietário e do leitor",
+      "paragraphs": [
+        "Com credenciais do proprietário, pessoas autorizadas a ver o relatório podem consultar os dados que a fonte permite sem terem acesso próprio à origem. Com credenciais do leitor, cada pessoa precisa fornecer acesso compatível. A escolha afeta a exposição dos dados, não apenas a conveniência do compartilhamento.",
+        "Mantenha o relatório privado enquanto valida. Para o portfólio, publique somente uma versão agregada e revisada; não exponha o painel administrativo nem dados detalhados que não deveriam ser públicos. Revise a fonte e o relatório antes de gerar qualquer link público."
+      ],
+      "codeBlocks": [
+        {
+          "code": "Origem GA4 autorizada\n    ↓ conector Google Analytics\nFonte: campos + tipos + credenciais\n    ↓\nRelatório privado → revisão → versão pública agregada",
+          "language": "text",
+          "label": "Arquitetura do relatório · não executável"
+        }
+      ]
+    },
+    {
+      "heading": "Reconcilie números e conheça os limites",
+      "paragraphs": [
+        "Compare uma tabela simples com o relatório GA4 usando o mesmo período, fuso, filtros e definição de métrica. Não espere que uma soma de usuários por categoria seja igual ao total de usuários: a mesma pessoa pode aparecer em mais de um grupo. Divergência exige investigação, não ajuste manual para esconder a diferença.",
+        "O conector GA4 está sujeito a cotas da Data API e não reproduz todos os recursos das explorações do Analytics. Relatórios complexos, dimensões incompatíveis e certos filtros podem causar erros ou diferenças. Comece pequeno e registre definições, limitações e critérios de atualização."
+      ]
+    }
+  ],
+  "exercise": "Quando houver uma propriedade GA4 com dados, conecte uma fonte privada. Crie uma tabela simples por página e compare período, filtros e métrica com GA4. Registre a decisão de credenciais. Se ainda não houver dados, faça apenas o desenho do relatório e marque-o como protótipo sem resultados reais.",
+  "pitfalls": [
+    "Publicar com credenciais do proprietário sem revisar o público.",
+    "Somar usuários únicos de grupos que se sobrepõem.",
+    "Confundir dados de relatórios com todas as funcionalidades de Explorações do GA4."
+  ],
+  "review": [
+    {
+      "question": "Conectar uma fonte autoriza automaticamente qualquer público a ver dados?",
+      "answer": "Não. O acesso ao relatório e o modo de credenciais precisam ser revisados; uma escolha de compartilhamento indevida pode expor dados."
+    },
+    {
+      "question": "Por que alinhar período e filtros na reconciliação?",
+      "answer": "Porque métricas só são comparáveis quando as definições e recortes de análise são compatíveis."
+    }
+  ],
+  "references": [
+    {
+      "label": "Looker Studio / Data Studio — conectar ao GA4",
+      "url": "https://docs.cloud.google.com/data-studio/connect-to-google-analytics"
+    },
+    {
+      "label": "Google Analytics — eventos e DebugView",
+      "url": "https://support.google.com/analytics/answer/9322688?hl=pt-BR"
+    }
+  ],
+  "editorialStatus": "initial-release"
+}
