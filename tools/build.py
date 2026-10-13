@@ -8,13 +8,19 @@ def validate(tracks,lessons,refs):
     track_ids=[t['id'] for t in tracks]
     if len(track_ids)!=len(set(track_ids)): raise ValueError('ID de trilha duplicado')
     ids=[]
-    for item in tracks+lessons:
+    for item in tracks+lessons+refs:
         if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*',item['id']): raise ValueError('ID inválido: '+item['id'])
     for l in lessons:
         if l['track'] not in track_ids: raise ValueError('Aula aponta para trilha inexistente: '+l['id'])
         ids.append(l['id'])
-        for key in ('title','objective','intro','sections','exercise','review','references'):
+        for key in ('title','objective','intro','sections','review','references'):
             if not l.get(key): raise ValueError(f'Campo obrigatório ausente em {l["id"]}: {key}')
+        for section in l['sections']:
+            if section.get('code') and section.get('codeBlocks'):
+                raise ValueError('Use code ou codeBlocks, não ambos: '+l['id'])
+            for block in section.get('codeBlocks', []):
+                if not block.get('code') or not block.get('language') or not block.get('label'):
+                    raise ValueError('Bloco precisa de code, language e label: '+l['id'])
         if not l['review'] or not l['references']: raise ValueError('Aula precisa de revisão e fontes: '+l['id'])
     if len(ids)!=len(set(ids)): raise ValueError('ID de aula duplicado')
     for track_id in track_ids:

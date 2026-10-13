@@ -342,18 +342,18 @@
       "category": "Junções",
       "name": "LEFT JOIN",
       "description": "Mantém todas as linhas do lado esquerdo; faltas no lado direito tornam-se NULL.",
-      "code": "FROM customers c LEFT JOIN orders o ON o.customer_id=c.customer_id",
+      "code": "SELECT o.order_id, o.customer_id, c.name\nFROM orders o\nLEFT JOIN customers c ON o.customer_id = c.customer_id;",
       "dialect": "SQL comum",
       "source": {
         "label": "PostgreSQL — SELECT",
         "url": "https://www.postgresql.org/docs/current/sql-select.html"
       },
       "use": "Preservar todos os pedidos mesmo quando o cadastro do cliente está faltando.",
-      "result": "Todas as linhas da esquerda; campos da direita recebem NULL quando não há correspondência.",
+      "result": "Todos os pedidos, incluindo os sem cliente correspondente. Para estes, c.name recebe NULL. Chaves de cliente duplicadas podem multiplicar um pedido.",
       "steps": [
-        "A tabela à esquerda é a base preservada.",
-        "ON define quais linhas da direita podem se associar.",
-        "Uma chave repetida à direita ainda pode multiplicar linhas da esquerda."
+        "FROM orders define os pedidos como a base preservada.",
+        "LEFT JOIN customers associa o cadastro por customer_id sem excluir pedidos sem correspondência.",
+        "SELECT devolve a identificação do pedido e o nome do cliente; uma chave repetida em customers pode multiplicar linhas."
       ],
       "pitfall": "Um WHERE que rejeita NULL em campos da direita pode retirar justamente as linhas preservadas pelo LEFT JOIN."
     },

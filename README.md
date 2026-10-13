@@ -89,11 +89,12 @@ Abra **http://localhost:8000**. No Windows, substitua `python` por `py -3.12`.
 python -m py_compile tools/build.py tools/views.py tools/highlight.py
 node --check assets/site.js
 python tools/qa_static.py
+python tools/qa_regressions.py
 node tools/qa_examples.mjs
 python tools/audit.py
 ```
 
-O QA visual/interativo opcional exige Node 24 e Chromium: `node tools/qa_browser.mjs`. Os relatórios locais ficam em `reports/`.
+O CI verifica a sintaxe dos blocos JavaScript sem executá-los. O QA visual/interativo opcional executa JavaScript local previamente revisado, não é sandbox e não deve receber conteúdo desconhecido; exige Node 24 e Chromium: `node tools/qa_browser.mjs`. Os relatórios locais ficam em `reports/`.
 
 ## Publicação segura
 

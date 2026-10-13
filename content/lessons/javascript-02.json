@@ -19,9 +19,21 @@
       "heading": "Um contador acessível",
       "paragraphs": [
         "O botão já tem interação nativa de teclado. addEventListener liga um manipulador ao clique; a função atualiza a variável e a mensagem. O script deve estar depois do HTML ou carregar com defer.",
-        "aria-live=\"polite\" pode anunciar mudanças sem interromper imediatamente a leitura. Não use anúncios em alta frequência para cada detalhe visual."
+        "aria-live=\"polite\" pode anunciar mudanças sem interromper imediatamente a leitura. Não use anúncios em alta frequência para cada detalhe visual.",
+        "Salve o primeiro bloco no corpo de index.html e o segundo em contador.js, no mesmo diretório. A tag script carrega o arquivo com defer. Copie cada bloco para seu próprio arquivo, não misture HTML dentro do JavaScript."
       ],
-      "code": "<!-- HTML -->\n<button id=\"adicionar\" type=\"button\">Adicionar exemplo</button>\n<p id=\"contador\" aria-live=\"polite\">0 exemplos</p>\n\n// JavaScript em um arquivo separado, carregado com defer\nconst botao = document.querySelector('#adicionar');\nconst saida = document.querySelector('#contador');\nlet total = 0;\nif (botao && saida) {\n  botao.addEventListener('click', () => {\n    total += 1;\n    saida.textContent = `${total} exemplos`;\n  });\n}"
+      "codeBlocks": [
+        {
+          "language": "html",
+          "label": "HTML · index.html",
+          "code": "<button id=\"adicionar\" type=\"button\">Adicionar exemplo</button>\n<p id=\"contador\" aria-live=\"polite\">0 exemplos</p>\n<script src=\"contador.js\" defer></script>"
+        },
+        {
+          "language": "javascript",
+          "label": "JavaScript · contador.js",
+          "code": "const botao = document.querySelector('#adicionar');\nconst saida = document.querySelector('#contador');\nlet total = 0;\nif (botao && saida) {\n  botao.addEventListener('click', () => {\n    total += 1;\n    saida.textContent = `${total} exemplos`;\n  });\n}"
+        }
+      ]
     },
     {
       "heading": "Texto não é HTML",

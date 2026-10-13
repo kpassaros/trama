@@ -20,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -35,6 +37,7 @@ jobs:
       - name: Validar links, IDs, sintaxe e exemplos
         run: |
           python tools/qa_static.py
+          python tools/qa_regressions.py
           node tools/qa_examples.mjs
           python tools/audit.py
       - uses: actions/upload-artifact@v4
@@ -52,6 +55,8 @@ jobs:
       pages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
