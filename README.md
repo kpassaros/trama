@@ -37,7 +37,8 @@ Trilhas iniciais: **Databricks, SQL, Microsoft Fabric, Power BI, Power Query, Ex
 - Busca por nome ou intenção, filtros, estados vazios e detalhes expansíveis.
 - Sem login, banco remoto ou progresso individual.
 - Portfólio, LinkedIn e Contato e sugestões com ícones locais na lateral e no rodapé.
-- GA4 opcional: nenhuma tag do Google antes de aceite. Apenas a preferência de consentimento é guardada localmente; cookies analíticos são configurados após aceite.
+- GA4 em modo informativo nesta branch: coleta automática em produção, salvo preferência de desativação. Entendi apenas fecha o aviso; cookies analíticos continuam presentes.
+- Termos de Uso e Privacidade no rodapé. Recusas válidas da versão anterior são preservadas; métricas podem ser desativadas no rodapé.
 
 ### Tela real do projeto
 
@@ -111,7 +112,7 @@ O workflow só publica `main`; Pull Requests passam pelos checks, mas não alter
 - Exemplos não são executados contra suas ferramentas ou dados reais. Confira esquema, tipo, versão, dialeto, localidade e permissão antes de adaptar.
 - Realce de sintaxe é uma apresentação estática, não um editor ou validador completo de linguagem.
 - Testes locais de SQL usam uma fixture SQLite; isso não certifica compatibilidade com todos os bancos.
-- A integração GA4 está preparada para o domínio da Trama e depende de aceite explícito. Preferências podem ser revisadas no rodapé; recusa mantém o portal funcional. Consulte [GA4-INICIO.md](GA4-INICIO.md) para limitações, configuração externa e testes reais. O provedor de hospedagem pode manter logs técnicos próprios.
+- A integração GA4 desta branch está preparada para iniciar automaticamente no domínio da Trama. O pop-up informa e não coleta aceite; a preferência de desativação permanece disponível. Consulte [GA4-INICIO.md](GA4-INICIO.md) para limitações, configuração externa e testes reais. O provedor de hospedagem pode manter logs técnicos próprios.
 - Nunca publique segredos, arquivos operacionais, dados reais ou referências internas privadas.
 - Não há revisão externa/certificação das formações nem alegação de resultado profissional comprovado.
 
@@ -129,4 +130,4 @@ No envio automatizado inicial, arquivos binários usam representações `.base64
 
 ## Ecossistema Google — conteúdo inicial
 
-Inclui Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Cada trilha nova começa com uma aula e duas consultas, sem alegação de currículo completo. O guia [GA4 do zero](GA4-INICIO.md) mantém o caminho de criação da propriedade e documenta a integração opt-in, eventos e testes reais ainda pendentes. A atualização permanece em branch de revisão até merge/publicação.
+Inclui Workspace, Sheets, Forms, GA4, Looker Studio / Data Studio, Looker / LookML e Google Cloud. Cada trilha nova começa com uma aula e duas consultas, sem alegação de currículo completo. O guia [GA4 do zero](GA4-INICIO.md) mantém o caminho de criação da propriedade e documenta o aviso informativo, cookies, desativação, eventos e testes reais ainda pendentes. A atualização permanece em branch de revisão até merge/publicação.

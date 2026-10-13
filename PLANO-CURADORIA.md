@@ -69,4 +69,4 @@ Fontes oficiais lidas por produto:
 - Looker Studio / Data Studio — conectar ao GA4: https://docs.cloud.google.com/data-studio/connect-to-google-analytics
 - Looker — introdução ao LookML: https://docs.cloud.google.com/looker/docs/what-is-lookml
 
-Validação de estrutura e exemplos didáticos não equivale à execução em contas Google, Looker ou Cloud. Analytics permanece desligado; GA4-INICIO.md orienta a configuração do titular.
+Validação de estrutura e exemplos didáticos não equivale à execução em contas Google, Looker ou Cloud. A instrumentação está documentada em GA4-INICIO.md. Esta branch propõe aviso informativo com coleta automática; base legal, configuração externa e recebimento real dependem de validação do titular.

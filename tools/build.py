@@ -45,11 +45,13 @@ def validate_config(cfg):
         u=urlsplit(a.get('site_url',''))
         if a.get('provider')!='ga4' or not re.fullmatch(r'G-[A-Z0-9]+',a.get('measurement_id','')):
             raise ValueError('Provider/ID GA4 inválido')
-        if not a.get('consent_required') or a.get('advertising_enabled'):
-            raise ValueError('Coleta exige opt-in; publicidade deve permanecer desligada')
+        if a.get('collection_mode')!='informational' or a.get('consent_required') is not False:
+            raise ValueError('Esta versão exige modo informativo explícito, sem falso aceite')
+        if a.get('advertising_enabled'):
+            raise ValueError('Publicidade deve permanecer desligada')
         if u.scheme!='https' or not u.netloc or u.username or u.password or u.query or u.fragment or not u.path.endswith('/'):
             raise ValueError('URL base GA4 inválida')
-        days=a.get('consent_days',180)
+        days=a.get('preference_days',180)
         if not isinstance(days,int) or isinstance(days,bool) or not 1<=days<=365:
             raise ValueError('Prazo de preferência inválido')
 
@@ -59,7 +61,7 @@ def build():
     lessons=[read(p) for p in sorted((ROOT/'content/lessons').glob('*.json'))]
     refs=read(ROOT/'content/reference.json')['items']
     validate(tracks,lessons,refs)
-    # Gate de configuração: enabled não dispensa consentimento individual no navegador.
+    # Gate técnico de configuração; não valida a base legal da coleta.
     validate_config(cfg)
     if OUT.exists(): shutil.rmtree(OUT)
     OUT.mkdir(parents=True)

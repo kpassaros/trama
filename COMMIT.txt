@@ -1,6 +1,8 @@
-feat: preparar fundamentos Google e guia GA4 do zero
+feat: preparar aviso informativo de métricas e documentos de uso
 
-- sete trilhas, sete aulas iniciais e quatorze referências novas
-- manter Looker/LookML separado de Looker Studio/Data Studio
-- orientar conta, propriedade e fluxo GA4 sem ativar coleta
-- atualizar contagens e QA para expansão de conteúdo
+- coleta automática sem registrar fechamento como consentimento
+- preservar recusas anteriores e oferecer desativação
+- informar cookies reais e limites de anonimato
+- gerar Termos de Uso e Privacidade independentemente de analytics
+- testar instrumentação com stub offline, sem enviar dados ao Google
+- manter validação de base legal pendente do responsável antes da publicação

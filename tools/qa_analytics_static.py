@@ -6,7 +6,7 @@ from build import validate_config
 R=Path(__file__).resolve().parents[1]
 cfg=json.loads((R/'config.json').read_text());validate_config(cfg)
 fixture=copy.deepcopy(cfg);fixture['analytics']['enabled']=True
-for patch in [{'measurement_id':'<script>'},{'consent_required':False},{'advertising_enabled':True},{'site_url':'http://example.test/'},{'consent_days':True}]:
+for patch in [{'measurement_id':'<script>'},{'consent_required':True},{'collection_mode':'unknown'},{'advertising_enabled':True},{'site_url':'http://example.test/'},{'preference_days':True}]:
  bad=copy.deepcopy(fixture);bad['analytics'].update(patch)
  try:validate_config(bad)
  except ValueError:pass
@@ -35,5 +35,7 @@ for file in files:
 js=(R/'assets/analytics.js').read_text()
 assert 'send_page_view:false' in js and 'allow_google_signals:false' in js
 assert 'allow_ad_personalization_signals:false' in js and "script.referrerPolicy='no-referrer'" in js
-assert (R/'public/privacidade.html').exists()==cfg['analytics']['enabled']
+assert (R/'public/privacidade.html').exists() and (R/'public/termos.html').exists()
+assert "window.gtag('consent'" not in js
+assert 'data-consent-accept' not in (R/'tools/views.py').read_text()
 print(f'Analytics estrutural: {len(files)} páginas, seis links profissionais por página, sem tag remota no HTML e gate de configuração aprovado.')
