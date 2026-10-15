@@ -9,7 +9,7 @@
   "analytics": {
     "enabled": true,
     "provider": "ga4",
-    "measurement_id": "G-4SFQY2C6J3",
+    "measurement_id": "G-37RRWN6GTX",
     "site_url": "https://kpassaros.github.io/trama/",
     "consent_required": true,
     "consent_days": 180,
