@@ -12,7 +12,7 @@
     "measurement_id": "G-37RRWN6GTX",
     "site_url": "https://kpassaros.github.io/trama/",
     "consent_required": true,
-    "consent_days": 180,
+    "consent_days": 365,
     "advertising_enabled": false
   }
 }
